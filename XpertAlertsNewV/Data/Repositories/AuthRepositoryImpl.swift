@@ -7,9 +7,10 @@
 
 import Foundation
 final class AuthRepositoryImpl: AuthRepository {
-    func login(email: String, password: String) {
+    func login(email: String, password: String)-> Bool {
         print("AuthRepositoryImpl received login request")
         print("email:", email)
         print("password", password)
+        return true
     }
 }

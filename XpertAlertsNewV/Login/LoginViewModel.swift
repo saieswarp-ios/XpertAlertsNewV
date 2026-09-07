@@ -8,6 +8,7 @@ final class LoginViewModel: ObservableObject {
     @Published var password = ""
     @Published var isLoading = false
     @Published var errorMessage: String?
+    @Published var loginSucceeded = false
 
     private let loginUseCase: LoginUseCase
 
@@ -31,9 +32,13 @@ final class LoginViewModel: ObservableObject {
             return
         }
 
-        loginUseCase.execute(
-            email: email,
-            password: password
-        )
+        let success = loginUseCase.execute(email: email,
+                                           password: password)
+        
+        
+        if success{
+            loginSucceeded = true
+        }
+       
     }
 }

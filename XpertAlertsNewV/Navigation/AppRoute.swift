@@ -10,4 +10,9 @@ enum AppRoute {
     
     case login
     case alerts
+    case notifications
+    case archived
+    case about
+    case subscriptions
+    
 }

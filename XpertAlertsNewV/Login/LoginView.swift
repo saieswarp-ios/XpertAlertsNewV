@@ -11,10 +11,15 @@ struct LoginView: View {
     
     @StateObject private var viewModel: LoginViewModel
     
-    init(container: DIContainer) {
+    let cooardinator: AppCoordinator
+    
+    init(container: DIContainer,
+    coordinator: AppCoordinator) {
+        
+        self.cooardinator = coordinator
            
            _viewModel = StateObject(
-               wrappedValue: container.makeLoginViewModel()
+            wrappedValue: container.makeLoginViewModel()
            )
        }
     
@@ -24,6 +29,8 @@ struct LoginView: View {
                 .font(.largeTitle)
                 
             Text("Login")
+                .foregroundColor(.purple
+                )
             
             TextField("Email", text: $viewModel.email)
             
@@ -36,13 +43,20 @@ struct LoginView: View {
             
             Button("Login"){
                 
-print("Login Tapped")
                 viewModel.login()
             }
             
             }
         
         .padding()
+        .onChange(of: viewModel.loginSucceeded) { _, succeeded in
+            
+            if succeeded {
+                cooardinator.showAlerts()
+                
+            }
+            
+        }
         
     }
     

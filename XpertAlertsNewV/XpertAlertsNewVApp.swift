@@ -11,14 +11,13 @@ import SwiftUI
 struct XpertAlertsNewVApp: App {
     
     private let container = DIContainer()
+    
+    @StateObject private var cooardinator = AppCoordinator()
     var body: some Scene {
         WindowGroup {
             
-LoginView(
-    
-    container: container
-
-)
+            RootView(cooardinator: cooardinator, container: container)
+                .environmentObject(cooardinator)
         }
     }
 }
