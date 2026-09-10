@@ -45,20 +45,40 @@ struct LoginView: View {
                 
                 viewModel.login()
             }
+            .disabled(viewModel.isLoading)
+            
+            if viewModel.isLoading {
+                ProgressView()
+            }
+            
+            if let errorMessage = viewModel.errorMessage {
+                Text(errorMessage)
+            }
             
             }
         
         .padding()
-        .onChange(of: viewModel.loginSucceeded) { _, succeeded in
-            
-            if succeeded {
+        .onReceive(viewModel.$loginResult){  result in
+
+            guard let result else {
+                return
+            }
+            switch result {
+                
+            case .success:
                 cooardinator.showAlerts()
+                
+            case .passwordExpired:
+                cooardinator.showChangePassword()
+                
+                
+            }
                 
             }
             
         }
         
-    }
+    
     
 }
 

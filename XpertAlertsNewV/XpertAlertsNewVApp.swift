@@ -18,6 +18,9 @@ struct XpertAlertsNewVApp: App {
             
             RootView(cooardinator: cooardinator, container: container)
                 .environmentObject(cooardinator)
+                .onAppear {
+                    cooardinator.start(getSavedUserUseCase: container.getSavedUserUseCase)
+                }
         }
     }
 }

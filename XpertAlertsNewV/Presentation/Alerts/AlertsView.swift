@@ -7,8 +7,22 @@
 
 import SwiftUI
 struct AlertsView: View {
-    
+    @StateObject private var viewModel: AlertsViewModel
     @EnvironmentObject var cooardinator: AppCoordinator
+    let logoutUseCase: LogoutUseCase
+    
+    init(getAlertsUseCase: GetAlertsUseCase,
+         logoutUseCase: LogoutUseCase
+         
+    ) {
+        _viewModel = StateObject(
+            
+            wrappedValue: AlertsViewModel(getAlertsUseCase: getAlertsUseCase)
+        )
+        self.logoutUseCase = logoutUseCase
+        
+    }
+    
     var body: some View {
         VStack(spacing: 20) {
             
@@ -30,6 +44,7 @@ struct AlertsView: View {
                 cooardinator.subscriptions()
             }
             Button("Logout") {
+                logoutUseCase.execute()
                 cooardinator.showLogin()
             }
             
@@ -37,8 +52,9 @@ struct AlertsView: View {
             
         }
         .padding()
+        .onAppear {
+            viewModel.loadAlerts()
+        }
     }
 }
-#Preview {
-    AlertsView()
-}
+

@@ -21,7 +21,14 @@ struct RootView: View {
      
        
    case .alerts:
-       AlertsView()
+       AlertsView(
+        getAlertsUseCase: container.getAlertsUseCase, 
+        logoutUseCase: container.logoutUseCase
+       )
+            
+            
+        case .changePassword:
+            ChangePasswordView()
        
    case .about:
        AboutView()

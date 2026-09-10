@@ -10,6 +10,7 @@ enum AppRoute {
     
     case login
     case alerts
+    case changePassword
     case notifications
     case archived
     case about
