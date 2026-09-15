@@ -13,9 +13,9 @@ final class AlertRepositoryImpl: AlertRepository {
     private let apiClient: APIClient
     private let userRepository: UserRepository
     
-    init(apiClient: APIClient, userReportory: UserRepository) {
+    init(apiClient: APIClient, userRepository: UserRepository) {
         self.apiClient = apiClient
-        self.userRepository = userReportory
+        self.userRepository = userRepository
     }
     
     func getAlerts(
@@ -49,7 +49,13 @@ final class AlertRepositoryImpl: AlertRepository {
             
         ]
         
-       
+        print("Alert startDate:", startDate)
+        print("Alert endDate:", endDate)
+        print("Alert searchByKeyword:", searchByKeyword)
+        print("Alert viewByFlag:", viewByFlag)
+        print("Alert applicationId:", applicationId)
+        print("Alert alertDefinitionId:", alertDefinitionId)
+        
         
         let data = try await apiClient.request(endpoint: endpoint, method: "GET", queryItems: queryItems)
         

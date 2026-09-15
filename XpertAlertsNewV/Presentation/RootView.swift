@@ -1,49 +1,43 @@
-//
-//  RootView.swift
-//  XpertAlertsNewV
-//
-//  Created by IOS DEV on 07/09/26.
-//
-
 import SwiftUI
+
 struct RootView: View {
-    
-    @ObservedObject var cooardinator: AppCoordinator
-    
+
+    @ObservedObject var coordinator: AppCoordinator
     let container: DIContainer
-    
+
     var body: some View {
-        
-        switch cooardinator.route {
-   case .login:
-       LoginView(container: container,
-       coordinator: cooardinator)
-     
-       
-   case .alerts:
-       AlertsView(
-        getAlertsUseCase: container.getAlertsUseCase, 
-        logoutUseCase: container.logoutUseCase
-       )
-            
-            
+
+        switch coordinator.route {
+
+        case .login:
+            LoginView(
+                container: container,
+                coordinator: coordinator
+            )
+
+        case .alerts:
+           MainTabView()
+
+        case .search:
+            SearchView()
+
         case .changePassword:
             ChangePasswordView()
-       
-   case .about:
-       AboutView()
-   case .notifications:
-       NotificationsView()
-   case .subscriptions:
-       SubscriptionsView()
+
+        case .notifications:
+            NotificationsView()
+
         case .archived:
             ArchivedView()
-       
+
+        case .about:
+            AboutView()
+
+        case .subscriptions:
+            SubscriptionsView()
+        case .buildSettings:
+            BuildSettingsView()
+
         }
     }
 }
-
-
-
-
-

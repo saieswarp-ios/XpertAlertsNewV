@@ -12,14 +12,17 @@ struct XpertAlertsNewVApp: App {
     
     private let container = DIContainer()
     
-    @StateObject private var cooardinator = AppCoordinator()
+    @StateObject private var coordinator = AppCoordinator()
     var body: some Scene {
         WindowGroup {
             
-            RootView(cooardinator: cooardinator, container: container)
-                .environmentObject(cooardinator)
+            RootView(
+                coordinator: coordinator,
+                container: container
+            )
+                .environmentObject(coordinator)
                 .onAppear {
-                    cooardinator.start(getSavedUserUseCase: container.getSavedUserUseCase)
+                    coordinator.start(getSavedUserUseCase: container.getSavedUserUseCase)
                 }
         }
     }

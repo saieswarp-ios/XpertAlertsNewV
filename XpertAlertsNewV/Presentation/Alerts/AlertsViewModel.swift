@@ -17,9 +17,16 @@ final class AlertsViewModel: ObservableObject {
     @Published var errorMessage: String?
     
     private let getAlertsUseCase: GetAlertsUseCase
+    private let getSearchApplicationUseCase: GetSearchApplicationUseCase
+        
     
-    init(getAlertsUseCase: GetAlertsUseCase) {
+    init(
+        getAlertsUseCase: GetAlertsUseCase,
+        getSearchApplicationUseCase: GetSearchApplicationUseCase
+    ) {
         self.getAlertsUseCase = getAlertsUseCase
+        self.getSearchApplicationUseCase =
+            getSearchApplicationUseCase
     }
     
     func loadAlerts() {
@@ -44,11 +51,12 @@ final class AlertsViewModel: ObservableObject {
                 
                 let result = try await getAlertsUseCase.execute(
                     
-                    startDate: "",
-                    endDate: "",
+                    startDate: formatter.string(from: startDate),
+                    endDate: formatter.string(from: today),
                     searchByKeyword: "",
                     viewByFlag: 0,
-                    applicationId: 0,
+                    applicationId: getSearchApplicationUseCase.execute(),
+                        
                     alertDefinitionId: 0
                     
                 )

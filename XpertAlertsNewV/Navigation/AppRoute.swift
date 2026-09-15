@@ -11,9 +11,10 @@ enum AppRoute {
     case login
     case alerts
     case changePassword
+    case search
     case notifications
     case archived
     case about
     case subscriptions
-    
+    case buildSettings
 }

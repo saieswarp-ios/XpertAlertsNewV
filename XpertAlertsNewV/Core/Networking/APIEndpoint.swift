@@ -11,6 +11,5 @@ struct APIEndpoint {
     static let baseURL = "https://testapps.aquilasoftware.com/ams/webservice/"
     
     static let login = "authenticateUserForDevices"
-    
-    static let alerts = "getAlertsForDevices"
+  static let alerts = "getAlertsForDevices"
 }

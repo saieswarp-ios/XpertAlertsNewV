@@ -36,6 +36,10 @@ final class AppCoordinator: ObservableObject {
         route = .changePassword
     }
     
+    func showSearch() {
+        route = .search
+    }
+    
     func showNotifications() {
         route = .notifications
     }
@@ -47,5 +51,8 @@ final class AppCoordinator: ObservableObject {
     }
     func subscriptions() {
         route = .subscriptions  
+    }
+    func showBuildSettings() {
+        route = .buildSettings
     }
 }

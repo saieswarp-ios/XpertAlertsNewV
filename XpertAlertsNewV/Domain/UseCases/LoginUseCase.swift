@@ -38,7 +38,6 @@ final class LoginUseCase {
 
             userRepository.saveUser(user)
             print("Application IDs:", user.applicationIds)
-            
                 // Password has expired.
                 if user.passwordExpiryFlag != 0 {
                     return .passwordExpired(user)
