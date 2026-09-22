@@ -13,16 +13,25 @@ final class AppCoordinator: ObservableObject {
     
     @Published var route: AppRoute = .login
     
+//    func start(
+//        getSavedUserUseCase: GetSavedUserUseCase
+//    ) {
+//        if getSavedUserUseCase.execute() != nil {
+//            route = .alerts
+//        }else {
+//            route = .login
+//            
+//        }
+//    }
+    
+  
     func start(
         getSavedUserUseCase: GetSavedUserUseCase
     ) {
-        if getSavedUserUseCase.execute() != nil {
-            route = .alerts
-        }else {
-            route = .login
-            
-        }
+        route = .login
     }
+    
+
     
     
     func showLogin() {

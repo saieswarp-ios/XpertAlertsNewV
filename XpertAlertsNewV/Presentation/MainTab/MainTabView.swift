@@ -1,19 +1,22 @@
-
 import SwiftUI
 
 struct MainTabView: View {
+
+    let container: DIContainer
 
     var body: some View {
 
         TabView {
 
-            AlertsView()
-                .tabItem {
-                    Label(
-                        "Alerts",
-                        systemImage: "bell.fill"
-                    )
-                }
+            AlertsView(
+                viewModel: container.makeAlertsViewModel()
+            )
+            .tabItem {
+                Label(
+                    "Alerts",
+                    systemImage: "bell.fill"
+                )
+            }
 
             SearchView()
                 .tabItem {
@@ -37,7 +40,7 @@ struct MainTabView: View {
                         "More",
                         systemImage: "ellipsis.circle.fill"
                     )
-                }
+            }
         }
         .tint(Color.themeOrange)
     }

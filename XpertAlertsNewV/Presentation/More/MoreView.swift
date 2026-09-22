@@ -11,7 +11,6 @@ struct MoreView: View {
                 //profile
 
                 Section {
-
                     NavigationLink {
                         ProfileView()
                     } label: {

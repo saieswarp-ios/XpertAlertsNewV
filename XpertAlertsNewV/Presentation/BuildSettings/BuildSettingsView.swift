@@ -420,8 +420,8 @@
 import SwiftUI
 
 struct BuildSettingsView: View {
-
-    @Environment(\.dismiss) private var dismiss
+    let coordinator: AppCoordinator
+//    @Environment(\.dismiss) private var dismiss
 
     @State private var baseURL = ""
     @State private var isTesting = false
@@ -437,7 +437,11 @@ struct BuildSettingsView: View {
             HStack(spacing: 12) {
 
                 Button {
-                    dismiss()
+//                    dismiss()
+                    coordinator.showLogin()
+                    
+                    
+                    
                 } label: {
                     Image(systemName: "chevron.left")
                         .font(.system(size: 18, weight: .bold))
@@ -783,42 +787,115 @@ struct BuildSettingsView: View {
 
     //  Test Connection
 
+//    private func testConnection() {
+//
+//        isTesting = true
+//        testPassed = false
+//
+//        // Temporary UI behavior.
+//        // Real API will be connected later.
+//
+//        DispatchQueue.main.asyncAfter(
+//            deadline: .now() + 1
+//        ) {
+//
+//            isTesting = false
+//            testPassed = true
+//        }
+//    }
+    
+    
     private func testConnection() {
-
+        
+        let urlString = baseURL
+            .trimmingCharacters(in: .whitespacesAndNewlines)
+        
+        guard !urlString.isEmpty else {
+            return
+        }
+        
+        guard let url = URL(string: urlString) else {
+            return
+        }
+        
         isTesting = true
         testPassed = false
-
-        // Temporary UI behavior.
-        // Real API will be connected later.
-
-        DispatchQueue.main.asyncAfter(
-            deadline: .now() + 1
-        ) {
-
-            isTesting = false
-            testPassed = true
+        
+        Task {
+            do {
+                var request = URLRequest(url: url)
+                request.httpMethod = "HEAD"
+                
+                let (_, response) = try await URLSession.shared.data(
+                    for: request
+                )
+                
+                guard let httpResponse = response as? HTTPURLResponse else {
+                    await MainActor.run {
+                        isTesting = false
+                        testPassed = false
+                    }
+                    return
+                }
+                
+                await MainActor.run {
+                    isTesting = false
+                    testPassed = (200...499).contains(httpResponse.statusCode)
+                }
+                
+            } catch {
+                print("Connection test failed:", error)
+                
+                await MainActor.run {
+                    isTesting = false
+                    testPassed = false
+                }
+            }
         }
+    
     }
+ 
+
 
 
     // Save URL
 
+//    private func saveURL() {
+//
+//        let url = baseURL.trimmingCharacters(
+//            in: .whitespacesAndNewlines
+//        )
+//
+//        UserDefaults.standard.set(
+//            url,
+//            forKey: "BaseURL"
+//        )
+//
+//        UserDefaults.standard.set(
+//            true,
+//            forKey: "BaseURLVerified"
+//        )
+//
+//        print("Saved Base URL:", url)
+//    }
+  
     private func saveURL() {
-
-        let url = baseURL.trimmingCharacters(
-            in: .whitespacesAndNewlines
-        )
-
+        
+        let url = baseURL
+            .trimmingCharacters(in: .whitespacesAndNewlines)
+        
+        let finalURL = url.hasSuffix("/")
+            ? url
+            : url + "/"
+        
         UserDefaults.standard.set(
-            url,
+            finalURL,
             forKey: "BaseURL"
         )
-
-        UserDefaults.standard.set(
-            true,
-            forKey: "BaseURLVerified"
-        )
-
-        print("Saved Base URL:", url)
+        
+        print("Saved Base URL:", finalURL)
+        
+        coordinator.showLogin()
     }
+    
 }

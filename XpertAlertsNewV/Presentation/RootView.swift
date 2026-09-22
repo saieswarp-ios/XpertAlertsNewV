@@ -16,7 +16,10 @@ struct RootView: View {
             )
 
         case .alerts:
-           MainTabView()
+
+            MainTabView(
+                container: container
+            )
 
         case .search:
             SearchView()
@@ -36,8 +39,9 @@ struct RootView: View {
         case .subscriptions:
             SubscriptionsView()
         case .buildSettings:
-            BuildSettingsView()
-
+            BuildSettingsView(
+                coordinator: coordinator
+            )
         }
     }
 }

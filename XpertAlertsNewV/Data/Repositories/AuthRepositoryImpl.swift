@@ -17,6 +17,7 @@ final class AuthRepositoryImpl: AuthRepository {
         let endpoint =
             APIEndpoint.baseURL +
             APIEndpoint.login
+        print("LOGIN API:", endpoint)
 
         let deviceId =
             UIDevice.current.identifierForVendor?.uuidString ?? ""
