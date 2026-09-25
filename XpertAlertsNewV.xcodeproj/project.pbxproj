@@ -85,7 +85,7 @@
 					};
 				};
 			};
-			buildConfigurationList = 900C89DC304E988600A4D119 /* Build configuration list for PBXProject "XpertAlertsNewV" */;
+			buildConfigurationList = 900C89DC304E988600A4D119 /* Build configuration list for PBXProject "URLSessionAPIClient" */;
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
 			knownRegions = (
@@ -321,7 +321,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		900C89DC304E988600A4D119 /* Build configuration list for PBXProject "XpertAlertsNewV" */ = {
+		900C89DC304E988600A4D119 /* Build configuration list for PBXProject "URLSessionAPIClient" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				900C89EA304E988700A4D119 /* Debug */,
