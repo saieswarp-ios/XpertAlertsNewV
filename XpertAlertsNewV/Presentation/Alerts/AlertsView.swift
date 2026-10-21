@@ -1,363 +1,387 @@
-//import SwiftUI
-//
-//struct AlertsView: View {
-//
-//    private let alerts = [
-//        (
-//            "POC Issue",
-//            "Unable to Load Screen",
-//            "Production",
-//            "10:42 AM",
-//            "Critical"
-//        ),
-//        (
-//            "XpertAlerts",
-//            "Storage is running low",
-//            "Monitor Api",
-//            "9:18 AM",
-//            "Warning"
-//        ),
-//        (
-//            "Speed",
-//            "Run Api",
-//            "DvL Connected",
-//            "Yesterday",
-//            "Info"
-//        )
-//    ]
-//
-//    var body: some View {
-//
-//        ScrollView {
-//
-//            VStack(
-//                alignment: .leading,
-//                spacing: 24
-//            ) {
-//
-//             // screen header
-//
-//                AppScreenHeader(
-//                    title: "Alerts",
-//                    subtitle: "Monitor your latest business alerts",
-//                    icon: "bell.fill",
-//                    iconColor: .themeRed,
-//                    titleColor: .themeRed
-//                )
-//
-//              // greeting
-//
-//                VStack(
-//                    alignment: .leading,
-//                    spacing: 4
-//                ) {
-//
-//                    Text("Good morning")
-//                        .font(
-//                            .system(
-//                                size: 14,
-//                                weight: .medium
-//                            )
-//                        )
-//                        .foregroundStyle(.secondary)
-//
-//                    Text("Stay informed.")
-//                        .font(
-//                            .system(
-//                                size: 28,
-//                                weight: .bold
-//                            )
-//                        )
-//
-//                    Text(
-//                        "Here is a quick overview of your alerts."
-//                    )
-//                    .font(
-//                        .system(
-//                            size: 14
-//                        )
-//                    )
-//                    .foregroundStyle(.secondary)
-//                }
-//
-//        // summary
-//
-////                HStack(spacing: 12) {
-////
-////                    AlertSummaryCard(
-////                        value: "12",
-////                        title: "Total",
-////                        icon: "bell.fill",
-////                        color: .themeOrange
-////                    )
-////
-////                    AlertSummaryCard(
-////                        value: "3",
-////                        title: "Critical",
-////                        icon: "exclamationmark.triangle.fill",
-////                        color: .themeRed
-////                    )
-////
-////                    AlertSummaryCard(
-////                        value: "5",
-////                        title: "Today",
-////                        icon: "calendar",
-////                        color: .themeGreen
-////                    )
-////                }
-//
-//              // recent alertss
-//
-////                HStack {
-////
-////                    SectionTitle(
-////                        title: "Recent Alerts",
-////                        subtitle: "Your latest notifications"
-////                    )
-////
-////                    Spacer()
-////
-////                    Button {
-////
-////                        print("View All tapped")
-////
-////                    } label: {
-////
-////                        HStack(spacing: 4) {
-////
-////                            Text("View All")
-////
-////                            Image(
-////                                systemName: "chevron.right"
-////                            )
-////                            .font(
-////                                .system(
-////                                    size: 11,
-////                                    weight: .bold
-////                                )
-////                            )
-////                        }
-////                        .font(
-////                            .system(
-////                                size: 13,
-////                                weight: .semibold
-////                            )
-////                        )
-////                        .foregroundStyle(
-////                            Color.primary
-////                        )
-////                    }
-////                }
-//
-//             // alert list
-//
-//                VStack(spacing: 14) {
-//
-//                    ForEach(
-//                        alerts.indices,
-//                        id: \.self
-//                    ) { index in
-//
-//                        let alert = alerts[index]
-//
-//                        AlertCardView(
-//                            title: alert.0,
-//                            message: alert.1,
-//                            application: alert.2,
-//                            date: alert.3,
-//                            severity: alert.4
-//                        )
-//                    }
-//                }
-//            }
-//            .padding(.horizontal, 16)
-//            .padding(.top, 20)
-//            .padding(.bottom, 24)
-//        }
-//        .background(
-//            Color(.systemGroupedBackground)
-//                .ignoresSafeArea()
-//        )
-//    }
-//}
-//
-//
-////summary card
-//
-//struct AlertSummaryCard: View {
-//
-//    let value: String
-//    let title: String
-//    let icon: String
-//    let color: Color
-//
-//    var body: some View {
-//
-//        VStack(
-//            alignment: .leading,
-//            spacing: 10
-//        ) {
-//
-//            Image(systemName: icon)
-//                .font(
-//                    .system(
-//                        size: 17,
-//                        weight: .semibold
-//                    )
-//                )
-//                .foregroundStyle(color)
-//                .frame(
-//                    width: 34,
-//                    height: 34
-//                )
-//                .background(
-//                    color.opacity(0.12),
-//                    in: RoundedRectangle(
-//                        cornerRadius: 10
-//                    )
-//                )
-//
-//            Text(value)
-//                .font(
-//                    .system(
-//                        size: 24,
-//                        weight: .bold
-//                    )
-//                )
-//
-//            Text(title)
-//                .font(
-//                    .system(
-//                        size: 12,
-//                        weight: .medium
-//                    )
-//                )
-//                .foregroundStyle(.secondary)
-//        }
-//        .frame(
-//            maxWidth: .infinity,
-//            alignment: .leading
-//        )
-//        .padding(14)
-//        .background(
-//            Color(.secondarySystemBackground),
-//            in: RoundedRectangle(
-//                cornerRadius: 18
-//            )
-//        )
-//    }
-//}
-
 
 import SwiftUI
 
 struct AlertsView: View {
 
     @StateObject private var viewModel: AlertsViewModel
+    let coordinator: AppCoordinator
 
-    init(viewModel: AlertsViewModel) {
-        _viewModel = StateObject(wrappedValue: viewModel)
+    init(
+        container: DIContainer,
+        coordinator: AppCoordinator
+    ) {
+        self.coordinator = coordinator
+        _viewModel = StateObject(
+            wrappedValue: container.makeAlertsViewModel()
+        )
     }
 
     var body: some View {
-
         VStack(spacing: 0) {
+
+            // MARK: - Header
 
             AppScreenHeader(
                 title: "Alerts",
                 subtitle: nil,
                 icon: "bell.fill"
             )
-            .padding()
+            .padding(.horizontal, 16)
+            .padding(.top, 12)
+            .padding(.bottom, 10)
 
-            if viewModel.isLoading {
+            // MARK: - Search Alerts
 
-                ProgressView("Loading Alerts...")
-                    .frame(maxWidth: .infinity, maxHeight: .infinity)
+            Button {
+                coordinator.showSearchAlerts()
+            } label: {
+                HStack(spacing: 8) {
+                    Image(systemName: "magnifyingglass")
+                    Text("Search Alerts")
+                }
+                .font(.system(size: 15, weight: .semibold))
+                .foregroundStyle(.white)
+                .frame(maxWidth: .infinity)
+                .frame(height: 42)
+                .background(Color.themeOrange)
+                .clipShape(RoundedRectangle(cornerRadius: 10))
+            }
+            .buttonStyle(.plain)
+            .padding(.horizontal, 16)
+            .padding(.bottom, 10)
 
-            } else if let errorMessage = viewModel.errorMessage {
+            Divider()
 
-                VStack(spacing: 12) {
+            // MARK: - Loading State
 
+            if viewModel.isLoading && viewModel.alerts.isEmpty {
+
+                Spacer()
+                ProgressView("Loading alerts...")
+                Spacer()
+
+            // MARK: - Error State
+
+            } else if viewModel.alerts.isEmpty,
+                      let errorMessage = viewModel.errorMessage {
+
+                Spacer()
+
+                VStack(spacing: 10) {
                     Image(systemName: "exclamationmark.triangle")
                         .font(.system(size: 30))
-                        .foregroundStyle(.red)
+                        .foregroundStyle(Color.themeOrange)
 
                     Text(errorMessage)
+                        .font(.system(size: 15))
                         .foregroundStyle(.secondary)
+                        .multilineTextAlignment(.center)
 
                     Button("Retry") {
                         viewModel.loadAlerts()
                     }
+                    .foregroundStyle(Color.themeOrange)
                 }
-                .frame(maxWidth: .infinity, maxHeight: .infinity)
+                .padding(16)
+
+                Spacer()
+
+            // MARK: - Empty State
+
+            } else if viewModel.alerts.isEmpty {
+
+                Spacer()
+
+                VStack(spacing: 10) {
+                    Image(systemName: "bell.slash")
+                        .font(.system(size: 32))
+                        .foregroundStyle(.secondary)
+
+                    Text("No Alerts")
+                        .font(.system(size: 17, weight: .medium))
+
+                    Text("There are no alerts to display for this date range.")
+                        .font(.system(size: 14))
+                        .foregroundStyle(.secondary)
+                        .multilineTextAlignment(.center)
+                }
+                .padding(16)
+
+                Spacer()
+
+            // MARK: - Date-Grouped Alerts
 
             } else {
 
                 ScrollView {
+                    LazyVStack(alignment: .leading, spacing: 0) {
 
-                    VStack(spacing: 0) {
+                        ForEach(groupedAlerts, id: \.dateKey) { group in
 
-                        ForEach(viewModel.alerts, id: \.id) { alert in
+                            // Date heading
 
-                            AlertRow(
-                                title: alert.subject,
-                                message: alert.message,
-                                application: alert.applicationName,
-                                date: alert.date
-                            )
+                            Text(group.dateTitle)
+                                .font(.system(size: 14, weight: .semibold))
+                                .foregroundStyle(.white)
+                                .padding(.horizontal, 10)
+                                .frame(height: 29)
+                                .background(Color.themeOrange)
+                                .clipShape(Capsule())
+                                .padding(.leading, 16)
+                                .padding(.top, 10)
+                                .padding(.bottom, 7)
+
+                            // Alerts belonging to this date
+
+                            ForEach(group.alerts) { alert in
+                                Button {
+                                    coordinator.showAlertDetails(alert)
+                                } label: {
+                                    LegacyAlertCard(
+                                        title: alert.subject,
+                                        message: alert.message,
+                                        date: alert.date
+                                    )
+                                }
+                                .buttonStyle(.plain)
+                                .padding(.horizontal, 16)
+                                .padding(.bottom, 9)
+                            }
                         }
                     }
-                    .padding(.horizontal, 16)
+                    .padding(.bottom, 12)
+                }
+                .refreshable {
+                    await viewModel.refreshAlerts()
                 }
             }
         }
-        .task {
-            viewModel.loadAlerts()
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
+        .background(Color(.systemBackground))
+        .onAppear {
+            if let filters = coordinator.pendingAlertSearchFilters {
+                coordinator.pendingAlertSearchFilters = nil
+                viewModel.searchAlerts(filters: filters)
+            } else if viewModel.alerts.isEmpty && !viewModel.isLoading {
+                viewModel.loadAlerts()
+            }
         }
+        .onChange(of: coordinator.refreshAlertsAfterAction) { _, needsRefresh in
+            guard needsRefresh else { return }
+            coordinator.refreshAlertsAfterAction = false
+            Task {
+                await viewModel.refreshAlerts()
+            }
+        }
+    }
+
+    // MARK: - Group Alerts Using API groupBy
+
+    private var groupedAlerts: [AlertDateGroup] {
+
+        let groups = Dictionary(
+            grouping: viewModel.alerts,
+            by: { $0.groupBy }
+        )
+
+        return groups.map { key, alerts in
+
+            let parsedGroupDate = Self.parseDate(key)
+
+            let dateTitle: String
+
+            if let parsedGroupDate {
+                let formatter = DateFormatter()
+                formatter.locale = Locale(identifier: "en_US_POSIX")
+                formatter.dateFormat = "dd MMM"
+                dateTitle = formatter.string(from: parsedGroupDate)
+            } else {
+                dateTitle = key
+            }
+
+            let sortedAlerts = alerts.sorted { first, second in
+                let firstDate = Self.parseDate(first.date) ?? .distantPast
+                let secondDate = Self.parseDate(second.date) ?? .distantPast
+
+                return firstDate > secondDate
+            }
+
+            return AlertDateGroup(
+                dateKey: key,
+                dateTitle: dateTitle,
+                sortDate: parsedGroupDate ?? .distantPast,
+                alerts: sortedAlerts
+            )
+        }
+        .sorted { $0.sortDate > $1.sortDate }
+    }
+
+    // MARK: - Date Parsing
+
+    private static func parseDate(_ value: String) -> Date? {
+
+        let formats = [
+            "MM/dd/yyyy hh:mm:ss a",
+            "MM/dd/yyyy hh:mm a",
+            "MM/dd/yyyy HH:mm:ss",
+            "MM/dd/yyyy HH:mm",
+            "MM/dd/yyyy"
+        ]
+
+        for format in formats {
+            let formatter = DateFormatter()
+            formatter.locale = Locale(identifier: "en_US_POSIX")
+            formatter.timeZone = .current
+            formatter.dateFormat = format
+
+            if let parsedDate = formatter.date(from: value) {
+                return parsedDate
+            }
+        }
+
+        return ISO8601DateFormatter().date(from: value)
     }
 }
 
-struct AlertRow: View {
+// MARK: - Date Group
+
+private struct AlertDateGroup {
+    let dateKey: String
+    let dateTitle: String
+    let sortDate: Date
+    let alerts: [Alert]
+}
+
+// MARK: - Old-Style Alert Card
+
+private struct LegacyAlertCard: View {
 
     let title: String
     let message: String
-    let application: String
     let date: String
 
+    // MARK: - Parse Alert Date
+
+    private var parsedAlertDate: Date? {
+        let formatter = DateFormatter()
+        formatter.locale = Locale(identifier: "en_US_POSIX")
+        formatter.dateFormat = "MM/dd/yyyy hh:mm a"
+        return formatter.date(from: date)
+    }
+
+    // MARK: - Display Date
+
+    private var displayDate: String {
+        guard let parsedAlertDate else {
+            return date
+        }
+
+        let formatter = DateFormatter()
+        formatter.locale = Locale(identifier: "en_US")
+        formatter.dateFormat = "MM/dd/yyyy hh:mm a"
+
+        return formatter.string(from: parsedAlertDate)
+    }
+
+    // MARK: - Display Time
+
+    private var displayTime: String {
+        guard let parsedAlertDate else {
+            return ""
+        }
+
+        let formatter = DateFormatter()
+        formatter.locale = Locale(identifier: "en_US")
+        formatter.dateFormat = "hh:mm a"
+
+        return formatter.string(from: parsedAlertDate)
+    }
+
+    // MARK: - Clean HTML Message
+
+    private var formattedMessage: String {
+        message
+            .replacingOccurrences(
+                of: "(?i)<br\\s*/?>",
+                with: " ",
+                options: .regularExpression
+            )
+            .replacingOccurrences(
+                of: "(?i)</br>",
+                with: " ",
+                options: .regularExpression
+            )
+            .replacingOccurrences(
+                of: "(?i)</?p\\s*>",
+                with: " ",
+                options: .regularExpression
+            )
+            .replacingOccurrences(
+                of: "\\s+",
+                with: " ",
+                options: .regularExpression
+            )
+            .trimmingCharacters(in: .whitespacesAndNewlines)
+    }
+
+    // MARK: - Card UI
+
     var body: some View {
+        HStack(spacing: 0) {
 
-        VStack(
-            alignment: .leading,
-            spacing: 6
-        ) {
+            // Left column: date and time
 
-            HStack {
+            VStack(spacing: 5) {
 
-                Text(title)
-                    .font(.system(size: 16, weight: .medium))
+                Text(
+                    parsedAlertDate.map { value in
+                        let formatter = DateFormatter()
+                        formatter.locale = Locale(identifier: "en_US")
+                        formatter.dateFormat = "dd MMM"
+                        return formatter.string(from: value)
+                    } ?? title
+                )
+                .font(.system(size: 12, weight: .medium))
+                .foregroundStyle(.secondary)
+                .lineLimit(1)
 
-                Spacer()
-
-                Text(date)
-                    .font(.system(size: 12))
+                Text(displayTime.isEmpty ? displayDate : displayTime)
+                    .font(.system(size: 11))
                     .foregroundStyle(.secondary)
+                    .lineLimit(1)
+                    .minimumScaleFactor(0.75)
             }
+            .frame(width: 78)
+            .padding(.vertical, 10)
 
-            Text(message)
-                .font(.system(size: 14))
+            // Orange vertical divider
 
-            Text(application)
+            Rectangle()
+                .fill(Color.themeOrange)
+                .frame(width: 1, height: 36)
+
+            // Right column: message
+
+            Text(formattedMessage.isEmpty ? title : formattedMessage)
                 .font(.system(size: 12))
                 .foregroundStyle(.secondary)
+                .lineLimit(2)
+                .multilineTextAlignment(.leading)
+                .frame(maxWidth: .infinity, alignment: .leading)
+                .padding(.leading, 8)
+                .padding(.trailing, 8)
+                .padding(.vertical, 8)
         }
-        .padding(.vertical, 14)
-
-        Divider()
+        .frame(maxWidth: .infinity, minHeight: 58)
+        .background(Color(.systemGray6))
+        .clipShape(RoundedRectangle(cornerRadius: 5))
+        .shadow(
+            color: .black.opacity(0.08),
+            radius: 2,
+            x: 0,
+            y: 1
+        )
+        .contentShape(Rectangle())
     }
 }
 
-#Preview {
-    // Preview will be handled later because
-    // AlertsView now requires AlertsViewModel.
-}

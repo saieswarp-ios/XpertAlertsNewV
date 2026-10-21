@@ -1,302 +1,86 @@
+
 import SwiftUI
 
 struct AboutView: View {
 
+    @Environment(\.dismiss) private var dismiss
+
+    private let themeOrange = Color(
+        red: 0.929,
+        green: 0.455,
+        blue: 0.110
+    )
+
     var body: some View {
+        VStack(spacing: 0) {
 
-        ScrollView {
+            // MARK: - Header
 
-            VStack(spacing: 24) {
+            HStack(spacing: 12) {
 
-                //header
-
-                VStack(spacing: 12) {
-
-                    ZStack {
-
-                        RoundedRectangle(
-                            cornerRadius: 24
-                        )
-                        .fill(
-                            Color(.secondarySystemBackground)
-                        )
-                        .frame(
-                            width: 110,
-                            height: 110
-                        )
-
-                        Image(
-                            systemName: "bell.badge.fill"
-                        )
-                        .font(.system(size: 48))
-                    }
-
-                    Text("XpertAlerts")
-                        .font(.largeTitle)
-                        .fontWeight(.bold)
-
-                    Text("Version 1.0.0")
-                        .font(.subheadline)
-                        .foregroundStyle(.secondary)
-
-                    Text(
-                        "Stay informed. Respond faster."
-                    )
-                    .font(.subheadline)
-                    .foregroundStyle(.secondary)
+                Button {
+                    dismiss()
+                } label: {
+                    Image(systemName: "chevron.left")
+                        .font(.system(size: 18, weight: .semibold))
+                        .foregroundStyle(themeOrange)
+                        .frame(width: 28, height: 40)
+                        .contentShape(Rectangle())
                 }
-                .frame(maxWidth: .infinity)
-                .padding(.top, 20)
+                .buttonStyle(.plain)
+                .accessibilityLabel("Back")
 
-                // about
+                Image(systemName: "info.circle.fill")
+                    .font(.system(size: 18, weight: .semibold))
+                    .foregroundStyle(themeOrange)
+                    .frame(width: 40, height: 40)
+                    .background(themeOrange.opacity(0.12))
+                    .clipShape(RoundedRectangle(cornerRadius: 12))
 
-                AboutSection(
-                    title: "About XpertAlerts"
-                ) {
+                Text("About")
+                    .font(.system(size: 21, weight: .bold))
+                    .foregroundStyle(themeOrange)
 
-                    Text(
-                        "XpertAlerts helps you monitor, manage, and respond to important alerts from your applications and services."
-                    )
-                    .font(.body)
-                    .foregroundStyle(.secondary)
-                    .fixedSize(
-                        horizontal: false,
-                        vertical: true
-                    )
-                }
-
-                // features
-
-                VStack(
-                    alignment: .leading,
-                    spacing: 16
-                ) {
-
-                    Text("Features")
-                        .font(.title2)
-                        .fontWeight(.bold)
-
-                    AboutFeatureRow(
-                        icon: "bell.fill",
-                        title: "Alert Monitoring",
-                        description:
-                            "Stay informed about important events."
-                    )
-
-                    Divider()
-
-                    AboutFeatureRow(
-                        icon: "magnifyingglass",
-                        title: "Smart Search",
-                        description:
-                            "Find alerts quickly using filters."
-                    )
-
-                    Divider()
-
-                    AboutFeatureRow(
-                        icon:
-                            "arrowshape.turn.up.right.fill",
-                        title: "Alert Forwarding",
-                        description:
-                            "Share important alerts with others."
-                    )
-
-                    Divider()
-
-                    AboutFeatureRow(
-                        icon: "archivebox.fill",
-                        title: "Alert History",
-                        description:
-                            "Keep track of previous alerts."
-                    )
-                }
-                .padding()
-                .background(
-                    RoundedRectangle(cornerRadius: 20)
-                        .fill(
-                            Color(.secondarySystemBackground)
-                        )
-                )
-
-                // links
-
-                VStack(spacing: 0) {
-
-                    AboutLinkButton(
-                        title: "Privacy Policy",
-                        icon: "hand.raised.fill"
-                    ) {
-                        print("Privacy Policy tapped")
-                    }
-
-                    Divider()
-
-                    AboutLinkButton(
-                        title: "Terms & Conditions",
-                        icon: "doc.text.fill"
-                    ) {
-                        print("Terms tapped")
-                    }
-
-                    Divider()
-
-                    AboutLinkButton(
-                        title: "Contact Support",
-                        icon: "questionmark.circle.fill"
-                    ) {
-                        print("Contact Support tapped")
-                    }
-                }
-                .padding(.horizontal)
-                .background(
-                    RoundedRectangle(cornerRadius: 20)
-                        .fill(
-                            Color(.secondarySystemBackground)
-                        )
-                )
-
-                // footer
-                VStack(spacing: 6) {
-
-                    Text("XpertAlerts")
-                        .font(.headline)
-
-                    Text("© 2026 XpertAlerts")
-                        .font(.caption)
-                        .foregroundStyle(.secondary)
-                }
-                .padding(.bottom, 16)
+                Spacer()
             }
-            .padding()
-        }
-        .background(
-            Color(.systemGroupedBackground)
-                .ignoresSafeArea()
-        )
-        .navigationTitle("About")
-        .navigationBarTitleDisplayMode(.inline)
-    }
-}
+            .padding(.horizontal, 16)
+            .padding(.top, 12)
+            .padding(.bottom, 16)
 
+            // MARK: - About Content
 
-// about
+            Spacer()
 
-struct AboutSection<Content: View>: View {
+            VStack(spacing: 20) {
+                Image("XpertAlerts")
+                    .resizable()
+                    .scaledToFit()
+                    .frame(maxWidth: 280, maxHeight: 160)
+                    .padding(.horizontal, 20)
 
-    let title: String
-    let content: Content
+                VStack(spacing: 8) {
+                    Text("XpertAlerts")
+                        .font(.system(size: 22, weight: .bold))
+                        .foregroundStyle(.primary)
 
-    init(
-        title: String,
-        @ViewBuilder content: () -> Content
-    ) {
-        self.title = title
-        self.content = content()
-    }
-
-    var body: some View {
-
-        VStack(
-            alignment: .leading,
-            spacing: 12
-        ) {
-
-            Text(title)
-                .font(.title2)
-                .fontWeight(.bold)
-
-            content
-        }
-        .frame(
-            maxWidth: .infinity,
-            alignment: .leading
-        )
-        .padding()
-        .background(
-            RoundedRectangle(cornerRadius: 20)
-                .fill(
-                    Color(.secondarySystemBackground)
-                )
-        )
-    }
-}
-
-
-//feature
-
-struct AboutFeatureRow: View {
-
-    let icon: String
-    let title: String
-    let description: String
-
-    var body: some View {
-
-        HStack(
-            alignment: .top,
-            spacing: 14
-        ) {
-
-            Image(systemName: icon)
-                .font(.title3)
-                .frame(
-                    width: 40,
-                    height: 40
-                )
-
-            VStack(
-                alignment: .leading,
-                spacing: 4
-            ) {
-
-                Text(title)
-                    .font(.headline)
-
-                Text(description)
-                    .font(.caption)
-                    .foregroundStyle(.secondary)
-                    .fixedSize(
-                        horizontal: false,
-                        vertical: true
-                    )
+                    Text("App Version: v1.7")
+                        .font(.system(size: 15, weight: .medium))
+                        .foregroundStyle(.secondary)
+                }
             }
 
             Spacer()
-        }
-    }
-}
 
-
-//link button
-
-struct AboutLinkButton: View {
-
-    let title: String
-    let icon: String
-    let action: () -> Void
-
-    var body: some View {
-
-        Button(action: action) {
-
-            HStack(spacing: 14) {
-
-                Image(systemName: icon)
-                    .frame(width: 28)
-
-                Text(title)
-
-                Spacer()
-
-                Image(
-                    systemName: "chevron.right"
-                )
-                .font(.caption)
+            Text("Copyright © 2020, Aquila Software Inc.")
+                .font(.system(size: 13, weight: .medium))
                 .foregroundStyle(.secondary)
-            }
-            .padding(.vertical, 15)
+                .multilineTextAlignment(.center)
+                .padding(.horizontal, 16)
+                .padding(.bottom, 20)
         }
-        .buttonStyle(.plain)
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
+        .background(Color(.systemBackground))
+        .toolbar(.hidden, for: .navigationBar)
     }
 }
+

@@ -1,12 +1,14 @@
+
 import SwiftUI
 
 struct RootView: View {
 
     @ObservedObject var coordinator: AppCoordinator
+
     let container: DIContainer
+    let logoutUseCase: LogoutUseCase
 
     var body: some View {
-
         switch coordinator.route {
 
         case .login:
@@ -15,29 +17,94 @@ struct RootView: View {
                 coordinator: coordinator
             )
 
-        case .alerts:
+            
+            
+          
+            case .alerts, .alertDetails:
 
-            MainTabView(
-                container: container
+                MainTabView(
+                    container: container,
+                    coordinator: coordinator,
+                    logoutUseCase: logoutUseCase
+                )
+                .fullScreenCover(
+                    isPresented: Binding(
+                        get: {
+                            coordinator.route == .alertDetails
+                        },
+                        set: { isPresented in
+                            if !isPresented {
+                                coordinator.backToAlerts()
+                            }
+                        }
+                    )
+                ) {
+                    if let alert = coordinator.selectedAlert {
+                        AlertDetailsView(
+                            alert: alert,
+                            coordinator: coordinator,
+                            container: container
+                        )
+                    }
+                }
+         
+            
+            
+            
+            
+            
+//        case .alerts:
+//            MainTabView(
+//                container: container,
+//                coordinator: coordinator,
+//                logoutUseCase: logoutUseCase
+//            )
+
+        case .searchAlerts:
+            SearchAlertsView(
+                container: container,
+                coordinator: coordinator
             )
 
+//        case .alertDetails:
+//            if let alert = coordinator.selectedAlert {
+//                AlertDetailsView(
+//                    alert: alert,
+//                    coordinator: coordinator,
+//                    container: container
+//                )
+//            }
+
+        case .forwardAlerts:
+            NavigationStack {
+                ForwardAlertsView(
+                    viewModel: container.makeForwardAlertsViewModel(),
+                    createForwardAlertViewModel:
+                        container.makeCreateForwardAlertViewModel()
+                )
+            }
+
         case .search:
-            SearchView()
+            SearchView(
+                container: container,
+                coordinator: coordinator
+            )
 
         case .changePassword:
-            ChangePasswordView()
-
-        case .notifications:
-            NotificationsView()
+            ChangePasswordView(container: container)
 
         case .archived:
-            ArchivedView()
+            ArchivedView(
+                container: container,
+                coordinator: coordinator
+            )
 
         case .about:
             AboutView()
 
         case .subscriptions:
-            SubscriptionsView()
+            SubscriptionsView(container: container)
+
         case .buildSettings:
             BuildSettingsView(
                 coordinator: coordinator
@@ -45,3 +112,4 @@ struct RootView: View {
         }
     }
 }
+

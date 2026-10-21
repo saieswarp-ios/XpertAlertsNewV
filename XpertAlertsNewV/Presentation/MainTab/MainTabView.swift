@@ -3,13 +3,18 @@ import SwiftUI
 struct MainTabView: View {
 
     let container: DIContainer
+    let coordinator: AppCoordinator
+    let logoutUseCase: LogoutUseCase
 
     var body: some View {
 
         TabView {
 
+            // MARK: - Alerts
+
             AlertsView(
-                viewModel: container.makeAlertsViewModel()
+                container: container,
+                coordinator: coordinator
             )
             .tabItem {
                 Label(
@@ -18,30 +23,50 @@ struct MainTabView: View {
                 )
             }
 
-            SearchView()
-                .tabItem {
-                    Label(
-                        "Search",
-                        systemImage: "magnifyingglass"
-                    )
-                }
+            // MARK: - Forward Alerts
 
-            ArchivedView()
-                .tabItem {
-                    Label(
-                        "Archived",
-                        systemImage: "archivebox.fill"
-                    )
-                }
+            NavigationStack {
+                ForwardAlertsView(
+                    viewModel: container.makeForwardAlertsViewModel(),
+                    createForwardAlertViewModel:
+                        container.makeCreateForwardAlertViewModel()
+                )
+            }
+            .tabItem {
+                Label(
+                    "Forward",
+                    systemImage: "arrowshape.turn.up.right.fill"
+                )
+            }
 
-            MoreView()
-                .tabItem {
-                    Label(
-                        "More",
-                        systemImage: "ellipsis.circle.fill"
-                    )
+            // MARK: - Archived
+
+            ArchivedView(
+                container: container,
+                coordinator: coordinator
+            )
+            .tabItem {
+                Label(
+                    "Archived",
+                    systemImage: "archivebox.fill"
+                )
+            }
+
+            // MARK: - More
+
+            MoreView(
+                coordinator: coordinator,
+                logoutUseCase: logoutUseCase,
+                container: container
+            )
+            .tabItem {
+                Label(
+                    "More",
+                    systemImage: "ellipsis.circle.fill"
+                )
             }
         }
         .tint(Color.themeOrange)
     }
 }
+

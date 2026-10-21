@@ -6,15 +6,19 @@
 //
 
 import Foundation
-enum AppRoute {
+enum AppRoute: Equatable {
     
     case login
     case alerts
     case changePassword
     case search
-    case notifications
+    
+        case searchAlerts
+//    case notifications
     case archived
     case about
     case subscriptions
     case buildSettings
+    case alertDetails
+    case forwardAlerts
 }

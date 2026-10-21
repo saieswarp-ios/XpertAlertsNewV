@@ -1,3 +1,4 @@
+
 import SwiftUI
 import Combine
 
@@ -11,54 +12,73 @@ final class LoginViewModel: ObservableObject {
     @Published var loginResult: LoginResult?
 
     private let loginUseCase: LoginUseCase
+    //private let analyticsTracker: AnalyticsTracking
 
-    init(loginUseCase: LoginUseCase) {
+    init(
+        loginUseCase: LoginUseCase
+        //,
+       // analyticsTracker: AnalyticsTracking
+    ) {
         self.loginUseCase = loginUseCase
+        //self.analyticsTracker = analyticsTracker
     }
 
     func login() {
-
-        print("Login Tapped")
-
         errorMessage = nil
-        
-      loginResult = nil
+        loginResult = nil
 
-        if email.isEmpty {
+        guard !email.isEmpty else {
             errorMessage = "Please enter your email"
             return
         }
 
-        if password.isEmpty {
+        guard !password.isEmpty else {
             errorMessage = "Please enter your password"
             return
         }
-        
+
+       // analyticsTracker.trackEvent("login_attempt", parameters: nil)
+
         Task {
-            
             isLoading = true
-            
+
+            defer {
+                isLoading = false
+            }
+
             do {
-                
-                let result = try await loginUseCase.execute(email: email, password: password)
-                
+                let result = try await loginUseCase.execute(
+                    email: email,
+                    password: password
+                )
+
                 loginResult = result
 
-            }
-            
-            catch LoginError.adminNotAllowed {
+               // analyticsTracker.trackEvent("login_success", parameters: nil)
+            } catch LoginError.adminNotAllowed {
                 errorMessage = "Admin user cannot login into this app."
+
+//                //analyticsTracker.trackEvent(
+//                    "login_failure",
+//                    parameters: ["reason": "admin_not_allowed"]
+//                )
             } catch LoginError.server(let message) {
                 errorMessage = message
+
+//                //analyticsTracker.trackEvent(
+//                    "login_failure",
+//                    parameters: ["reason": "server_error"]
+//                )
             } catch {
                 print("Login failed:", error)
-                
                 errorMessage = "Login failed. Please try again."
-            }
-            
-            isLoading = false
 
+//                analyticsTracker.trackEvent(
+//                    "login_failure",
+//                    parameters: ["reason": "unexpected_error"]
+//                )
+            }
         }
-       
     }
 }
+

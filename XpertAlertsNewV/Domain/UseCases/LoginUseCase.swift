@@ -1,52 +1,53 @@
-//
-//  LoginUseCase.swift
-//  XpertAlertsNewV
-//
-//  Created by IOS DEV on 07/09/26.
-//
 import Foundation
+
 final class LoginUseCase {
-    
-    
+
     private let authRepository: AuthRepository
-    
     private let userRepository: UserRepository
-    
-    init(authRepository: AuthRepository,
-         userRepository: UserRepository) {
+    private let searchRepository: SearchRepository
+
+    init(
+        authRepository: AuthRepository,
+        userRepository: UserRepository,
+        searchRepository: SearchRepository
+    ) {
         self.authRepository = authRepository
         self.userRepository = userRepository
+        self.searchRepository = searchRepository
     }
-    
+
     func execute(
-            
-        email: String, password: String) async throws -> LoginResult {  // async : this operation may take some time, so dont block the uii while waiting
-            
-            print("loginUsecase execute called here")
-            
-            let user = try await authRepository.login(
-                
-                email: email,
-                password: password
-                
-            )
-            
-            // Admin users cannot login into this app.
-                if user.userTypeId == 1 || user.userTypeId == 2 {
-                    throw LoginError.adminNotAllowed
-                }
+        email: String,
+        password: String
+    ) async throws -> LoginResult {
 
-            userRepository.saveUser(user)
-            print("Application IDs:", user.applicationIds)
-                // Password has expired.
-                if user.passwordExpiryFlag != 0 {
-                    return .passwordExpired(user)
-                }
+        print("LoginUseCase.execute() called")
 
-                // Normal successful login.
-                return .success(user)
+        // 1. Call the login API
+        let user = try await authRepository.login(
+            email: email,
+            password: password
+        )
+
+        // 2. Admin users cannot log in to this application
+        if user.userTypeId == 1 || user.userTypeId == 2 {
+            throw LoginError.adminNotAllowed
         }
-    
+
+        // 3. Save logged-in user
+        userRepository.saveUser(user)
+
+        // 4. Print application IDs for debugging
+        print("Application IDs:", user.applicationIds)
+
+        // 5. Check password expiry
+        if user.passwordExpiryFlag != 0 {
+            return .passwordExpired(user)
+        }
+
+        // 6. Normal successful login
+        return .success(user)
+    }
 }
 
 

@@ -2,148 +2,77 @@ import SwiftUI
 
 struct MoreView: View {
 
+    let coordinator: AppCoordinator
+    let logoutUseCase: LogoutUseCase
+    let container: DIContainer
+
+    @State private var showLogoutConfirmation = false
+
     var body: some View {
 
         NavigationStack {
 
             List {
 
-                //profile
-
-                Section {
-                    NavigationLink {
-                        ProfileView()
-                    } label: {
-
-                        HStack(spacing: 14) {
-
-                            Image(
-                                systemName:
-                                    "person.circle.fill"
-                            )
-                            .foregroundStyle(Color.themeRed)
-                            .font(.system(size: 46))
-
-                            VStack(
-                                alignment: .leading,
-                                spacing: 4
-                            ) {
-
-                                Text("My Profile")
-                                    .font(.headline)
-
-                                Text(
-                                    "Manage your account"
-                                )
-                                .font(.subheadline)
-                                .foregroundStyle(.secondary)
-                            }
-
-                            Spacer()
-                        }
-                        .padding(.vertical, 8)
-                    }
-                }
-
-                // alerts
-
-                Section("Alerts") {
-
-                    NavigationLink {
-                        ForwardAlertsView()
-                    } label: {
-
-                        MoreRow(
-                          
-                            icon: "arrowshape.turn.up.right.fill",
-                            title: "Forward Alerts",
-                            subtitle:
-                                "Share alerts with others",
-                            iconColor: .brown,
-                        
-                        )
-                       
-                    }
-                    
-
-                    NavigationLink {
-                        NotificationsView()
-                    } label: {
-
-                        MoreRow(
-                            icon: "bell.fill",
-                            title: "Notifications",
-                            subtitle:
-                                "Manage your notifications",
-                            iconColor: .cyan
-                        )
-                    }
-                }
-
-                // account
+                // MARK: - Account
 
                 Section("Account") {
 
                     NavigationLink {
-                        SubscriptionsView()
+                        SubscriptionsView(
+                            container: container
+                        )
                     } label: {
-
                         MoreRow(
                             icon: "creditcard.fill",
                             title: "Subscriptions",
-                            subtitle:
-                                "Manage your subscription",
+                            subtitle: "Manage your subscription",
                             iconColor: .teal
                         )
                     }
 
                     NavigationLink {
-                        ChangePasswordView()
+                        ChangePasswordView(
+                            container: container
+                        )
                     } label: {
-
                         MoreRow(
                             icon: "lock.fill",
                             title: "Change Password",
-                            subtitle:
-                                "Update your account password"
-                            , iconColor: .indigo
+                            subtitle: "Update your account password",
+                            iconColor: .indigo
                         )
                     }
                 }
 
-                // information
+                // MARK: - Information
 
                 Section("Information") {
 
                     NavigationLink {
                         AboutView()
                     } label: {
-
                         MoreRow(
                             icon: "info.circle.fill",
                             title: "About XpertAlerts",
-                            subtitle:
-                                "App information and details",
+                            subtitle: "App information and details",
                             iconColor: .yellow
                         )
                     }
                 }
 
-                // logout
+                // MARK: - Logout
 
                 Section {
 
                     Button {
-
-                        print("Logout tapped")
-
+                        showLogoutConfirmation = true
                     } label: {
 
                         HStack(spacing: 14) {
 
                             Image(
-                                systemName:
-                                    "rectangle.portrait.and.arrow.right"
+                                systemName: "rectangle.portrait.and.arrow.right"
                             )
                             .frame(width: 28)
 
@@ -155,16 +84,33 @@ struct MoreView: View {
                     }
                     .foregroundStyle(.red)
                     .padding(.vertical, 6)
+
                 }
             }
             .navigationTitle("More")
             .navigationBarTitleDisplayMode(.large)
+            
+            .alert(
+                "Confirm Logout",
+                isPresented: $showLogoutConfirmation
+            ) {
+                Button("Cancel", role: .cancel) {
+                    showLogoutConfirmation = false
+                }
+
+                Button("OK", role: .destructive) {
+                    logoutUseCase.execute()
+                    coordinator.route = .login
+                }
+            } message: {
+                Text("Are you sure you want to logout?")
+            }
+           
         }
     }
 }
 
-
-// more
+// MARK: - More Row
 
 struct MoreRow: View {
 
@@ -180,10 +126,7 @@ struct MoreRow: View {
             Image(systemName: icon)
                 .font(.title3)
                 .foregroundStyle(iconColor)
-                .frame(
-                    width: 38,
-                    height: 38
-                )
+                .frame(width: 38, height: 38)
 
             VStack(
                 alignment: .leading,

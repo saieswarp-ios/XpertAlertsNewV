@@ -1,301 +1,378 @@
+
 import SwiftUI
 
 struct SubscriptionsView: View {
 
-    var body: some View {
+    @StateObject private var viewModel: SubscriptionsViewModel
+    @Environment(\.dismiss) private var dismiss
 
-        ScrollView {
+    let container: DIContainer
 
-            VStack(alignment: .leading, spacing: 24) {
+    @State private var applications: [Application] = []
+    @State private var selectedApplicationId: Int? = nil
+    @State private var isLoadingApplications = false
+    @State private var applicationError: String?
 
-                // Header
-
-                VStack(alignment: .leading, spacing: 6) {
-
-                    Text("Subscription")
-                        .font(.largeTitle)
-                        .fontWeight(.bold)
-
-                    Text(
-                        "Manage your XpertAlerts subscription."
-                    )
-                    .font(.subheadline)
-                    .foregroundStyle(.secondary)
-                }
-
-                // Current Plan
-
-                VStack(alignment: .leading, spacing: 16) {
-
-                    HStack {
-
-                        VStack(
-                            alignment: .leading,
-                            spacing: 5
-                        ) {
-
-                            Text("CURRENT PLAN")
-                                .font(.caption)
-                                .fontWeight(.semibold)
-                                .foregroundStyle(.secondary)
-
-                            Text("Professional")
-                                .font(.title2)
-                                .fontWeight(.bold)
-                        }
-
-                        Spacer()
-
-                        Image(
-                            systemName: "checkmark.seal.fill"
-                        )
-                        .font(.system(size: 32))
-                    }
-
-                    Divider()
-
-                    HStack(spacing: 10) {
-
-                        Image(systemName: "checkmark.circle.fill")
-
-                        Text("Your subscription is active.")
-                            .font(.subheadline)
-                    }
-
-                    HStack(spacing: 10) {
-
-                        Image(systemName: "calendar")
-
-                        Text("Renews on September 30")
-                            .font(.subheadline)
-                    }
-                    .foregroundStyle(.secondary)
-                }
-                .padding()
-                .background(
-                    RoundedRectangle(cornerRadius: 20)
-                        .fill(
-                            Color(.secondarySystemBackground)
-                        )
-                )
-
-                //  - Available Plans
-
-                Text("Available Plans")
-                    .font(.title2)
-                    .fontWeight(.bold)
-
-                SubscriptionPlanCard(
-                    name: "Basic",
-                    price: "$9.99",
-                    description: "For small teams",
-                    features: [
-                        "Alert monitoring",
-                        "Basic notifications",
-                        "7-day alert history"
-                    ]
-                )
-
-                SubscriptionPlanCard(
-                    name: "Professional",
-                    price: "$19.99",
-                    description: "For growing teams",
-                    features: [
-                        "Unlimited alerts",
-                        "Advanced notifications",
-                        "30-day alert history",
-                        "Alert forwarding"
-                    ],
-                    isCurrent: true
-                )
-
-                SubscriptionPlanCard(
-                    name: "Enterprise",
-                    price: "$49.99",
-                    description: "For larger organizations",
-                    features: [
-                        "Everything in Professional",
-                        "Advanced reporting",
-                        "Priority support",
-                        "Extended alert history"
-                    ]
-                )
-
-                // Information
-
-                Text(
-                    "Subscription changes will take effect according to your current billing period."
-                )
-                .font(.caption)
-                .foregroundStyle(.secondary)
-                .multilineTextAlignment(.center)
-                .frame(maxWidth: .infinity)
-                .padding(.bottom, 10)
-            }
-            .padding()
-        }
-        .background(
-            Color(.systemGroupedBackground)
-                .ignoresSafeArea()
+    init(container: DIContainer) {
+        self.container = container
+        _viewModel = StateObject(
+            wrappedValue: container.makeSubscriptionsViewModel()
         )
-        .navigationTitle("Subscriptions")
-        .navigationBarTitleDisplayMode(.inline)
     }
-}
 
-
-//  Subscription Plan Card
-
-struct SubscriptionPlanCard: View {
-
-    let name: String
-    let price: String
-    let description: String
-    let features: [String]
-    var isCurrent: Bool = false
+    private var activeStatusBinding: Binding<Int> {
+        Binding(
+            get: { viewModel.searchActive },
+            set: { viewModel.searchActive = $0 }
+        )
+    }
 
     var body: some View {
+        VStack(spacing: 0) {
 
-        VStack(
-            alignment: .leading,
-            spacing: 18
-        ) {
+            // MARK: - Header
 
-            // Plan Header
+            HStack(spacing: 12) {
+                Button {
+                    dismiss()
+                } label: {
+                    Image(systemName: "chevron.left")
+                        .font(.system(size: 18, weight: .semibold))
+                        .foregroundStyle(Color.themeOrange)
+                        .frame(width: 28, height: 40)
+                }
+                .buttonStyle(.plain)
+                .accessibilityLabel("Back")
 
-            HStack {
+                Image(systemName: "rectangle.stack.fill")
+                    .font(.system(size: 20, weight: .semibold))
+                    .foregroundStyle(Color.themeOrange)
+                    .frame(width: 44, height: 44)
+                    .background(Color.themeOrange.opacity(0.12))
+                    .clipShape(RoundedRectangle(cornerRadius: 12))
 
-                VStack(
-                    alignment: .leading,
-                    spacing: 5
-                ) {
+                Text("Subscriptions")
+                    .font(.system(size: 21, weight: .bold))
+                    .foregroundStyle(Color.themeOrange)
+                    .lineLimit(1)
+                    .minimumScaleFactor(0.8)
+
+                Spacer(minLength: 4)
+
+                NavigationLink {
+                    CreateSubscriptionView(
+                        getApplicationsUseCase:
+                            container.getApplicationsUseCase,
+                        getAlertDefinitionsUseCase:
+                            container.getAlertDefinitionsUseCase,
+                        userRepository:
+                            container.userRepository,
+                        saveSubscriptionUseCase:
+                            container.saveSubscriptionUseCase,
+                        getDuplicateSubscriptionUseCase:
+                            container.getDuplicateSubscriptionUseCase,
+                        onSaveSuccess: {
+                            viewModel.loadSubscriptions()
+                        }
+                    )
+                } label: {
+                    Image(systemName: "plus")
+                        .font(.system(size: 18, weight: .semibold))
+                        .foregroundStyle(.white)
+                        .frame(width: 54, height: 44)
+                        .background(Color.themeOrange)
+                        .clipShape(RoundedRectangle(cornerRadius: 10))
+                }
+                .buttonStyle(.plain)
+                .accessibilityLabel("Create Subscription")
+            }
+            .padding(.horizontal, 16)
+            .padding(.vertical, 12)
+
+            // MARK: - Search Filters
+
+            VStack(alignment: .leading, spacing: 12) {
+
+                // Application filter
+                VStack(alignment: .leading, spacing: 5) {
+                    Text("Application")
+                        .font(.system(size: 13, weight: .medium))
+                        .foregroundStyle(.secondary)
+
+                    Picker("Application", selection: $selectedApplicationId) {
+                        Text("All Applications")
+                            .tag(Int?.none)
+
+                        ForEach(applications) { application in
+                            Text(application.name)
+                                .tag(Optional(application.id))
+                        }
+                    }
+                    .pickerStyle(.menu)
+                    .tint(Color.themeOrange)
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                    .padding(.horizontal, 10)
+                    .frame(height: 44)
+                    .background(Color(.secondarySystemBackground))
+                    .clipShape(RoundedRectangle(cornerRadius: 10))
+                }
+
+                // Alert name search
+                VStack(alignment: .leading, spacing: 5) {
+                    Text("Alert Name")
+                        .font(.system(size: 13, weight: .medium))
+                        .foregroundStyle(.secondary)
 
                     HStack(spacing: 8) {
+                        Image(systemName: "magnifyingglass")
+                            .foregroundStyle(.secondary)
 
-                        Text(name)
-                            .font(.title2)
-                            .fontWeight(.bold)
+                        TextField(
+                            "Enter alert name",
+                            text: $viewModel.searchName
+                        )
+                        .textInputAutocapitalization(.never)
+                        .autocorrectionDisabled()
+                        .submitLabel(.search)
+                        .onSubmit {
+                            performSearch()
+                        }
 
-                        if isCurrent {
-
-                            Text("CURRENT")
-                                .font(.caption2)
-                                .fontWeight(.bold)
-                                .padding(
-                                    .horizontal,
-                                    8
-                                )
-                                .padding(
-                                    .vertical,
-                                    4
-                                )
-                                .background(
-                                    Capsule()
-                                        .fill(
-                                            Color(
-                                                .tertiarySystemBackground
-                                            )
-                                        )
-                                )
+                        if !viewModel.searchName.isEmpty {
+                            Button {
+                                viewModel.searchName = ""
+                            } label: {
+                                Image(systemName: "xmark.circle.fill")
+                                    .foregroundStyle(.secondary)
+                            }
+                            .buttonStyle(.plain)
+                            .accessibilityLabel("Clear alert name")
                         }
                     }
-
-                    Text(description)
-                        .font(.subheadline)
-                        .foregroundStyle(.secondary)
+                    .padding(.horizontal, 12)
+                    .frame(height: 44)
+                    .background(Color(.secondarySystemBackground))
+                    .clipShape(RoundedRectangle(cornerRadius: 10))
                 }
 
-                Spacer()
-
-                VStack(
-                    alignment: .trailing,
-                    spacing: 2
-                ) {
-
-                    Text(price)
-                        .font(.title3)
-                        .fontWeight(.bold)
-
-                    Text("/ month")
-                        .font(.caption)
+                // Active status filter
+                VStack(alignment: .leading, spacing: 5) {
+                    Text("Active Status")
+                        .font(.system(size: 13, weight: .medium))
                         .foregroundStyle(.secondary)
+
+                    Picker("Active Status", selection: activeStatusBinding) {
+                        Text("Yes").tag(1)
+                        Text("No").tag(0)
+                        Text("All").tag(2)
+                    }
+                    .pickerStyle(.segmented)
+                }
+
+                // Search and Reset buttons
+                HStack(spacing: 10) {
+                    Button {
+                        performSearch()
+                    } label: {
+                        Label("Search", systemImage: "magnifyingglass")
+                            .font(.system(size: 15, weight: .semibold))
+                            .frame(maxWidth: .infinity)
+                            .frame(height: 44)
+                            .foregroundStyle(.white)
+                            .background(Color.themeOrange)
+                            .clipShape(RoundedRectangle(cornerRadius: 10))
+                    }
+                    .buttonStyle(.plain)
+                    .disabled(viewModel.isLoading || isLoadingApplications)
+
+                    Button {
+                        selectedApplicationId = nil
+                        viewModel.searchName = ""
+                        viewModel.searchActive = 1
+                        viewModel.resetSearch()
+                    } label: {
+                        Label("Reset", systemImage: "arrow.counterclockwise")
+                            .font(.system(size: 15, weight: .medium))
+                            .frame(maxWidth: .infinity)
+                            .frame(height: 44)
+                            .foregroundStyle(Color.themeOrange)
+                            .background(Color.themeOrange.opacity(0.10))
+                            .clipShape(RoundedRectangle(cornerRadius: 10))
+                    }
+                    .buttonStyle(.plain)
+                    .disabled(viewModel.isLoading)
+                }
+
+                if let applicationError {
+                    Text(applicationError)
+                        .font(.caption)
+                        .foregroundStyle(.red)
                 }
             }
+            .padding(.horizontal, 16)
+            .padding(.bottom, 12)
 
             Divider()
 
-            // Features
+            // MARK: - Subscription Content
 
-            VStack(
-                alignment: .leading,
-                spacing: 11
-            ) {
+            if viewModel.isLoading {
+                Spacer()
 
-                ForEach(
-                    features,
-                    id: \.self
-                ) { feature in
+                ProgressView("Loading subscriptions...")
 
-                    HStack(spacing: 10) {
+                Spacer()
 
-                        Image(
-                            systemName:
-                                "checkmark.circle.fill"
-                        )
+            } else if let errorMessage = viewModel.errorMessage {
+                Spacer()
 
-                        Text(feature)
-                            .font(.subheadline)
+                VStack(spacing: 12) {
+                    Image(systemName: "exclamationmark.triangle")
+                        .font(.system(size: 32))
+                        .foregroundStyle(.secondary)
+
+                    Text(errorMessage)
+                        .font(.subheadline)
+                        .multilineTextAlignment(.center)
+
+                    Button("Retry") {
+                        viewModel.loadSubscriptions()
                     }
+                    .buttonStyle(.borderedProminent)
+                    .tint(Color.themeOrange)
                 }
-            }
+                .padding(.horizontal, 20)
 
-            // Action
+                Spacer()
 
-            if isCurrent {
+            } else if viewModel.subscriptions.isEmpty {
+                Spacer()
 
-                Text("Current Plan")
-                    .font(.subheadline)
-                    .fontWeight(.semibold)
-                    .frame(maxWidth: .infinity)
-                    .padding(.vertical, 11)
-                    .background(
-                        RoundedRectangle(
-                            cornerRadius: 12
-                        )
-                        .fill(
-                            Color(
-                                .tertiarySystemBackground
-                            )
-                        )
-                    )
+                Image(systemName: "rectangle.stack")
+                    .font(.system(size: 32))
+                    .foregroundStyle(.secondary)
+
+                Text("No subscriptions found")
+                    .font(.headline)
+                    .padding(.top, 4)
+
+                Spacer()
 
             } else {
-
-                Button {
-
-                    print(
-                        "Select \(name) plan"
-                    )
-
-                } label: {
-
-                    Text("Choose \(name)")
-                        .fontWeight(.semibold)
-                        .frame(
-                            maxWidth: .infinity
-                        )
+                ScrollView {
+                    LazyVStack(spacing: 0) {
+                        ForEach(viewModel.subscriptions) { subscription in
+                            NavigationLink {
+                                SubscriptionDetailView(
+                                    subscription: subscription,
+                                    viewModel: viewModel,
+                                    container: container
+                                )
+                            } label: {
+                                SubscriptionRow(
+                                    subscription: subscription
+                                )
+                            }
+                            .buttonStyle(.plain)
+                        }
+                    }
                 }
-                .buttonStyle(
-                    .borderedProminent
-                )
+                .refreshable {
+                    viewModel.loadSubscriptions()
+                }
             }
         }
-        .padding()
-        .background(
-            RoundedRectangle(cornerRadius: 20)
-                .fill(
-                    Color(.secondarySystemBackground)
-                )
-        )
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
+        .background(Color(.systemBackground))
+        .toolbar(.hidden, for: .navigationBar)
+        .task {
+            await loadApplications()
+            viewModel.loadSubscriptions()
+        }
+    }
+
+    // MARK: - Search Actions
+
+    private func performSearch() {
+        viewModel.search(applicationId: selectedApplicationId)
+    }
+
+    // MARK: - Load Real Applications
+
+    @MainActor
+    private func loadApplications() async {
+        guard applications.isEmpty else { return }
+
+        isLoadingApplications = true
+        applicationError = nil
+
+        do {
+            applications = try await container.getApplicationsUseCase.execute()
+        } catch {
+            applicationError = "Unable to load applications."
+            print("Load applications error: \(error)")
+        }
+
+        isLoadingApplications = false
     }
 }
+
+// MARK: - Subscription Row
+
+struct SubscriptionRow: View {
+
+    let subscription: Subscription
+
+    private var notificationTypes: String {
+        let deviceEnabled = subscription.device == "Yes"
+        let emailEnabled = subscription.email == "Yes"
+
+        switch (deviceEnabled, emailEnabled) {
+        case (true, true):
+            return "Device, Email"
+        case (true, false):
+            return "Device"
+        case (false, true):
+            return "Email"
+        case (false, false):
+            return ""
+        }
+    }
+
+    var body: some View {
+        VStack(spacing: 0) {
+            HStack(spacing: 10) {
+                VStack(alignment: .leading, spacing: 6) {
+                    Text(subscription.alertName ?? "-")
+                        .font(.system(size: 16, weight: .medium))
+                        .foregroundStyle(.primary)
+                        .multilineTextAlignment(.leading)
+
+                    Text(subscription.applicationName ?? "-")
+                        .font(.system(size: 12))
+                        .foregroundStyle(.secondary)
+                        .multilineTextAlignment(.leading)
+
+                    if !notificationTypes.isEmpty {
+                        Text(notificationTypes)
+                            .font(.system(size: 12))
+                            .foregroundStyle(Color.themeOrange)
+                    }
+                }
+
+                Spacer(minLength: 4)
+
+                Image(systemName: "chevron.right")
+                    .font(.system(size: 13, weight: .medium))
+                    .foregroundStyle(.secondary)
+            }
+            .frame(maxWidth: .infinity, alignment: .leading)
+            .padding(.horizontal, 16)
+            .padding(.vertical, 14)
+            .contentShape(Rectangle())
+
+            Divider()
+        }
+    }
+}
+

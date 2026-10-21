@@ -83,12 +83,13 @@ final class AlertRepositoryImpl: AlertRepository {
                 let applicationName = item.applicationName,
                 let userName = item.userName,
                 let groupBy = item.groupBy,
-                let aggregateAlertId = item.aggregateAlertId,
+             
                 let count = item.count,
                 let status = item.status
                     
             else {
-               return nil
+               
+              return nil
             }
            return Alert (id: id,
                          alertId: alertId,
@@ -101,7 +102,7 @@ final class AlertRepositoryImpl: AlertRepository {
                          applicationName: applicationName,
                          username: userName,
                          groupBy: groupBy,
-                         aggregateAlertId: aggregateAlertId,
+                         aggregateAlertId: item.aggregateAlertId ?? "",
                          count: count,
                          status: status)
             
@@ -110,8 +111,132 @@ final class AlertRepositoryImpl: AlertRepository {
                 
             
         }
+        print("Mapped Alerts:", alerts.count)
+        return alerts
         
-       return alerts
+       
     }
     
+    
+
+        func getAlertButtonDetails(
+            applicationId: Int,
+            alertDefinitionId: Int
+        ) async throws -> [GetAlertButtonDetailsResponse] {
+
+            guard let user = userRepository.getUser() else {
+                throw URLError(.userAuthenticationRequired)
+            }
+
+            let endpoint = APIEndpoint.baseURL + APIEndpoint.alertButtonDetails
+
+            let queryItems = [
+                URLQueryItem(
+                    name: "applicationId",
+                    value: String(applicationId)
+                ),
+                URLQueryItem(
+                    name: "alertDefId",
+                    value: String(alertDefinitionId)
+                ),
+                URLQueryItem(
+                    name: "sessionId",
+                    value: user.sessionId
+                ),
+                URLQueryItem(
+                    name: "userId",
+                    value: String(user.userId)
+                )
+            ]
+
+            let data = try await apiClient.request(
+                endpoint: endpoint,
+                method: "GET",
+                queryItems: queryItems
+            )
+
+            print("RAW ALERT BUTTON DETAILS RESPONSE:")
+            print(String(data: data, encoding: .utf8) ?? "Unable to read response")
+
+            return try JSONDecoder().decode(
+                [GetAlertButtonDetailsResponse].self,
+                from: data
+            )
+        }
+    
+    
+    
+    func processDynamicActions(
+        applicationId: Int,
+        id: Int,
+        alertId: Int,
+        aggregateAlertIds: String,
+        actionId: String,
+        caption: String
+    ) async throws -> [ProcessDynamicActionsResponse] {
+
+        guard let user = userRepository.getUser() else {
+            throw URLError(.userAuthenticationRequired)
+        }
+
+        let endpoint = APIEndpoint.baseURL
+            + APIEndpoint.processDynamicActions
+
+        let queryItems = [
+            URLQueryItem(
+                name: "userId",
+                value: String(user.userId)
+            ),
+            URLQueryItem(
+                name: "applicationId",
+                value: String(applicationId)
+            ),
+            URLQueryItem(
+                name: "captions",
+                value: caption
+            ),
+            URLQueryItem(
+                name: "actions",
+                value: "null"
+            ),
+            URLQueryItem(
+                name: "amsActions",
+                value: actionId
+            ),
+            URLQueryItem(
+                name: "ids",
+                value: String(id)
+            ),
+            URLQueryItem(
+                name: "alertIds",
+                value: String(alertId)
+            ),
+            URLQueryItem(
+                name: "aggregateAlertIds",
+                value: aggregateAlertIds
+            ),
+            URLQueryItem(
+                name: "sessionId",
+                value: user.sessionId
+            )
+        ]
+
+        let data = try await apiClient.request(
+            endpoint: endpoint,
+            method: "GET",
+            queryItems: queryItems
+        )
+
+        print("RAW PROCESS DYNAMIC ACTIONS RESPONSE:")
+        print(
+            String(data: data, encoding: .utf8)
+                ?? "Unable to read response"
+        )
+
+        return try JSONDecoder().decode(
+            [ProcessDynamicActionsResponse].self,
+            from: data
+        )
+    }
+  
 }

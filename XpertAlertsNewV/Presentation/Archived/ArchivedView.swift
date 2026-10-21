@@ -316,45 +316,99 @@
 import SwiftUI
 
 struct ArchivedView: View {
+    @StateObject private var viewModel: ArchivedViewModel
+    let coordinator: AppCoordinator
+
+    init(
+        container: DIContainer,
+        coordinator: AppCoordinator
+    ) {
+        self.coordinator = coordinator
+
+        _viewModel = StateObject(
+            wrappedValue: container.makeArchivedViewModel()
+        )
+    }
 
     var body: some View {
-
         VStack(spacing: 0) {
 
             AppScreenHeader(
                 title: "Archived",
                 subtitle: nil,
                 icon: "archivebox.fill"
-            ).padding()
-            ScrollView {
+            )
+            .padding()
 
-                VStack(spacing: 0) {
+            if viewModel.isLoading {
 
-                    ArchivedRow(
-                        title: "POC Issue",
-                        message: "Unable to Load Screen",
-                        application: "Production",
-                        date: "Yesterday"
-                    )
+                Spacer()
 
-                    ArchivedRow(
-                        title: "XpertAlerts",
-                        message: "Storage is running low",
-                        application: "Monitor Api",
-                        date: "2 days ago"
-                    )
+                ProgressView("Loading archived alerts...")
 
-                    ArchivedRow(
-                        title: "Speed",
-                        message: "Run Api",
-                        application: "DvL Connected",
-                        date: "3 days ago"
-                    )
+                Spacer()
+
+            } else if let errorMessage = viewModel.errorMessage {
+
+                Spacer()
+
+                VStack(spacing: 10) {
+
+                    Image(systemName: "exclamationmark.triangle")
+                        .font(.system(size: 30))
+                        .foregroundStyle(Color.themeOrange)
+
+                    Text(errorMessage)
+                        .font(.system(size: 15))
+                        .foregroundStyle(.secondary)
                 }
-                .padding(.horizontal, 16)
+
+                Spacer()
+
+            } else if viewModel.alerts.isEmpty {
+
+                Spacer()
+
+                VStack(spacing: 10) {
+
+                    Image(systemName: "archivebox")
+                        .font(.system(size: 32))
+                        .foregroundStyle(.secondary)
+
+                    Text("No Archived Alerts")
+                        .font(.system(size: 17, weight: .medium))
+
+                    Text("There are no archived alerts to display.")
+                        .font(.system(size: 14))
+                        .foregroundStyle(.secondary)
+                }
+
+                Spacer()
+
+            } else {
+
+                ScrollView {
+
+                    LazyVStack(spacing: 0) {
+
+                        ForEach(viewModel.alerts) { alert in
+
+                            ArchivedRow(
+                                title: alert.subject,
+                                message: alert.message,
+                                application: alert.applicationName,
+                                date: alert.date
+                            ) {
+                                coordinator.showAlertDetails(alert)
+                            }
+                        }
+                    }
+                }
             }
         }
-    
+        .onAppear {
+            viewModel.loadArchivedAlerts()
+        }
     }
 }
 
@@ -364,45 +418,43 @@ struct ArchivedRow: View {
     let message: String
     let application: String
     let date: String
+    let action: () -> Void
 
     var body: some View {
 
-        VStack(
-            alignment: .leading,
-            spacing: 6
-        ) {
+        Button {
+            action()
+        } label: {
 
-            HStack {
+            VStack(alignment: .leading, spacing: 6) {
 
-                Text(title)
-                    .font(
-                        .system(
-                            size: 16,
-                            weight: .medium
-                        )
-                    )
+                HStack {
 
-                Spacer()
+                    Text(title)
+                        .font(.system(size: 16, weight: .medium))
+                        .foregroundStyle(.primary)
 
-                Text(date)
+                    Spacer()
+
+                    Text(date)
+                        .font(.system(size: 12))
+                        .foregroundStyle(.secondary)
+                }
+
+                Text(message)
+                    .font(.system(size: 14))
+                    .foregroundStyle(.primary)
+
+                Text(application)
                     .font(.system(size: 12))
                     .foregroundStyle(.secondary)
             }
-
-            Text(message)
-                .font(.system(size: 14))
-
-            Text(application)
-                .font(.system(size: 12))
-                .foregroundStyle(.secondary)
+            .frame(maxWidth: .infinity, alignment: .leading)
+            .padding(.horizontal, 16)
+            .padding(.vertical, 14)
         }
-        .padding(.vertical, 14)
+        .buttonStyle(.plain)
 
         Divider()
     }
 }
-
-#Preview {
-    ArchivedView()
-}
-

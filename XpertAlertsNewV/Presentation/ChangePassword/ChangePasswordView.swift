@@ -1,223 +1,209 @@
 import SwiftUI
+import Combine
 
 struct ChangePasswordView: View {
 
-    @State private var currentPassword = ""
-    @State private var newPassword = ""
-    @State private var confirmPassword = ""
+    @StateObject private var viewModel: ChangePasswordViewModel
+
+    let container: DIContainer
+    @Environment(\.dismiss) private var dismiss
+    init(container: DIContainer) {
+        self.container = container
+
+        _viewModel = StateObject(
+            wrappedValue: ChangePasswordViewModel(
+                changePasswordUseCase: container.changePasswordUseCase,
+                userRepository: container.userRepository
+            )
+        )
+    }
 
     var body: some View {
+        VStack(spacing: 0) {
 
-        ScrollView {
+            // MARK: - Header
+        
+            // MARK: - Header
 
-            VStack(
-                alignment: .leading,
-                spacing: 24
-            ) {
-
-                // header
-
-                VStack(spacing: 12) {
-
-                    ZStack {
-
-                        Circle()
-                            .fill(
-                                Color(.secondarySystemBackground)
-                            )
-                            .frame(
-                                width: 90,
-                                height: 90
-                            )
-
-                        Image(
-                            systemName: "lock.shield.fill"
-                        )
-                        .font(.system(size: 40))
-                    }
-
-                    Text("Change Password")
-                        .font(.largeTitle)
-                        .fontWeight(.bold)
-
-                    Text(
-                        "Update your password to keep your account secure."
-                    )
-                    .font(.subheadline)
-                    .foregroundStyle(.secondary)
-                    .multilineTextAlignment(.center)
+            HStack(spacing: 12) {
+                Button {
+                    dismiss()
+                } label: {
+                    Image(systemName: "chevron.left")
+                        .font(.system(size: 18, weight: .semibold))
+                        .foregroundStyle(Color.themeOrange)
+                        .frame(width: 36, height: 36)
+                        .contentShape(Rectangle())
                 }
-                .frame(maxWidth: .infinity)
+                .buttonStyle(.plain)
+               
 
-                // password fields
-
-                VStack(
-                    alignment: .leading,
-                    spacing: 18
-                ) {
-
-                    PasswordInputField(
-                        title: "Current Password",
-                        placeholder: "Enter current password",
-                        text: $currentPassword
-                    )
-
-                    PasswordInputField(
-                        title: "New Password",
-                        placeholder: "Enter new password",
-                        text: $newPassword
-                    )
-
-                    PasswordInputField(
-                        title: "Confirm New Password",
-                        placeholder: "Confirm new password",
-                        text: $confirmPassword
-                    )
-                }
-
-                //requirements
-
-                VStack(
-                    alignment: .leading,
-                    spacing: 14
-                ) {
-
-                    Text("Password Requirements")
-                        .font(.headline)
-
-                    PasswordRequirement(
-                        text: "At least 8 characters"
-                    )
-
-                    PasswordRequirement(
-                        text: "Contains an uppercase letter"
-                    )
-
-                    PasswordRequirement(
-                        text: "Contains a lowercase letter"
-                    )
-
-                    PasswordRequirement(
-                        text: "Contains a number"
-                    )
-                }
-                .padding()
-                .background(
-                    RoundedRectangle(cornerRadius: 20)
-                        .fill(
-                            Color(.secondarySystemBackground)
-                        )
+                AppScreenHeader(
+                    title: "Change Password",
+                    subtitle: nil,
+                    icon: "lock.fill"
                 )
 
-                // update button
-
-                Button {
-
-                    print("Update Password tapped")
-
-                } label: {
-
-                    HStack {
-
-                        Image(
-                            systemName: "checkmark"
-                        )
-
-                        Text("Update Password")
-                            .fontWeight(.semibold)
-
-                        Spacer()
-                    }
-                    .frame(maxWidth: .infinity)
-                    .padding()
-                }
-                .buttonStyle(.borderedProminent)
-                .controlSize(.large)
-
-                // security message
-
-                HStack(
-                    alignment: .top,
-                    spacing: 10
-                ) {
-
-                    Image(
-                        systemName: "info.circle.fill"
-                    )
-
-                    Text(
-                        "After changing your password, you may need to sign in again."
-                    )
-                    .font(.caption)
-                    .foregroundStyle(.secondary)
-                }
-                .padding(.bottom, 10)
+                Spacer(minLength: 0)
             }
             .padding()
+        
+
+            // MARK: - Password Form
+
+            ScrollView {
+                VStack(alignment: .leading, spacing: 20) {
+
+                    VStack(alignment: .leading, spacing: 6) {
+                        Text("Password")
+                            .font(.system(size: 18, weight: .semibold))
+                            .foregroundStyle(.primary)
+
+                        Text("Enter your current password and choose a new one.")
+                            .font(.system(size: 13))
+                            .foregroundStyle(.secondary)
+                    }
+
+                    VStack(spacing: 0) {
+
+                        PasswordInputRow(
+                            title: "Current Password",
+                            text: $viewModel.currentPassword
+                        )
+
+                        Divider()
+                            .padding(.leading, 16)
+
+                        PasswordInputRow(
+                            title: "New Password",
+                            text: $viewModel.newPassword
+                        )
+
+                        Divider()
+                            .padding(.leading, 16)
+
+                        PasswordInputRow(
+                            title: "Confirm Password",
+                            text: $viewModel.confirmPassword
+                        )
+                    }
+                    .background(Color(.secondarySystemBackground))
+                    .clipShape(RoundedRectangle(cornerRadius: 12))
+                    .overlay {
+                        RoundedRectangle(cornerRadius: 12)
+                            .stroke(
+                                Color.gray.opacity(0.15),
+                                lineWidth: 1
+                            )
+                    }
+
+                    // MARK: - Result Message
+
+                    if let message = viewModel.message {
+                        HStack(alignment: .top, spacing: 10) {
+                            Image(
+                                systemName: viewModel.isSuccess
+                                    ? "checkmark.circle.fill"
+                                    : "exclamationmark.circle.fill"
+                            )
+
+                            Text(message)
+                                .font(.system(size: 14))
+                                .fixedSize(
+                                    horizontal: false,
+                                    vertical: true
+                                )
+                        }
+                        .foregroundStyle(
+                            viewModel.isSuccess ? .green : .red
+                        )
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                        .padding(12)
+                        .background(
+                            (viewModel.isSuccess ? Color.green : Color.red)
+                                .opacity(0.08)
+                        )
+                        .clipShape(RoundedRectangle(cornerRadius: 10))
+                    }
+
+                    // MARK: - Update Button
+
+                    Button {
+                        viewModel.updatePassword()
+                    } label: {
+                        HStack(spacing: 10) {
+                            if viewModel.isLoading {
+                                ProgressView()
+                                    .tint(.white)
+                            } else {
+                                Image(systemName: "lock.rotation")
+                                Text("Update Password")
+                                    .fontWeight(.semibold)
+                            }
+                        }
+                        .frame(maxWidth: .infinity)
+                        .frame(height: 48)
+                        .foregroundStyle(.white)
+                        .background(Color.themeOrange)
+                        .clipShape(RoundedRectangle(cornerRadius: 10))
+                    }
+                    .disabled(viewModel.isLoading)
+                    .opacity(viewModel.isLoading ? 0.7 : 1.0)
+                }
+                .padding(.horizontal, 16)
+                .padding(.top, 8)
+                .padding(.bottom, 24)
+            }
         }
-        .background(
-            Color(.systemGroupedBackground)
-                .ignoresSafeArea()
-        )
-        .navigationTitle("Change Password")
-        .navigationBarTitleDisplayMode(.inline)
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
+        .background(Color(.systemBackground))
+        .toolbar(.hidden, for: .navigationBar)
     }
 }
 
+// MARK: - Password Input Row
 
-// pass input filed
-
-struct PasswordInputField: View {
+private struct PasswordInputRow: View {
 
     let title: String
-    let placeholder: String
-
     @Binding var text: String
 
-    var body: some View {
-
-        VStack(
-            alignment: .leading,
-            spacing: 8
-        ) {
-
-            Text(title)
-                .font(.subheadline)
-                .fontWeight(.medium)
-
-            SecureField(
-                placeholder,
-                text: $text
-            )
-            .padding()
-            .background(
-                RoundedRectangle(cornerRadius: 14)
-                    .fill(
-                        Color(.secondarySystemBackground)
-                    )
-            )
-        }
-    }
-}
-
-
-//pass required
-
-struct PasswordRequirement: View {
-
-    let text: String
+    @State private var isPasswordVisible = false
 
     var body: some View {
+        HStack(spacing: 12) {
 
-        HStack(spacing: 10) {
-
-            Image(
-                systemName: "checkmark.circle"
-            )
-
-            Text(text)
-                .font(.subheadline)
+            Image(systemName: "lock")
                 .foregroundStyle(.secondary)
+                .frame(width: 20)
+
+            Group {
+                if isPasswordVisible {
+                    TextField(title, text: $text)
+                } else {
+                    SecureField(title, text: $text)
+                }
+            }
+            .textInputAutocapitalization(.never)
+            .autocorrectionDisabled()
+            .textContentType(.none)
+
+            Button {
+                isPasswordVisible.toggle()
+            } label: {
+                Image(
+                    systemName: isPasswordVisible
+                        ? "eye.slash"
+                        : "eye"
+                )
+                .foregroundStyle(.secondary)
+            }
+            .buttonStyle(.plain)
+            .accessibilityLabel(
+                isPasswordVisible ? "Hide password" : "Show password"
+            )
         }
+        .padding(.horizontal, 16)
+        .frame(minHeight: 54)
     }
 }

@@ -19,4 +19,20 @@ protocol AlertRepository {
         
         
     ) async throws -> [Alert]
-}
+    
+    // Fetch available alert button details
+       func getAlertButtonDetails(
+           applicationId: Int,
+           alertDefinitionId: Int
+       ) async throws -> [GetAlertButtonDetailsResponse]
+    
+    func processDynamicActions(
+        applicationId: Int,
+        id: Int,
+        alertId: Int,
+        aggregateAlertIds: String,
+        actionId: String,
+        caption: String
+    ) async throws -> [ProcessDynamicActionsResponse]
+   }
+
