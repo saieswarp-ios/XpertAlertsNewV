@@ -299,23 +299,48 @@ private struct LegacyAlertCard: View {
 
     // MARK: - Clean HTML Message
 
+    
+    // MARK: - Clean HTML Message
+
     private var formattedMessage: String {
-        message
-            .replacingOccurrences(
-                of: "(?i)<br\\s*/?>",
-                with: " ",
-                options: .regularExpression
+        var cleaned = message
+
+        // Replace HTML line breaks and paragraph tags with spaces
+        cleaned = cleaned.replacingOccurrences(
+            of: "(?i)<br\\s*/?>|</?p\\b[^>]*>",
+            with: " ",
+            options: .regularExpression
+        )
+
+        // Remove remaining HTML tags, including <B>, </B>, etc.
+        cleaned = cleaned.replacingOccurrences(
+            of: "<[^>]*>",
+            with: "",
+            options: .regularExpression
+        )
+
+        // Decode common HTML entities
+        let replacements: [(String, String)] = [
+            ("&nbsp;", " "),
+            ("&#160;", " "),
+            ("&amp;", "&"),
+            ("&lt;", "<"),
+            ("&gt;", ">"),
+            ("&quot;", "\""),
+            ("&#39;", "'"),
+            ("&apos;", "'")
+        ]
+
+        for (html, plainText) in replacements {
+            cleaned = cleaned.replacingOccurrences(
+                of: html,
+                with: plainText,
+                options: .caseInsensitive
             )
-            .replacingOccurrences(
-                of: "(?i)</br>",
-                with: " ",
-                options: .regularExpression
-            )
-            .replacingOccurrences(
-                of: "(?i)</?p\\s*>",
-                with: " ",
-                options: .regularExpression
-            )
+        }
+
+        // Remove extra spaces
+        return cleaned
             .replacingOccurrences(
                 of: "\\s+",
                 with: " ",
@@ -323,6 +348,8 @@ private struct LegacyAlertCard: View {
             )
             .trimmingCharacters(in: .whitespacesAndNewlines)
     }
+
+    
 
     // MARK: - Card UI
 
@@ -346,7 +373,7 @@ private struct LegacyAlertCard: View {
                 .lineLimit(1)
 
                 Text(displayTime.isEmpty ? displayDate : displayTime)
-                    .font(.system(size: 11))
+                    .font(.system(size: 14))
                     .foregroundStyle(.secondary)
                     .lineLimit(1)
                     .minimumScaleFactor(0.75)
@@ -363,7 +390,7 @@ private struct LegacyAlertCard: View {
             // Right column: message
 
             Text(formattedMessage.isEmpty ? title : formattedMessage)
-                .font(.system(size: 12))
+                .font(.system(size: 15))
                 .foregroundStyle(.secondary)
                 .lineLimit(2)
                 .multilineTextAlignment(.leading)

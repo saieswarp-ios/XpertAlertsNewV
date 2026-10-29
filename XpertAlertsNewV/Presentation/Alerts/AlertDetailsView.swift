@@ -6,6 +6,7 @@ struct AlertDetailsView: View {
     let alert: Alert
     let coordinator: AppCoordinator
     let container: DIContainer
+    let isArchived: Bool
     
     // MARK: - Alert Presentation
     
@@ -104,7 +105,9 @@ struct AlertDetailsView: View {
                         sectionTitle("Message")
                         
                         Text(formattedMessage)
-                            .font(.system(size: 15))
+//                            .font(.system(size: 15))
+                        
+                           // .font(.system(size: 15, weight: .regular, design: .default))
                             .foregroundStyle(.primary)
                             .fixedSize(
                                 horizontal: false,
@@ -112,8 +115,10 @@ struct AlertDetailsView: View {
                             )
                     }
                     
-                    // API-backed action dropdown
-                    availableActionsSection
+                    // Archived alerts do not show Available Actions.
+                    if !isArchived {
+                        availableActionsSection
+                    }
                     
                     if isProcessingAction {
                         HStack(spacing: 8) {
@@ -138,7 +143,13 @@ struct AlertDetailsView: View {
         .toolbar(.hidden, for: .navigationBar)
         
         // Load the action details once for this screen.
+        // Load actions only for regular alerts.
         .task {
+            guard !isArchived else {
+                isLoadingActions = false
+                return
+            }
+
             await loadAlertActions()
         }
         

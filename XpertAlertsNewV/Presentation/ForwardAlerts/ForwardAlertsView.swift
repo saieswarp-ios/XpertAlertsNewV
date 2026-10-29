@@ -63,48 +63,48 @@ struct ForwardAlertsView: View {
 
                     // MARK: - Backend Status Actions
 
-                    HStack(spacing: 12) {
-
-                        Button {
-                            Task {
-                                await viewModel.updateForwardAlertsStatus(
-                                    status: 1
-                                )
-                            }
-                        } label: {
-                            Text("Select All")
-                                .fontWeight(.semibold)
-                                .frame(maxWidth: .infinity)
-                                .padding()
-                                .foregroundStyle(.white)
-                                .background(
-                                    RoundedRectangle(cornerRadius: 10)
-                                        .fill(Color.themeOrange)
-                                )
-                        }
-                        .buttonStyle(.plain)
-
-                        Button {
-                            Task {
-                                await viewModel.updateForwardAlertsStatus(
-                                    status: 0
-                                )
-                            }
-                        } label: {
-                            Text("Unselect All")
-                                .fontWeight(.semibold)
-                                .frame(maxWidth: .infinity)
-                                .padding()
-                                .foregroundStyle(.primary)
-                                .background(
-                                    RoundedRectangle(cornerRadius: 10)
-                                        .fill(
-                                            Color(.secondarySystemBackground)
-                                        )
-                                )
-                        }
-                        .buttonStyle(.plain)
-                    }
+//                    HStack(spacing: 12) {
+//
+//                        Button {
+//                            Task {
+//                                await viewModel.updateForwardAlertsStatus(
+//                                    status: 1
+//                                )
+//                            }
+//                        } label: {
+//                            Text("Select All")
+//                                .fontWeight(.semibold)
+//                                .frame(maxWidth: .infinity)
+//                                .padding()
+//                                .foregroundStyle(.white)
+//                                .background(
+//                                    RoundedRectangle(cornerRadius: 10)
+//                                        .fill(Color.themeOrange)
+//                                )
+//                        }
+//                        .buttonStyle(.plain)
+//
+//                        Button {
+//                            Task {
+//                                await viewModel.updateForwardAlertsStatus(
+//                                    status: 0
+//                                )
+//                            }
+//                        } label: {
+//                            Text("Unselect All")
+//                                .fontWeight(.semibold)
+//                                .frame(maxWidth: .infinity)
+//                                .padding()
+//                                .foregroundStyle(.primary)
+//                                .background(
+//                                    RoundedRectangle(cornerRadius: 10)
+//                                        .fill(
+//                                            Color(.secondarySystemBackground)
+//                                        )
+//                                )
+//                        }
+//                        .buttonStyle(.plain)
+//                    }
 
                     // MARK: - Selection Controls
 

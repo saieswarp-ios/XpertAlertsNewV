@@ -66,6 +66,8 @@ final class AppDelegate: NSObject,
     }
 
  
+  
+    
     func messaging(
         _ messaging: Messaging,
         didReceiveRegistrationToken fcmToken: String?
@@ -77,10 +79,25 @@ final class AppDelegate: NSObject,
             return
         }
 
+        // Save the latest FCM token locally.
         UserDefaults.standard.set(fcmToken, forKey: "FirebaseToken")
+        print("FCM token saved locally")
 
-        print("FCM token received and saved successfully")
+        
+        // TEMPORARY: Print the token for Firebase testing.
+        print("FCM TOKEN:", fcmToken)
+        
+        
+        
+        
+        
+        // Register the token with the XpertAlerts server.
+        Task {
+            await FCMTokenRegistrationService().registerToken(fcmToken)
+        }
     }
+
+
 
 
     func userNotificationCenter(

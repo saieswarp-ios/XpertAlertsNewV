@@ -5,10 +5,11 @@
 //  Created by IOS DEV on 09/09/26.
 //
 
+
 import Foundation
 
 struct AlertResponse: Decodable {
-    
+
     let alertSendDate: String?
     let subject: String?
     let count: Int?
@@ -22,10 +23,13 @@ struct AlertResponse: Decodable {
     let deviceStatus: String?
     let emailStatus: String?
     let aggregateAlertId: String?
-    let id : Int?
+
+    let id: Int?
+    let archiveId: Int?
     let alertId: Int?
+
     let applicationId: Int?
     let applicationName: String?
     let status: Int?
-    
 }
+

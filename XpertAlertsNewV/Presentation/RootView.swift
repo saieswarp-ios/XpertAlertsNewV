@@ -43,7 +43,8 @@ struct RootView: View {
                         AlertDetailsView(
                             alert: alert,
                             coordinator: coordinator,
-                            container: container
+                            container: container,
+                            isArchived: true
                         )
                     }
                 }
@@ -98,6 +99,14 @@ struct RootView: View {
                 container: container,
                 coordinator: coordinator
             )
+//        case .searchArchived:
+//            ArchivedSearchView(
+//                container: container,
+//                coordinator: coordinator
+//            )
+            
+        case .searchArchived:
+            ArchivedSearchView(coordinator: coordinator)
 
         case .about:
             AboutView()

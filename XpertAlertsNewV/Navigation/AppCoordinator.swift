@@ -14,6 +14,7 @@ final class AppCoordinator: ObservableObject {
     @Published var route: AppRoute = .login
     @Published var pendingAlertSearchFilters: AlertSearchFilters?
     @Published var savedAlertSearchFilters: AlertSearchFilters?
+    @Published var pendingArchivedSearchFilters: ArchivedSearchFilters?
     private var userRepository: UserRepository?
     private var logoutUseCase: LogoutUseCase?
     
@@ -32,11 +33,17 @@ final class AppCoordinator: ObservableObject {
 //    }
     
   
+    
     func start(
         getSavedUserUseCase: GetSavedUserUseCase
     ) {
-        route = .login
+        if getSavedUserUseCase.execute() != nil {
+            route = .alerts
+        } else {
+            route = .login
+        }
     }
+
     
 
     func showAlertDetails(_ alert: Alert) {
@@ -80,6 +87,10 @@ final class AppCoordinator: ObservableObject {
     }
     
     
+    
+    
+  
+    
     func logout() {
         logoutUseCase?.execute()
         selectedAlert = nil
@@ -104,6 +115,17 @@ final class AppCoordinator: ObservableObject {
     func showArchived() {
         route = .archived
     }
+    
+    func showArchivedSearch() {
+        route = .searchArchived
+    }
+   
+
+    func applyArchivedSearch(filters: ArchivedSearchFilters) {
+        pendingArchivedSearchFilters = filters
+        route = .archived
+    }
+    
     func showAbout() {
         route = .about
     }

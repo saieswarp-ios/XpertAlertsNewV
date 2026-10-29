@@ -111,8 +111,25 @@ final class AlertRepositoryImpl: AlertRepository {
                 
             
         }
+       
         print("Mapped Alerts:", alerts.count)
+
+        // Register FCM token after a successful alerts API response,
+        // whether the list is empty or contains alerts.
+        if let fcmToken = UserDefaults.standard.string(
+            forKey: "FirebaseToken"
+        ), !fcmToken.isEmpty {
+
+            print("Registering FCM token after alerts API response")
+
+            await FCMTokenRegistrationService()
+                .registerToken(fcmToken)
+        } else {
+            print("FCM token not available in UserDefaults")
+        }
+
         return alerts
+
         
        
     }

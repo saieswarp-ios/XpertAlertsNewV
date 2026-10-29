@@ -12,7 +12,7 @@ enum AppRoute: Equatable {
     case alerts
     case changePassword
     case search
-    
+    case searchArchived
         case searchAlerts
 //    case notifications
     case archived

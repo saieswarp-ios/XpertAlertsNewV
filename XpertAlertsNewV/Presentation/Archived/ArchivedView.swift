@@ -1,316 +1,3 @@
-//import SwiftUI
-//
-//struct ArchivedView: View {
-//
-//  
-//    
-//    
-//    private let archivedAlerts = [
-//        (
-//            "Poc Isuue solved",
-//            "The POC issue was resolved successfully.",
-//            "Client side",
-//            "Yesterday",
-//            "Info"
-//        ),
-//        (
-//            "screen refresh",
-//            "solved",
-//            "dispatch",
-//            "2 days ago",
-//            "Info"
-//        ),
-//        (
-//            "Patch deliver",
-//            "done good",
-//            "Production",
-//            "3 days ago",
-//            "Warning"
-//        )
-//    ]
-//
-//    var body: some View {
-//
-//        ScrollView {
-//
-//            VStack(
-//                alignment: .leading,
-//                spacing: 24
-//            ) {
-//
-//                // header
-//
-//                AppScreenHeader(
-//                    title: "Archived",
-//                    subtitle: "Review your previously archived alerts",
-//                    icon: "archivebox.fill",
-//                    iconColor: .themeBlue,
-//                    titleColor: .themeBlue
-//                )
-//
-//          // overview
-//
-////                AppCard {
-////
-////                    HStack(spacing: 14) {
-////
-////                        Image(systemName: "archivebox.fill")
-////                            .font(
-////                                .system(
-////                                    size: 20,
-////                                    weight: .semibold
-////                                )
-////                            )
-////                            .foregroundStyle(
-////                                Color.themeBlue
-////                            )
-////                            .frame(
-////                                width: 44,
-////                                height: 44
-////                            )
-////                            .background(
-////                                Color.themeBlue.opacity(0.12),
-////                                in: RoundedRectangle(
-////                                    cornerRadius: 12
-////                                )
-////                            )
-////
-////                        VStack(
-////                            alignment: .leading,
-////                            spacing: 4
-////                        ) {
-////
-////                            Text("Archived Alerts")
-////                                .font(
-////                                    .system(
-////                                        size: 17,
-////                                        weight: .bold
-////                                    )
-////                                )
-////
-////                            Text(
-////                                "\(archivedAlerts.count) alerts are currently archived."
-////                            )
-////                            .font(
-////                                .system(
-////                                    size: 13
-////                                )
-////                            )
-////                            .foregroundStyle(.secondary)
-////                        }
-////
-////                        Spacer()
-////                    }
-////                }
-//
-//                // section
-//
-//                SectionTitle(
-//                    title: "Archived History",
-//                    subtitle: "Previously handled alerts",
-//                    icon: "clock.arrow.circlepath"
-//                    
-//                )
-//
-//                // archived list
-//
-//                VStack(spacing: 14) {
-//
-//                    ForEach(
-//                        archivedAlerts.indices,
-//                        id: \.self
-//                    ) { index in
-//
-//                        let alert = archivedAlerts[index]
-//
-//                        ArchivedAlertCard(
-//                            title: alert.0,
-//                            message: alert.1,
-//                            application: alert.2,
-//                            date: alert.3,
-//                            severity: alert.4
-//                        )
-//                    }
-//                }
-//            }
-//            .padding(.horizontal, 16)
-//            .padding(.top, 20)
-//            .padding(.bottom, 30)
-//        }
-//        .background(
-//            Color(.systemGroupedBackground)
-//                .ignoresSafeArea()
-//        )
-//    }
-//}
-//
-//
-////archived alert card
-//
-//struct ArchivedAlertCard: View {
-//
-//    let title: String
-//    let message: String
-//    let application: String
-//    let date: String
-//    let severity: String
-//
-//    private var severityColor: Color {
-//
-//        switch severity.lowercased() {
-//
-//        case "warning":
-//            return .primary
-//
-//        case "info":
-//            return .primary
-//
-//        default:
-//            return .primary
-//        }
-//    }
-//
-//    private var severityIcon: String {
-//
-//        switch severity.lowercased() {
-//
-//        case "warning":
-//            return "exclamationmark.circle.fill"
-//
-//        case "info":
-//            return "info.circle.fill"
-//
-//        default:
-//            return "archivebox.fill"
-//        }
-//    }
-//
-//    var body: some View {
-//
-//        VStack(
-//            alignment: .leading,
-//            spacing: 14
-//        ) {
-//
-//            // title row
-//
-//            HStack(
-//                alignment: .top,
-//                spacing: 12
-//            ) {
-//
-//                Image(systemName: severityIcon)
-//                    .font(
-//                        .system(
-//                            size: 17,
-//                            weight: .semibold
-//                        )
-//                    )
-//                    .foregroundStyle(severityColor)
-//                    .frame(
-//                        width: 40,
-//                        height: 40
-//                    )
-//                    .background(
-//                        severityColor.opacity(0.12),
-//                        in: RoundedRectangle(
-//                            cornerRadius: 11
-//                        )
-//                    )
-//
-//                VStack(
-//                    alignment: .leading,
-//                    spacing: 5
-//                ) {
-//
-//                    Text(title)
-//                        .font(
-//                            .system(
-//                                size: 16,
-//                                weight: .bold
-//                            )
-//                        )
-//
-//                    Text(message)
-//                        .font(
-//                            .system(
-//                                size: 13
-//                            )
-//                        )
-//                        .foregroundStyle(.secondary)
-//                        .fixedSize(
-//                            horizontal: false,
-//                            vertical: true
-//                        )
-//                }
-//
-//                Spacer()
-//            }
-//
-//            AppDivider()
-//
-//            //Details
-//
-//            HStack {
-//
-//                HStack(spacing: 6) {
-//
-//                    Image(
-//                        systemName: "square.grid.2x2.fill"
-//                    )
-//                    .font(.system(size: 11))
-//
-//                    Text(application)
-//                        .font(
-//                            .system(
-//                                size: 12,
-//                                weight: .medium
-//                            )
-//                        )
-//                }
-//                .foregroundStyle(.secondary)
-//
-//                Spacer()
-//
-//                HStack(spacing: 6) {
-//
-//                    Image(
-//                        systemName: "clock.fill"
-//                    )
-//                    .font(.system(size: 11))
-//
-//                    Text(date)
-//                        .font(
-//                            .system(
-//                                size: 12,
-//                                weight: .medium
-//                            )
-//                        )
-//                }
-//                .foregroundStyle(.secondary)
-//            }
-//
-//            // status
-//
-//            AppStatusChip(
-//                title: "Archived",
-//                color: .themeBlue,
-//                icon: "archivebox.fill"
-//            )
-//        }
-//        .frame(
-//            maxWidth: .infinity,
-//            alignment: .leading
-//        )
-//        .padding(16)
-//        .background(
-//            Color(.secondarySystemBackground),
-//            in: RoundedRectangle(
-//                cornerRadius: 18
-//            )
-//        )
-//    }
-//}
 
 
 import SwiftUI
@@ -319,41 +6,80 @@ struct ArchivedView: View {
     @StateObject private var viewModel: ArchivedViewModel
     let coordinator: AppCoordinator
 
+    @State private var searchText = ""
+
     init(
         container: DIContainer,
         coordinator: AppCoordinator
     ) {
         self.coordinator = coordinator
-
         _viewModel = StateObject(
             wrappedValue: container.makeArchivedViewModel()
         )
     }
 
+    private var filteredAlerts: [Alert] {
+        let query = searchText.trimmingCharacters(
+            in: .whitespacesAndNewlines
+        )
+
+        guard !query.isEmpty else {
+            return viewModel.alerts
+        }
+
+        return viewModel.alerts.filter { alert in
+            alert.subject.localizedCaseInsensitiveContains(query) ||
+            alert.message.localizedCaseInsensitiveContains(query) ||
+            alert.applicationName.localizedCaseInsensitiveContains(query)
+        }
+    }
+
+    private var groupedAlerts: [(date: String, alerts: [Alert])] {
+        let groups = Dictionary(grouping: filteredAlerts) { alert in
+            Self.dayLabel(from: alert.groupBy, fallback: alert.date)
+        }
+
+        // Preserve the order of dates as they first appear in the API response.
+        var seen = Set<String>()
+        var orderedGroups: [(date: String, alerts: [Alert])] = []
+
+        for alert in filteredAlerts {
+            let key = Self.dayLabel(
+                from: alert.groupBy,
+                fallback: alert.date
+            )
+
+            guard seen.insert(key).inserted else { continue }
+
+            if let alerts = groups[key] {
+                orderedGroups.append((date: key, alerts: alerts))
+            }
+        }
+
+        return orderedGroups
+    }
+
     var body: some View {
         VStack(spacing: 0) {
-
             AppScreenHeader(
                 title: "Archived",
                 subtitle: nil,
                 icon: "archivebox.fill"
             )
-            .padding()
+            .padding(.horizontal, 16)
+            .padding(.top, 12)
+            .padding(.bottom, 10)
+
+            searchBar
 
             if viewModel.isLoading {
-
                 Spacer()
-
                 ProgressView("Loading archived alerts...")
-
                 Spacer()
-
             } else if let errorMessage = viewModel.errorMessage {
-
                 Spacer()
 
                 VStack(spacing: 10) {
-
                     Image(systemName: "exclamationmark.triangle")
                         .font(.system(size: 30))
                         .foregroundStyle(Color.themeOrange)
@@ -364,97 +90,253 @@ struct ArchivedView: View {
                 }
 
                 Spacer()
-
-            } else if viewModel.alerts.isEmpty {
-
+            } else if filteredAlerts.isEmpty {
                 Spacer()
 
                 VStack(spacing: 10) {
-
                     Image(systemName: "archivebox")
                         .font(.system(size: 32))
                         .foregroundStyle(.secondary)
 
-                    Text("No Archived Alerts")
-                        .font(.system(size: 17, weight: .medium))
+                    Text(
+                        searchText.isEmpty
+                            ? "No Archived Alerts"
+                            : "No Matching Alerts"
+                    )
+                    .font(.system(size: 17, weight: .medium))
 
-                    Text("There are no archived alerts to display.")
-                        .font(.system(size: 14))
-                        .foregroundStyle(.secondary)
+                    Text(
+                        searchText.isEmpty
+                            ? "There are no archived alerts to display."
+                            : "Try a different search term."
+                    )
+                    .font(.system(size: 14))
+                    .foregroundStyle(.secondary)
                 }
 
                 Spacer()
-
             } else {
-
                 ScrollView {
+                    LazyVStack(alignment: .leading, spacing: 14) {
+                        ForEach(
+                            Array(groupedAlerts.enumerated()),
+                            id: \.offset
+                        ) { _, group in
+                            VStack(alignment: .leading, spacing: 8) {
+                                Text(group.date)
+                                    .font(.system(size: 13, weight: .semibold))
+                                    .foregroundStyle(.white)
+                                    .padding(.horizontal, 12)
+                                    .padding(.vertical, 5)
+                                    .background(
+                                        Color.themeOrange,
+                                        in: Capsule()
+                                    )
 
-                    LazyVStack(spacing: 0) {
-
-                        ForEach(viewModel.alerts) { alert in
-
-                            ArchivedRow(
-                                title: alert.subject,
-                                message: alert.message,
-                                application: alert.applicationName,
-                                date: alert.date
-                            ) {
-                                coordinator.showAlertDetails(alert)
+                                LazyVStack(spacing: 10) {
+                                    ForEach(group.alerts) { alert in
+                                        ArchivedRow(
+                                            title: alert.subject,
+                                            message: alert.message,
+                                            application: alert.applicationName,
+                                            date: alert.date
+                                        ) {
+                                            coordinator.showAlertDetails(alert)
+                                        }
+                                    }
+                                }
                             }
                         }
                     }
+                    .padding(.horizontal, 16)
+                    .padding(.top, 8)
+                    .padding(.bottom, 20)
                 }
             }
         }
+        .background(Color.white)
         .onAppear {
-            viewModel.loadArchivedAlerts()
+            let filters = coordinator.pendingArchivedSearchFilters
+            coordinator.pendingArchivedSearchFilters = nil
+            viewModel.loadArchivedAlerts(filters: filters)
         }
+    }
+
+    private var searchBar: some View {
+        HStack(spacing: 10) {
+            Image(systemName: "magnifyingglass")
+                .font(.system(size: 15))
+                .foregroundStyle(.secondary)
+
+            TextField("Search Archived Alerts", text: $searchText)
+                .font(.system(size: 14))
+                .textInputAutocapitalization(.never)
+                .autocorrectionDisabled()
+                .disabled(true)
+
+            Spacer(minLength: 0)
+
+            Image(systemName: "magnifyingglass")
+                .font(.system(size: 17))
+                .foregroundStyle(.secondary)
+        }
+        .padding(.horizontal, 14)
+        .frame(height: 42)
+        .background(Color.white, in: Capsule())
+        .overlay {
+            Capsule()
+                .stroke(Color.gray.opacity(0.20), lineWidth: 1)
+        }
+        .contentShape(Capsule())
+        .onTapGesture {
+            coordinator.showArchivedSearch()
+        }
+        .padding(.horizontal, 16)
+        .padding(.bottom, 12)
+    }
+
+    private static func dayLabel(
+        from groupBy: String,
+        fallback date: String
+    ) -> String {
+        let rawValue = groupBy.isEmpty ? date : groupBy
+
+        let formats = [
+            "MM/dd/yyyy",
+            "MM/dd/yyyy hh:mm a",
+            "MM/dd/yyyy hh:mm:ss a",
+            "yyyy-MM-dd"
+        ]
+
+        for format in formats {
+            let formatter = DateFormatter()
+            formatter.locale = Locale(identifier: "en_US_POSIX")
+            formatter.timeZone = .current
+            formatter.dateFormat = format
+
+            if let parsedDate = formatter.date(from: rawValue) {
+                let output = DateFormatter()
+                output.locale = Locale.current
+                output.timeZone = .current
+                output.dateFormat = "dd MMM"
+                return output.string(from: parsedDate)
+            }
+        }
+
+        return rawValue
     }
 }
 
 struct ArchivedRow: View {
-
     let title: String
     let message: String
     let application: String
     let date: String
     let action: () -> Void
 
-    var body: some View {
+    private var parsedDate: Date? {
+        let formats = [
+            "MM/dd/yyyy hh:mm a",
+            "MM/dd/yyyy hh:mm:ss a",
+            "MM/dd/yyyy"
+        ]
 
-        Button {
-            action()
-        } label: {
+        for format in formats {
+            let formatter = DateFormatter()
+            formatter.locale = Locale(identifier: "en_US_POSIX")
+            formatter.timeZone = .current
+            formatter.dateFormat = format
 
-            VStack(alignment: .leading, spacing: 6) {
-
-                HStack {
-
-                    Text(title)
-                        .font(.system(size: 16, weight: .medium))
-                        .foregroundStyle(.primary)
-
-                    Spacer()
-
-                    Text(date)
-                        .font(.system(size: 12))
-                        .foregroundStyle(.secondary)
-                }
-
-                Text(message)
-                    .font(.system(size: 14))
-                    .foregroundStyle(.primary)
-
-                Text(application)
-                    .font(.system(size: 12))
-                    .foregroundStyle(.secondary)
+            if let parsed = formatter.date(from: date) {
+                return parsed
             }
-            .frame(maxWidth: .infinity, alignment: .leading)
-            .padding(.horizontal, 16)
-            .padding(.vertical, 14)
+        }
+
+        return nil
+    }
+
+    private var displayDay: String {
+        guard let parsedDate else { return date }
+
+        let formatter = DateFormatter()
+        formatter.locale = Locale.current
+        formatter.dateFormat = "dd MMM"
+        return formatter.string(from: parsedDate)
+    }
+
+    private var displayTime: String {
+        guard let parsedDate else { return "" }
+
+        let formatter = DateFormatter()
+        formatter.locale = Locale.current
+        formatter.dateFormat = "hh:mm a"
+        return formatter.string(from: parsedDate)
+    }
+
+    private var preview: String {
+        let source = message.trimmingCharacters(in: .whitespacesAndNewlines)
+        let content = source.isEmpty ? title : source
+
+        return content
+            .replacingOccurrences(
+                of: "(?i)<br\\s*/?>",
+                with: " ",
+                options: .regularExpression
+            )
+            .replacingOccurrences(
+                of: "<[^>]+>",
+                with: "",
+                options: .regularExpression
+            )
+            .replacingOccurrences(
+                of: "&nbsp;",
+                with: " ",
+                options: .caseInsensitive
+            )
+            .trimmingCharacters(in: .whitespacesAndNewlines)
+    }
+
+    var body: some View {
+        Button(action: action) {
+            HStack(spacing: 8) {
+                VStack(spacing: 4) {
+                    Text(displayDay)
+                        .lineLimit(1)
+
+                    Text(displayTime)
+                        .lineLimit(1)
+                }
+                .font(.system(size: 11))
+                .foregroundStyle(Color.gray)
+                .frame(width: 56)
+
+                Rectangle()
+                    .fill(Color.themeOrange)
+                    .frame(width: 1, height: 38)
+
+                VStack(alignment: .leading, spacing: 3) {
+                    Text(preview)
+                        .font(.system(size: 11))
+                        .foregroundStyle(Color.gray)
+                        .lineLimit(2)
+                        .multilineTextAlignment(.leading)
+                        .frame(maxWidth: .infinity, alignment: .leading)
+
+                    Text(application)
+                        .font(.system(size: 10))
+                        .foregroundStyle(Color.gray.opacity(0.9))
+                        .lineLimit(1)
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                }
+            }
+            .padding(.horizontal, 10)
+            .padding(.vertical, 10)
+            .frame(maxWidth: .infinity, minHeight: 54)
+            .background(
+                Color(red: 0.95, green: 0.95, blue: 0.97),
+                in: RoundedRectangle(cornerRadius: 6)
+            )
         }
         .buttonStyle(.plain)
-
-        Divider()
     }
 }
