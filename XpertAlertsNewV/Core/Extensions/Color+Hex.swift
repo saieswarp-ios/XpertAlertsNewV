@@ -37,3 +37,5 @@ extension Color {
     static let themeRed = Color(hex: "#FF0000")
     static let themeBlue = Color(hex: "#007AFF")
 }
+// these are colors
+//thtrhret
