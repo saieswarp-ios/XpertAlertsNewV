@@ -4,7 +4,7 @@
 //
 //  Created by IOS DEV on 08/09/26.
 //
-
+// THESE ARE LOGIN RESPONSE
 import Foundation
  
 struct LoginResponse: Decodable {

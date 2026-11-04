@@ -5,7 +5,7 @@
 //  Created by IOS DEV on 09/09/26.
 //
 
-
+// THSES ARE ALERT RESPONSES
 import Foundation
 
 struct AlertResponse: Decodable {
