@@ -6,78 +6,78 @@ struct RootView: View {
     @ObservedObject var coordinator: AppCoordinator
 
     let container: DIContainer
+
     let logoutUseCase: LogoutUseCase
 
     var body: some View {
+
         switch coordinator.route {
 
+        // MARK: - Login
+
         case .login:
+
             LoginView(
                 container: container,
                 coordinator: coordinator
             )
 
-            
-            
-          
-            case .alerts, .alertDetails:
+        // MARK: - Main Tab Screens
 
-                MainTabView(
-                    container: container,
-                    coordinator: coordinator,
-                    logoutUseCase: logoutUseCase
-                )
-                .fullScreenCover(
-                    isPresented: Binding(
-                        get: {
-                            coordinator.route == .alertDetails
-                        },
-                        set: { isPresented in
-                            if !isPresented {
-                                coordinator.backToAlerts()
-                            }
+        case .alerts,
+             .alertDetails,
+             .archived,
+             .searchArchived:
+
+            MainTabView(
+                container: container,
+                coordinator: coordinator,
+                logoutUseCase: logoutUseCase
+            )
+            .fullScreenCover(
+
+                isPresented: Binding(
+
+                    get: {
+                        coordinator.route == .alertDetails
+                    },
+
+                    set: { isPresented in
+
+                        if !isPresented {
+                            coordinator.backToAlerts()
                         }
-                    )
-                ) {
-                    if let alert = coordinator.selectedAlert {
-                        AlertDetailsView(
-                            alert: alert,
-                            coordinator: coordinator,
-                            container: container,
-                            isArchived: true
-                        )
                     }
+                )
+
+            ) {
+
+                if let alert = coordinator.selectedAlert {
+
+                    AlertDetailsView(
+                        alert: alert,
+                        coordinator: coordinator,
+                        container: container,
+                        isArchived: true
+                    )
                 }
-         
-            
-            
-            
-            
-            
-//        case .alerts:
-//            MainTabView(
-//                container: container,
-//                coordinator: coordinator,
-//                logoutUseCase: logoutUseCase
-//            )
+            }
+
+        // MARK: - Search Alerts
 
         case .searchAlerts:
+
             SearchAlertsView(
                 container: container,
                 coordinator: coordinator
             )
 
-//        case .alertDetails:
-//            if let alert = coordinator.selectedAlert {
-//                AlertDetailsView(
-//                    alert: alert,
-//                    coordinator: coordinator,
-//                    container: container
-//                )
-//            }
+        // MARK: - Forward Alerts
 
         case .forwardAlerts:
+
             NavigationStack {
+
                 ForwardAlertsView(
                     viewModel: container.makeForwardAlertsViewModel(),
                     createForwardAlertViewModel:
@@ -85,36 +85,41 @@ struct RootView: View {
                 )
             }
 
+        // MARK: - Search
+
         case .search:
+
             SearchView(
                 container: container,
                 coordinator: coordinator
             )
 
-        case .changePassword:
-            ChangePasswordView(container: container)
+        // MARK: - Change Password
 
-        case .archived:
-            ArchivedView(
-                container: container,
-                coordinator: coordinator
+        case .changePassword:
+
+            ChangePasswordView(
+                container: container
             )
-//        case .searchArchived:
-//            ArchivedSearchView(
-//                container: container,
-//                coordinator: coordinator
-//            )
-            
-        case .searchArchived:
-            ArchivedSearchView(coordinator: coordinator)
+
+        // MARK: - About
 
         case .about:
+
             AboutView()
 
+        // MARK: - Subscriptions
+
         case .subscriptions:
-            SubscriptionsView(container: container)
+
+            SubscriptionsView(
+                container: container
+            )
+
+        // MARK: - Build Settings
 
         case .buildSettings:
+
             BuildSettingsView(
                 coordinator: coordinator
             )
