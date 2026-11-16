@@ -77,7 +77,8 @@ struct MoreView: View {
                             .frame(width: 28)
 
                             Text("Logout")
-                                .fontWeight(.semibold)
+                               // .fontWeight(.semibold)
+                                .font(.avenirDemiBold(size: 18))
 
                             Spacer()
                         }
@@ -127,7 +128,9 @@ struct MoreRow: View {
         HStack(spacing: 14) {
 
             Image(systemName: icon)
-                .font(.title3)
+             //   .font(.title3)
+            
+                .font(.avenirDemiBold(size: 20))
                 .foregroundStyle(iconColor)
                 .frame(width: 38, height: 38)
 
@@ -137,11 +140,14 @@ struct MoreRow: View {
             ) {
 
                 Text(title)
-                    .font(.body)
-                    .fontWeight(.medium)
+//                    .font(.body)
+//                    .fontWeight(.medium)
+                    .font(.avenirMedium(size: 17))
 
                 Text(subtitle)
-                    .font(.caption)
+                   // .font(.caption)
+                
+                    .font(.avenirRegular(size: 12))
                     .foregroundStyle(.secondary)
             }
 

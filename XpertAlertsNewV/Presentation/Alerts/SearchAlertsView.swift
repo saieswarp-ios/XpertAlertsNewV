@@ -34,7 +34,8 @@ struct SearchAlertsView: View {
                 Spacer()
 
                 Text("Search Alerts")
-                    .font(.system(size: 20, weight: .bold))
+//                    .font(.system(size: 20, weight: .bold))
+                    .font(.avenirBold(size: 20))
 
                 Spacer()
 
@@ -176,7 +177,7 @@ struct SearchAlertsView: View {
                             Spacer()
                             Image(systemName: "magnifyingglass")
                             Text("Search")
-                                .fontWeight(.semibold)
+                                .font(.avenirDemiBold(size: 16))
                             Spacer()
                         }
                     }

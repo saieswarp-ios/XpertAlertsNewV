@@ -27,15 +27,20 @@ struct ProfileView: View {
                             systemName:
                                 "person.fill"
                         )
-                        .font(.system(size: 50))
+                        //.font(.system(size: 50))
+                        .font(.avenirRegular(size: 50))
                     }
 
                     Text("John Doe")
-                        .font(.title)
-                        .fontWeight(.bold)
+//                        .font(.title)
+//                        .fontWeight(.bold)
+                        .font(.avenirBold(size: 28))
 
                     Text("XpertAlerts User")
-                        .font(.subheadline)
+//                        .font(.subheadline)
+//                        .foregroundStyle(.secondary)
+                    
+                        .font(.avenirRegular(size: 15))
                         .foregroundStyle(.secondary)
                 }
                 .frame(maxWidth: .infinity)
@@ -105,7 +110,7 @@ struct ProfileView: View {
                                 systemName:
                                     "pencil.circle.fill"
                             )
-                            .font(.title3)
+                            .font(.avenirDemiBold(size: 20))
 
                             Text("Edit Profile")
                                 .fontWeight(.medium)

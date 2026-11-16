@@ -83,21 +83,28 @@ struct AlertCardView: View {
                 ) {
 
                     Text(title)
-                        .font(
-                            .system(
-                                size: 16,
-                                weight: .bold
-                            )
-                        )
+//                        .font(
+//                            .system(
+//                                size: 16,
+//                                weight: .bold
+//                            )
+//                        )
+                    
+                        .font(.avenirBold(size: 16))
+                    
+                    
                         .foregroundStyle(.primary)
 
                     Text(message)
-                        .font(
-                            .system(
-                                size: 13,
-                                weight: .regular
-                            )
-                        )
+//                        .font(
+//                            .system(
+//                                size: 13,
+//                                weight: .regular
+//                            )
+//                        )
+                    
+                        .font(.avenirRegular(size: 13))
+                    
                         .foregroundStyle(.secondary)
                         .fixedSize(
                             horizontal: false,
@@ -120,12 +127,14 @@ struct AlertCardView: View {
                         .font(.system(size: 11))
 
                     Text(application)
-                        .font(
-                            .system(
-                                size: 12,
-                                weight: .medium
-                            )
-                        )
+//                        .font(
+//                            .system(
+//                                size: 12,
+//                                weight: .medium
+//                            )
+//                        )
+                    
+                        .font(.avenirMedium(size: 12))
                 }
                 .foregroundStyle(.secondary)
 
@@ -137,12 +146,15 @@ struct AlertCardView: View {
                         .font(.system(size: 11))
 
                     Text(date)
-                        .font(
-                            .system(
-                                size: 12,
-                                weight: .medium
-                            )
-                        )
+//                        .font(
+//                            .system(
+//                                size: 12,
+//                                weight: .medium
+//                            )
+//                        )
+                        .font(.avenirMedium(size: 12))
+                    
+                    
                 }
                 .foregroundStyle(.secondary)
             }

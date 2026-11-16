@@ -8,7 +8,9 @@ struct APIEndpoint {
 //    static let defaultBaseURL =
 //        "https://testapps.aquilasoftware.com/ams/webservice/"
     static let defaultBaseURL =
-        "https://www.xpertalerts.com/ams/webservice/"
+    
+    "https://www.xpertalerts.com/ams/webservice/"
+  //  "https://testapps.aquilasoftware.com/ams/webservice/"
 
     // MARK: - Base URL
 

@@ -1,25 +1,32 @@
+
 import SwiftUI
 
-// screen icon
+// MARK: - Screen Icon
 
 struct AppScreenIcon: View {
 
     let systemName: String
     let color: Color
 
+    @ScaledMetric(relativeTo: .body)
+    private var iconSize: CGFloat = 20
+
+    @ScaledMetric(relativeTo: .body)
+    private var iconFrameSize: CGFloat = 42
+
     var body: some View {
 
         Image(systemName: systemName)
             .font(
                 .system(
-                    size: 20,
+                    size: iconSize,
                     weight: .semibold
                 )
             )
             .foregroundStyle(color)
             .frame(
-                width: 42,
-                height: 42
+                width: iconFrameSize,
+                height: iconFrameSize
             )
             .background(
                 color.opacity(0.12),
@@ -31,7 +38,7 @@ struct AppScreenIcon: View {
 }
 
 
-// screen header
+// MARK: - Screen Header
 
 struct AppScreenHeader: View {
 
@@ -40,6 +47,12 @@ struct AppScreenHeader: View {
     let icon: String
     let iconColor: Color
     let titleColor: Color
+
+    @ScaledMetric(relativeTo: .title2)
+    private var titleSize: CGFloat = 23
+
+    @ScaledMetric(relativeTo: .body)
+    private var subtitleSize: CGFloat = 13
 
     init(
         title: String,
@@ -73,53 +86,55 @@ struct AppScreenHeader: View {
             ) {
 
                 Text(title)
-                    .font(
-                        .system(
-                            size: 23,
-                            weight: .bold
-                        )
-                    )
+                    .font(.avenirBold(size: titleSize))
                     .foregroundStyle(titleColor)
 
                 if let subtitle {
 
                     Text(subtitle)
-                        .font(
-                            .system(
-                                size: 13,
-                                weight: .regular
-                            )
-                        )
+                        .font(.avenirRegular(size: subtitleSize))
                         .foregroundStyle(.secondary)
+                        .fixedSize(
+                            horizontal: false,
+                            vertical: true
+                        )
                 }
             }
 
-            Spacer()
+            Spacer(minLength: 0)
         }
     }
 }
 
 
-// section title
+// MARK: - Section Title
 
 struct SectionTitle: View {
 
     let title: String
     let subtitle: String?
     let icon: String?
-   
+
+    @ScaledMetric(relativeTo: .body)
+    private var iconSize: CGFloat = 20
+
+    @ScaledMetric(relativeTo: .body)
+    private var iconFrameSize: CGFloat = 40
+
+    @ScaledMetric(relativeTo: .headline)
+    private var titleSize: CGFloat = 18
+
+    @ScaledMetric(relativeTo: .body)
+    private var subtitleSize: CGFloat = 13
 
     init(
         title: String,
         subtitle: String? = nil,
-        icon: String? = nil,
-      
+        icon: String? = nil
     ) {
         self.title = title
         self.subtitle = subtitle
         self.icon = icon
-      
-        
     }
 
     var body: some View {
@@ -134,16 +149,14 @@ struct SectionTitle: View {
                 Image(systemName: icon)
                     .font(
                         .system(
-                            size: 20,
+                            size: iconSize,
                             weight: .semibold
                         )
                     )
-                    .foregroundStyle(
-                        Color.themeBlue     // sign in side icon color
-                    )
+                    .foregroundStyle(Color.themeBlue)
                     .frame(
-                        width: 40,
-                        height: 40
+                        width: iconFrameSize,
+                        height: iconFrameSize
                     )
                     .background(
                         Color.themeOrange.opacity(0.12),
@@ -159,38 +172,38 @@ struct SectionTitle: View {
             ) {
 
                 Text(title)
-                    .font(
-                        .system(
-                            size: 18,
-                            weight: .bold
-                        )
-                    )
+                    .font(.avenirBold(size: titleSize))
                     .foregroundStyle(.primary)
 
                 if let subtitle {
 
                     Text(subtitle)
-                        .font(
-                            .system(
-                                size: 13,
-                                weight: .regular
-                            )
-                        )
+                        .font(.avenirRegular(size: subtitleSize))
                         .foregroundStyle(.secondary)
+                        .fixedSize(
+                            horizontal: false,
+                            vertical: true
+                        )
                 }
             }
 
-            Spacer()
+            Spacer(minLength: 0)
         }
     }
 }
 
 
-// app card
+// MARK: - App Card
 
 struct AppCard<Content: View>: View {
 
     let content: Content
+
+    @ScaledMetric(relativeTo: .body)
+    private var cardPadding: CGFloat = 16
+
+    @ScaledMetric(relativeTo: .body)
+    private var cornerRadius: CGFloat = 18
 
     init(
         @ViewBuilder content: () -> Content
@@ -205,18 +218,18 @@ struct AppCard<Content: View>: View {
                 maxWidth: .infinity,
                 alignment: .leading
             )
-            .padding(16)
+            .padding(cardPadding)
             .background(
                 Color(.secondarySystemBackground),
                 in: RoundedRectangle(
-                    cornerRadius: 18
+                    cornerRadius: cornerRadius
                 )
             )
     }
 }
 
 
-//app background
+// MARK: - App Background
 
 struct AppBackground: View {
 
@@ -228,13 +241,22 @@ struct AppBackground: View {
 }
 
 
-// status chip
+// MARK: - Status Chip
 
 struct AppStatusChip: View {
 
     let title: String
     let color: Color
     let icon: String
+
+    @ScaledMetric(relativeTo: .body)
+    private var iconSize: CGFloat = 12
+
+    @ScaledMetric(relativeTo: .body)
+    private var horizontalPadding: CGFloat = 10
+
+    @ScaledMetric(relativeTo: .body)
+    private var verticalPadding: CGFloat = 6
 
     var body: some View {
 
@@ -243,16 +265,11 @@ struct AppStatusChip: View {
             Image(systemName: icon)
 
             Text(title)
-                .font(
-                    .system(
-                        size: 12,
-                        weight: .semibold
-                    )
-                )
+                .font(.avenirDemiBold(size: iconSize))
         }
         .foregroundStyle(color)
-        .padding(.horizontal, 10)
-        .padding(.vertical, 6)
+        .padding(.horizontal, horizontalPadding)
+        .padding(.vertical, verticalPadding)
         .background(
             color.opacity(0.12),
             in: Capsule()
@@ -261,14 +278,17 @@ struct AppStatusChip: View {
 }
 
 
-// app divider
+// MARK: - App Divider
 
 struct AppDivider: View {
+
+    @ScaledMetric(relativeTo: .body)
+    private var dividerSpacing: CGFloat = 2
 
     var body: some View {
 
         Divider()
-            .padding(.vertical, 2)
+            .padding(.vertical, dividerSpacing)
     }
 }
 

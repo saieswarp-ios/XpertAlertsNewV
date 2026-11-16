@@ -45,14 +45,17 @@ struct SubscriptionsView: View {
                 .accessibilityLabel("Back")
 
                 Image(systemName: "rectangle.stack.fill")
-                    .font(.system(size: 20, weight: .semibold))
+                   .font(.system(size: 20, weight: .semibold))
+                
+                    
                     .foregroundStyle(Color.themeOrange)
                     .frame(width: 44, height: 44)
                     .background(Color.themeOrange.opacity(0.12))
                     .clipShape(RoundedRectangle(cornerRadius: 12))
 
                 Text("Subscriptions")
-                    .font(.system(size: 21, weight: .bold))
+                    //.font(.system(size: 21, weight: .bold))
+                    .font(.avenirBold(size: 21))
                     .foregroundStyle(Color.themeOrange)
                     .lineLimit(1)
                     .minimumScaleFactor(0.8)
@@ -78,6 +81,8 @@ struct SubscriptionsView: View {
                 } label: {
                     Image(systemName: "plus")
                         .font(.system(size: 18, weight: .semibold))
+                       
+                    
                         .foregroundStyle(.white)
                         .frame(width: 54, height: 44)
                         .background(Color.themeOrange)
@@ -96,7 +101,8 @@ struct SubscriptionsView: View {
                 // Application filter
                 VStack(alignment: .leading, spacing: 5) {
                     Text("Application")
-                        .font(.system(size: 13, weight: .medium))
+                       // .font(.system(size: 13, weight: .medium))
+                        .font(.avenirMedium(size: 13))
                         .foregroundStyle(.secondary)
 
                     Picker("Application", selection: $selectedApplicationId) {
@@ -120,7 +126,8 @@ struct SubscriptionsView: View {
                 // Alert name search
                 VStack(alignment: .leading, spacing: 5) {
                     Text("Alert Name")
-                        .font(.system(size: 13, weight: .medium))
+                      //  .font(.system(size: 13, weight: .medium))
+                        .font(.avenirMedium(size: 13))
                         .foregroundStyle(.secondary)
 
                     HStack(spacing: 8) {
@@ -158,7 +165,8 @@ struct SubscriptionsView: View {
                 // Active status filter
                 VStack(alignment: .leading, spacing: 5) {
                     Text("Active Status")
-                        .font(.system(size: 13, weight: .medium))
+                     //   .font(.system(size: 13, weight: .medium))
+                        .font(.avenirMedium(size: 13))
                         .foregroundStyle(.secondary)
 
                     Picker("Active Status", selection: activeStatusBinding) {
@@ -175,7 +183,9 @@ struct SubscriptionsView: View {
                         performSearch()
                     } label: {
                         Label("Search", systemImage: "magnifyingglass")
-                            .font(.system(size: 15, weight: .semibold))
+                          //  .font(.system(size: 15, weight: .semibold))
+                        
+                            .font(.avenirDemiBold(size: 15))
                             .frame(maxWidth: .infinity)
                             .frame(height: 44)
                             .foregroundStyle(.white)
@@ -192,7 +202,8 @@ struct SubscriptionsView: View {
                         viewModel.resetSearch()
                     } label: {
                         Label("Reset", systemImage: "arrow.counterclockwise")
-                            .font(.system(size: 15, weight: .medium))
+                           // .font(.system(size: 15, weight: .medium))
+                            .font(.avenirMedium(size: 15))
                             .frame(maxWidth: .infinity)
                             .frame(height: 44)
                             .foregroundStyle(Color.themeOrange)
@@ -205,7 +216,9 @@ struct SubscriptionsView: View {
 
                 if let applicationError {
                     Text(applicationError)
-                        .font(.caption)
+                        
+                        .font(.avenirRegular(size: 12))
+                       
                         .foregroundStyle(.red)
                 }
             }
@@ -228,11 +241,13 @@ struct SubscriptionsView: View {
 
                 VStack(spacing: 12) {
                     Image(systemName: "exclamationmark.triangle")
-                        .font(.system(size: 32))
+                        //.font(.system(size: 32))
+                        .font(.avenirRegular(size: 32))
                         .foregroundStyle(.secondary)
 
                     Text(errorMessage)
-                        .font(.subheadline)
+                        //.font(.subheadline)
+                        .font(.avenirRegular(size: 15))
                         .multilineTextAlignment(.center)
 
                     Button("Retry") {
@@ -249,11 +264,15 @@ struct SubscriptionsView: View {
                 Spacer()
 
                 Image(systemName: "rectangle.stack")
-                    .font(.system(size: 32))
+                  //  .font(.system(size: 32))
+                    .font(.avenirRegular(size: 32))
                     .foregroundStyle(.secondary)
 
                 Text("No subscriptions found")
-                    .font(.headline)
+                  //  .font(.headline)
+                    .font(.avenirDemiBold(size: 17))
+                
+                
                     .padding(.top, 4)
 
                 Spacer()
@@ -344,18 +363,21 @@ struct SubscriptionRow: View {
             HStack(spacing: 10) {
                 VStack(alignment: .leading, spacing: 6) {
                     Text(subscription.alertName ?? "-")
-                        .font(.system(size: 16, weight: .medium))
+                       // .font(.system(size: 16, weight: .medium))
+                        .font(.avenirMedium(size: 16))
                         .foregroundStyle(.primary)
                         .multilineTextAlignment(.leading)
 
                     Text(subscription.applicationName ?? "-")
-                        .font(.system(size: 12))
+                        //.font(.system(size: 12))
+                        .font(.avenirRegular(size: 12))
                         .foregroundStyle(.secondary)
                         .multilineTextAlignment(.leading)
 
                     if !notificationTypes.isEmpty {
                         Text(notificationTypes)
-                            .font(.system(size: 12))
+                            //.font(.system(size: 12))
+                            .font(.avenirRegular(size: 12))
                             .foregroundStyle(Color.themeOrange)
                     }
                 }
@@ -364,6 +386,7 @@ struct SubscriptionRow: View {
 
                 Image(systemName: "chevron.right")
                     .font(.system(size: 13, weight: .medium))
+                    .font(.avenirMedium(size: 13))
                     .foregroundStyle(.secondary)
             }
             .frame(maxWidth: .infinity, alignment: .leading)

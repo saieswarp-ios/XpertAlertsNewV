@@ -108,7 +108,8 @@ struct ArchivedView: View {
 
                     Text("Search Archived Alerts")
                 }
-                .font(.system(size: 15, weight: .semibold))
+              //  .font(.system(size: 15, weight: .semibold))
+                .font(.avenirDemiBold(size: 15))
                 .foregroundStyle(.white)
                 .frame(maxWidth: .infinity)
                 .frame(height: 42)
@@ -148,7 +149,8 @@ struct ArchivedView: View {
                         .foregroundStyle(Color.themeOrange)
 
                     Text(errorMessage)
-                        .font(.system(size: 15))
+                        //.font(.system(size: 15))
+                        .font(.avenirRegular(size: 15))
                         .foregroundStyle(.secondary)
                         .multilineTextAlignment(.center)
 
@@ -176,7 +178,8 @@ struct ArchivedView: View {
                             ? "No Archived Alerts"
                             : "No Matching Alerts"
                     )
-                    .font(.system(size: 17, weight: .medium))
+                   // .font(.system(size: 17, weight: .medium))
+                    .font(.avenirMedium(size: 17))
                     .foregroundStyle(.primary)
 
                     Text(
@@ -184,7 +187,8 @@ struct ArchivedView: View {
                             ? "There are no archived alerts to display."
                             : "Try a different search term."
                     )
-                    .font(.system(size: 14))
+                   // .font(.system(size: 14))
+                    .font(.avenirRegular(size: 14))
                     .foregroundStyle(.secondary)
                     .multilineTextAlignment(.center)
 
@@ -213,12 +217,13 @@ struct ArchivedView: View {
                                 // Date Heading
 
                                 Text(group.date)
-                                    .font(
-                                        .system(
-                                            size: 14,
-                                            weight: .semibold
-                                        )
-                                    )
+//                                    .font(
+//                                        .system(
+//                                            size: 14,
+//                                            weight: .semibold
+//                                        )
+//                                    )
+                                    .font(.avenirDemiBold(size: 14))
                                     .foregroundStyle(.white)
                                     .padding(.horizontal, 10)
                                     .frame(height: 29)
@@ -416,7 +421,8 @@ struct ArchivedRow: View {
                     Text(displayTime)
                         .lineLimit(1)
                 }
-                .font(.system(size: 11))
+               // .font(.system(size: 11))
+                .font(.avenirRegular(size: 11))
                 .foregroundStyle(Color.gray)
                 .frame(width: 56)
                 
@@ -427,7 +433,8 @@ struct ArchivedRow: View {
                 VStack(alignment: .leading, spacing: 3) {
                     
                     Text(preview)
-                        .font(.system(size: 11))
+                       // .font(.system(size: 11))
+                        .font(.avenirRegular(size: 11))
                         .foregroundStyle(Color.gray)
                         .lineLimit(2)
                         .multilineTextAlignment(.leading)
@@ -437,7 +444,8 @@ struct ArchivedRow: View {
                         )
                     
                     Text(application)
-                        .font(.system(size: 10))
+                       // .font(.system(size: 10))
+                        .font(.avenirRegular(size: 10))
                         .foregroundStyle(Color.gray.opacity(0.9))
                         .lineLimit(1)
                         .frame(

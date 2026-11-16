@@ -38,7 +38,8 @@ struct AboutView: View {
                     .clipShape(RoundedRectangle(cornerRadius: 12))
 
                 Text("About")
-                    .font(.system(size: 21, weight: .bold))
+                    //.font(.system(size: 21, weight: .bold))
+                    .font(.avenirBold(size: 21))
                     .foregroundStyle(themeOrange)
 
                 Spacer()
@@ -60,11 +61,14 @@ struct AboutView: View {
 
                 VStack(spacing: 8) {
                     Text("XpertAlerts")
-                        .font(.system(size: 22, weight: .bold))
+                        //.font(.system(size: 22, weight: .bold))
+                        .font(.avenirBold(size: 22))
                         .foregroundStyle(.primary)
 
                     Text("App Version: v1.7")
-                        .font(.system(size: 15, weight: .medium))
+//                        .font(.system(size: 15, weight: .medium))
+                        .font(.avenirMedium(size: 15))
+                    
                         .foregroundStyle(.secondary)
                 }
             }
@@ -72,7 +76,9 @@ struct AboutView: View {
             Spacer()
 
             Text("Copyright © 2020, Aquila Software Inc.")
-                .font(.system(size: 13, weight: .medium))
+               // .font(.system(size: 13, weight: .medium))
+                .font(.avenirMedium(size: 13))
+            
                 .foregroundStyle(.secondary)
                 .multilineTextAlignment(.center)
                 .padding(.horizontal, 16)

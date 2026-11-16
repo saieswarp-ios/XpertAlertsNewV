@@ -11,6 +11,11 @@ struct RootView: View {
 
     var body: some View {
 
+        let _ = coordinator.configure(
+            userRepository: container.userRepository,
+            logoutUseCase: logoutUseCase
+        )
+
         switch coordinator.route {
 
         // MARK: - Login

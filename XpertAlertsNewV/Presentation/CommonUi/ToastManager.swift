@@ -49,7 +49,8 @@ private struct ToastBanner: View {
             Image(systemName: "checkmark.circle.fill")
 
             Text(message)
-                .font(.subheadline.weight(.medium))
+               // .font(.subheadline.weight(.medium))
+                .font(.avenirMedium(size: 15))
                 .multilineTextAlignment(.leading)
         }
         .foregroundStyle(.white)

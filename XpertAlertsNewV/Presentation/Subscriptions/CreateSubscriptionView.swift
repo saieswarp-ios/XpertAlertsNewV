@@ -200,7 +200,9 @@ struct CreateSubscriptionView: View {
                                     ? "Updating..."
                                     : "Creating..."
                             )
-                            .fontWeight(.semibold)
+                          //  .fontWeight(.semibold)
+                            
+                            .font(.avenirDemiBold(size: 16))
                             .foregroundStyle(.white)
                         } else {
                             Text(
@@ -208,7 +210,9 @@ struct CreateSubscriptionView: View {
                                     ? "Update Subscription"
                                     : "Save"
                             )
-                            .fontWeight(.semibold)
+                            //.fontWeight(.semibold)
+                            
+                            .font(.avenirDemiBold(size: 16))
                             .foregroundStyle(.white)
                         }
 

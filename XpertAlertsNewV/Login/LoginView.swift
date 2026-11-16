@@ -195,7 +195,8 @@ struct LoginView: View {
                                 vertical: true
                             )
                         }
-                        .frame(maxWidth: .infinity, alignment: .leading)
+                        .frame(maxWidth: .infinity, alignment: .center)
+                        .multilineTextAlignment(.center)
 
                         // MARK: - Version
 

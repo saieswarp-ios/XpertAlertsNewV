@@ -23,11 +23,28 @@ struct XpertAlertsNewVApp: App {
             .environmentObject(coordinator)
             .environmentObject(toastManager)
             .modifier(ToastPresenter(manager: toastManager))
+            .environment(\.font, .avenirRegular(size: 16))
+           // .font(.custom("PlaywriteUSModern-Regular", size: 16))
+            
+            
+           
             .onAppear {
+                coordinator.configure(
+                    userRepository: container.userRepository,
+                    logoutUseCase: container.logoutUseCase
+                )
+
                 coordinator.start(
                     getSavedUserUseCase: container.getSavedUserUseCase
                 )
             }
+            .onReceive(
+                NotificationCenter.default.publisher(for: .sessionExpired)
+            ) { _ in
+                print("🔴 SESSION EXPIRED - AUTOMATIC LOGOUT")
+                coordinator.logout()
+            }
+
         }
 
     }

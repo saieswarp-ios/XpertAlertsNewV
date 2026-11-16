@@ -56,7 +56,8 @@ struct ArchivedSearchView: View {
                 }
 
                 Text("Search Archived Alerts")
-                    .font(.system(size: 20, weight: .bold))
+                    //.font(.system(size: 20, weight: .bold))
+                    .font(.avenirBold(size: 20))
                     .foregroundStyle(Color.themeOrange)
 
                 Spacer()
@@ -169,7 +170,8 @@ struct ArchivedSearchView: View {
                                 "Search",
                                 systemImage: "magnifyingglass"
                             )
-                            .font(.system(size: 15, weight: .semibold))
+                           // .font(.system(size: 15, weight: .semibold))
+                            .font(.avenirDemiBold(size: 15))
                             .foregroundStyle(.white)
                             .frame(maxWidth: .infinity)
                             .frame(height: 46)
@@ -184,7 +186,8 @@ struct ArchivedSearchView: View {
                         } label: {
 
                             Text("Reset")
-                                .font(.system(size: 15, weight: .semibold))
+                                //.font(.system(size: 15, weight: .semibold))
+                                .font(.avenirDemiBold(size: 15))
                                 .foregroundStyle(Color.themeOrange)
                                 .frame(maxWidth: .infinity)
                                 .frame(height: 46)
@@ -229,7 +232,8 @@ struct ArchivedSearchView: View {
     private func sectionTitle(_ title: String) -> some View {
 
         Text(title)
-            .font(.system(size: 15, weight: .semibold))
+           // .font(.system(size: 15, weight: .semibold))
+            .font(.avenirDemiBold(size: 15))
             .foregroundStyle(.primary)
     }
 
@@ -244,7 +248,8 @@ struct ArchivedSearchView: View {
         HStack {
 
             Text(title)
-                .font(.system(size: 14))
+               // .font(.system(size: 14))
+                .font(.avenirRegular(size: 14))
                 .foregroundStyle(.primary)
 
             Spacer()
@@ -275,7 +280,8 @@ struct ArchivedSearchView: View {
         HStack {
 
             Text(title)
-                .font(.system(size: 14))
+               // .font(.system(size: 14))
+                .font(.avenirRegular(size: 14))
                 .foregroundStyle(.primary)
 
             Spacer()
@@ -336,7 +342,8 @@ struct ArchivedSearchView: View {
                         $0.0 == selection.wrappedValue
                     })?.1 ?? title
                 )
-                .font(.system(size: 14))
+//                .font(.system(size: 14))
+                .font(.avenirRegular(size: 14))
                 .foregroundStyle(.primary)
 
                 Spacer()

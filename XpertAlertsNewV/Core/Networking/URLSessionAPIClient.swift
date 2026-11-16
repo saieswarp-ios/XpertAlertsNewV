@@ -55,27 +55,43 @@ final class URLSessionAPIClient: APIClient {
         }
 
         
+   
         guard let httpResponse = response as? HTTPURLResponse else {
-            
             throw URLError(.badServerResponse)
-            
         }
-        
+
+        // Check whether the backend has invalidated this session.
+        if let json = try? JSONSerialization.jsonObject(with: data),
+           let responseArray = json as? [[String: Any]] {
+
+            let sessionExpired = responseArray.contains {
+                ($0["errorCode"] as? Int) == 412
+            }
+
+            if sessionExpired {
+                print("SESSION EXPIRED: Logged in on another device.")
+
+                NotificationCenter.default.post(
+                    name: .sessionExpired,
+                    object: nil
+                )
+
+                throw SessionExpiredError()
+            }
+        }
+
         guard 200...299 ~= httpResponse.statusCode else {
+            print("HTTP STATUS CODE:", httpResponse.statusCode)
 
-            print("❌ HTTP STATUS CODE:", httpResponse.statusCode)
-
-            if let responseString = String(
-                data: data,
-                encoding: .utf8
-            ) {
-                print("❌ SERVER RESPONSE:")
-                print(responseString)
+            if let responseString = String(data: data, encoding: .utf8) {
+                print("SERVER RESPONSE:", responseString)
             }
 
             throw URLError(.badServerResponse)
         }
+
         return data
+
     }
 }
 

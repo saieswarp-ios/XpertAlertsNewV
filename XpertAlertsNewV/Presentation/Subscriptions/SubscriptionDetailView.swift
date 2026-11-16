@@ -17,7 +17,9 @@ struct SubscriptionDetailView: View {
                 VStack(alignment: .leading, spacing: 0) {
 
                     Text("Subscription Information")
-                        .font(.headline)
+                        //.font(.headline)
+                    
+                        .font(.avenirDemiBold(size: 17))
                         .foregroundStyle(.primary)
                         .padding(.bottom, 12)
 
@@ -68,7 +70,8 @@ struct SubscriptionDetailView: View {
                 VStack(alignment: .leading, spacing: 0) {
 
                     Text("Subscription Details")
-                        .font(.headline)
+                      //  .font(.headline)
+                        .font(.avenirDemiBold(size: 17))
                         .foregroundStyle(.primary)
                         .padding(.bottom, 12)
 
@@ -218,11 +221,15 @@ private struct DetailRow: View {
         VStack(alignment: .leading, spacing: 4) {
 
             Text(title)
-                .font(.caption)
+                //.font(.caption)
+            
+                .font(.avenirRegular(size: 12))
                 .foregroundStyle(.secondary)
 
             Text(value)
-                .font(.body)
+               // .font(.body)
+            
+                .font(.avenirRegular(size: 17))
                 .foregroundStyle(.primary)
                 .fixedSize(
                     horizontal: false,

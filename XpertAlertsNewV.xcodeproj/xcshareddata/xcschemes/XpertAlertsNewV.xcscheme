@@ -17,6 +17,7 @@
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "900C89E0304E988600A4D119"
                BuildableName = "XpertAlertsNewV.app"
+               BlueprintName = "XpertAlertsNewV"
                ReferencedContainer = "container:XpertAlertsNewV.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
@@ -46,6 +47,7 @@
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "900C89E0304E988600A4D119"
             BuildableName = "XpertAlertsNewV.app"
+            BlueprintName = "XpertAlertsNewV"
             ReferencedContainer = "container:XpertAlertsNewV.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
@@ -68,6 +70,7 @@
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "900C89E0304E988600A4D119"
             BuildableName = "XpertAlertsNewV.app"
+            BlueprintName = "XpertAlertsNewV"
             ReferencedContainer = "container:XpertAlertsNewV.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>

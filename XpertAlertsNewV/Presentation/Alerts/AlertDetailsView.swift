@@ -83,8 +83,10 @@ struct AlertDetailsView: View {
                         sectionTitle("Subject")
                         
                         Text(alert.subject)
-                            .font(.system(size: 17, weight: .medium))
-                            .foregroundStyle(.primary)
+//                            .font(.system(size: 17, weight: .medium))
+                            .font(.avenirMedium(size: 17))
+                        
+                            .foregroundStyle(.red)
                             .fixedSize(
                                 horizontal: false,
                                 vertical: true
@@ -95,8 +97,10 @@ struct AlertDetailsView: View {
                         sectionTitle("Time")
                         
                         Text(alert.date)
-                            .font(.system(size: 14))
-                            .foregroundStyle(.secondary)
+//                            .font(.system(size: 14))
+                            .font(.avenirRegular(size: 14))
+                            
+                            .foregroundStyle(.green)
                     }
                     
                     Divider()
@@ -105,15 +109,25 @@ struct AlertDetailsView: View {
                         sectionTitle("Message")
                         
                         Text(formattedMessage)
-//                            .font(.system(size: 15))
+                            .font(.avenirRegular(size: 15))
                         
-                           // .font(.system(size: 15, weight: .regular, design: .default))
-                            .foregroundStyle(.primary)
+                            .foregroundStyle(.red)
                             .fixedSize(
                                 horizontal: false,
                                 vertical: true
                             )
                     }
+//                    VStack(alignment: .leading, spacing: 8) {
+//                        Text("Hi Darlings")
+//                            .foregroundStyle(.blue)
+//                        Text(formattedMessage)
+//                            .font(.avenirBold(size: 25))
+//                            .foregroundStyle(.indigo)
+//                            .fixedSize(
+//                                horizontal: false,
+//                                vertical: true
+//                            )
+//                    }
                     
                     // Archived alerts do not show Available Actions.
                     if !isArchived {
@@ -125,7 +139,9 @@ struct AlertDetailsView: View {
                             ProgressView()
                             
                             Text("Processing action...")
-                                .font(.system(size: 13))
+//                                .font(.system(size: 13))
+                            
+                                .font(.avenirRegular(size: 13))
                                 .foregroundStyle(.secondary)
                         }
                         .padding(.top, 4)
@@ -190,7 +206,9 @@ struct AlertDetailsView: View {
     
     private func sectionTitle(_ title: String) -> some View {
         Text(title)
-            .font(.system(size: 13, weight: .medium))
+//            .font(.system(size: 13, weight: .medium))
+            .font(.avenirMedium(size: 13))
+        
             .foregroundStyle(Color.themeOrange)
     }
     
@@ -205,14 +223,17 @@ struct AlertDetailsView: View {
                 HStack(spacing: 8) {
                     ProgressView()
                     Text("Loading actions...")
-                        .font(.system(size: 14))
+//                        .font(.system(size: 14))
+                        .font(.avenirRegular(size: 14))
+                    
                         .foregroundStyle(.secondary)
                 }
                 .padding(.vertical, 8)
                 
             } else if actionOptions.isEmpty {
                 Text("No actions available")
-                    .font(.system(size: 14))
+//                    .font(.system(size: 14))
+                    .font(.avenirRegular(size: 14))
                     .foregroundStyle(.secondary)
                     .padding(.vertical, 8)
                 
@@ -226,7 +247,8 @@ struct AlertDetailsView: View {
                     } label: {
                         HStack {
                             Text(option)
-                                .font(.system(size: 15, weight: .medium))
+//                                .font(.system(size: 15, weight: .medium))
+                                .font(.avenirMedium(size: 15))
                                 .foregroundStyle(.primary)
                             
                             Spacer()
@@ -337,10 +359,36 @@ struct AlertDetailsView: View {
     
     // MARK: - Format Message
     
+//    private var formattedMessage: AttributedString {
+//        guard
+//            let data = alert.message.data(using: .utf8),
+//            let attributedString = try? NSAttributedString(
+//                data: data,
+//                options: [
+//                    .documentType:
+//                        NSAttributedString.DocumentType.html,
+//                    .characterEncoding:
+//                        String.Encoding.utf8.rawValue
+//                ],
+//                documentAttributes: nil
+//            )
+//                else {
+//            return AttributedString(alert.message)
+//        }
+//        
+//        return AttributedString(attributedString)
+//    }
+//
+    
+    
+    
+   
+ 
     private var formattedMessage: AttributedString {
+
         guard
             let data = alert.message.data(using: .utf8),
-            let attributedString = try? NSAttributedString(
+            let htmlString = try? NSAttributedString(
                 data: data,
                 options: [
                     .documentType:
@@ -350,12 +398,29 @@ struct AlertDetailsView: View {
                 ],
                 documentAttributes: nil
             )
-                else {
-            return AttributedString(alert.message)
+        else {
+            var text = AttributedString(alert.message)
+            text.font = .avenirRegular(size: 15)
+            text.foregroundColor = .red
+            return text
         }
-        
-        return AttributedString(attributedString)
+
+        // Convert HTML into plain text
+        let plainText = htmlString.string
+
+        // Create a completely new attributed string
+        var result = AttributedString(plainText)
+
+        // Apply our own font and colour
+        result.font = .avenirRegular(size: 15)
+        result.foregroundColor = .red
+
+        return result
     }
+
+
+    
+    
     
     // MARK: - Parse API Values
     

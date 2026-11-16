@@ -56,11 +56,13 @@ struct ChangePasswordView: View {
 
                     VStack(alignment: .leading, spacing: 6) {
                         Text("Password")
-                            .font(.system(size: 18, weight: .semibold))
+                            //.font(.system(size: 18, weight: .semibold))
+                            .font(.avenirDemiBold(size: 18))
                             .foregroundStyle(.primary)
 
                         Text("Enter your current password and choose a new one.")
-                            .font(.system(size: 13))
+                           // .font(.system(size: 13))
+                            .font(.avenirRegular(size: 13))
                             .foregroundStyle(.secondary)
                     }
 
@@ -108,7 +110,8 @@ struct ChangePasswordView: View {
                             )
 
                             Text(message)
-                                .font(.system(size: 14))
+                               // .font(.system(size: 14))
+                                .font(.avenirRegular(size: 14))
                                 .fixedSize(
                                     horizontal: false,
                                     vertical: true
@@ -138,7 +141,8 @@ struct ChangePasswordView: View {
                             } else {
                                 Image(systemName: "lock.rotation")
                                 Text("Update Password")
-                                    .fontWeight(.semibold)
+                                  //  .fontWeight(.semibold)
+                                    .font(.avenirDemiBold(size: 16))
                             }
                         }
                         .frame(maxWidth: .infinity)

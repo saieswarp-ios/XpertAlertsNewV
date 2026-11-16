@@ -50,7 +50,9 @@ struct ForwardAlertsView: View {
                     HStack {
 
                         Text("Forward Alerts")
-                            .font(.headline)
+//                            .font(.headline)
+                              .font(.avenirDemiBold(size: 17))
+
 
                         Spacer()
 
@@ -125,10 +127,15 @@ struct ForwardAlertsView: View {
                             Spacer()
 
                             Text("\(selectedAlertIDs.count) selected")
-                                .font(.caption)
+                            //    .font(.caption)
+                                 .font(.avenirRegular(size: 12))
+
+                            
                                 .foregroundStyle(.secondary)
                         }
-                        .font(.subheadline)
+                       // .font(.subheadline)
+                        .font(.avenirRegular(size: 15))
+                        
                         .foregroundStyle(Color.themeOrange)
 
                         Button("Delete Selected") {
@@ -172,14 +179,17 @@ struct ForwardAlertsView: View {
                                                     : "circle"
                                             )
                                             .foregroundStyle(Color.themeOrange)
-                                            .font(.title3)
+                                           // .font(.title3)
+                                            .font(.avenirDemiBold(size: 20))
+                                            
                                         }
                                         .buttonStyle(.plain)
                                     }
 
                                     Text(alert.userName)
-                                        .font(.body)
-                                        .fontWeight(.medium)
+//                                        .font(.body)
+//                                        .fontWeight(.medium)
+                                        .font(.avenirMedium(size: 17))
 
                                     Spacer()
 
@@ -199,11 +209,16 @@ struct ForwardAlertsView: View {
                                 }
 
                                 Text(alert.applicationName)
-                                    .font(.subheadline)
+                                   // .font(.subheadline)
+                                    .font(.avenirRegular(size: 15))
+                                
+                                
                                     .foregroundStyle(.secondary)
 
                                 Text(alert.email)
-                                    .font(.caption)
+//                                    .font(.caption)
+                                
+                                    .font(.avenirRegular(size: 12))
                                     .foregroundStyle(.secondary)
 
                                 // Delete
@@ -217,7 +232,11 @@ struct ForwardAlertsView: View {
                                         Image(systemName: "trash")
                                         Text("Delete")
                                     }
-                                    .font(.caption)
+                                    //.font(.caption)
+                                    
+                                    .font(.avenirRegular(size: 12))
+                                    
+                                    
                                     .foregroundStyle(.red)
                                 }
                                 .buttonStyle(.plain)
@@ -240,8 +259,9 @@ struct ForwardAlertsView: View {
                 // MARK: - Create Forward Alert
 
                 Text("Create Forward Alert")
-                    .font(.title3)
-                    .fontWeight(.semibold)
+//                    .font(.title3)
+//                    .fontWeight(.semibold)
+                    .font(.avenirDemiBold(size: 20))
 
                 NavigationLink {
                     CreateForwardAlertView(
@@ -252,7 +272,8 @@ struct ForwardAlertsView: View {
                         Image(systemName: "plus")
 
                         Text("Create Forward Alert")
-                            .fontWeight(.semibold)
+                            //.fontWeight(.semibold)
+                            .font(.avenirDemiBold(size: 16))
 
                         Spacer()
                     }
@@ -270,7 +291,11 @@ struct ForwardAlertsView: View {
                 VStack(alignment: .leading, spacing: 8) {
 
                     Text("Application")
-                        .font(.headline)
+                        //.font(.headline)
+                    
+                        .font(.avenirDemiBold(size: 17))
+                    
+                    
 
                     if viewModel.isLoadingApplications {
 
@@ -319,7 +344,8 @@ struct ForwardAlertsView: View {
                     VStack(alignment: .leading, spacing: 8) {
 
                         Text("User")
-                            .font(.headline)
+                            //.font(.headline)
+                            .font(.avenirDemiBold(size: 17))
 
                         if viewModel.isLoadingUsers {
 
@@ -367,7 +393,8 @@ struct ForwardAlertsView: View {
                             VStack(alignment: .leading, spacing: 8) {
 
                                 Text("Email")
-                                    .font(.headline)
+                                    //.font(.headline)
+                                    .font(.avenirDemiBold(size: 17))
 
                                 HStack(spacing: 10) {
 
@@ -412,7 +439,9 @@ struct ForwardAlertsView: View {
                         )
 
                         Text(deleteResultMessage)
-                            .font(.caption)
+                         //   .font(.caption)
+                            .font(.avenirRegular(size: 12))
+                        
                             .fixedSize(
                                 horizontal: false,
                                 vertical: true
@@ -441,7 +470,10 @@ struct ForwardAlertsView: View {
                 if let errorMessage = viewModel.errorMessage {
 
                     Text(errorMessage)
-                        .font(.caption)
+                     //   .font(.caption)
+                        .font(.avenirRegular(size: 12))
+                    
+                    
                         .foregroundStyle(.red)
                 }
 
@@ -499,8 +531,9 @@ struct ForwardAlertsView: View {
         let isActive = alert.active == 1
 
         return Text(isActive ? "Active" : "Inactive")
-            .font(.caption)
-            .fontWeight(.medium)
+//            .font(.caption)
+//            .fontWeight(.medium)
+            .font(.avenirMedium(size: 12))
             .foregroundColor(
                 isActive ? Color.green : Color.secondary
             )

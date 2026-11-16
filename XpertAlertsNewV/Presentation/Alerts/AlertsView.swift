@@ -39,7 +39,10 @@ struct AlertsView: View {
                     Image(systemName: "magnifyingglass")
                     Text("Search Alerts")
                 }
-                .font(.system(size: 15, weight: .semibold))
+//                .font(.system(size: 15, weight: .semibold))
+                
+                
+                .font(.avenirDemiBold(size: 15))
                 .foregroundStyle(.white)
                 .frame(maxWidth: .infinity)
                 .frame(height: 42)
@@ -73,7 +76,9 @@ struct AlertsView: View {
                         .foregroundStyle(Color.themeOrange)
 
                     Text(errorMessage)
-                        .font(.system(size: 15))
+//                        .font(.system(size: 15))
+                    
+                        .font(.avenirRegular(size: 15))
                         .foregroundStyle(.secondary)
                         .multilineTextAlignment(.center)
 
@@ -98,10 +103,11 @@ struct AlertsView: View {
                         .foregroundStyle(.secondary)
 
                     Text("No Alerts")
-                        .font(.system(size: 17, weight: .medium))
-
+//                        .font(.system(size: 17, weight: .medium))
+                        .font(.avenirMedium(size: 17))
                     Text("There are no alerts to display for this date range.")
-                        .font(.system(size: 14))
+                      //  .font(.system(size: 14))
+                        .font(.avenirRegular(size: 14))
                         .foregroundStyle(.secondary)
                         .multilineTextAlignment(.center)
                 }
@@ -121,7 +127,9 @@ struct AlertsView: View {
                             // Date heading
 
                             Text(group.dateTitle)
-                                .font(.system(size: 14, weight: .semibold))
+//                                .font(.system(size: 14, weight: .semibold))
+                                .font(.avenirDemiBold(size: 14))
+                            
                                 .foregroundStyle(.white)
                                 .padding(.horizontal, 10)
                                 .frame(height: 29)
@@ -368,13 +376,15 @@ private struct LegacyAlertCard: View {
                         return formatter.string(from: value)
                     } ?? title
                 )
-                .font(.system(size: 12, weight: .medium))
-                .foregroundStyle(.secondary)
+//                .font(.system(size: 12, weight: .medium))
+                .font(.avenirMedium(size: 12))
+                .foregroundStyle(.green)
                 .lineLimit(1)
 
                 Text(displayTime.isEmpty ? displayDate : displayTime)
-                    .font(.system(size: 14))
-                    .foregroundStyle(.secondary)
+//                    .font(.system(size: 14))
+                    .font(.avenirRegular(size: 14))
+                    .foregroundStyle(.cyan)
                     .lineLimit(1)
                     .minimumScaleFactor(0.75)
             }
@@ -390,8 +400,9 @@ private struct LegacyAlertCard: View {
             // Right column: message
 
             Text(formattedMessage.isEmpty ? title : formattedMessage)
-                .font(.system(size: 15))
-                .foregroundStyle(.secondary)
+//                .font(.system(size: 15))
+                .font(.avenirRegular(size: 15))
+                .foregroundStyle(.purple)
                 .lineLimit(2)
                 .multilineTextAlignment(.leading)
                 .frame(maxWidth: .infinity, alignment: .leading)

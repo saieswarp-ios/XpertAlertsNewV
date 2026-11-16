@@ -17,14 +17,17 @@ struct CreateForwardAlertView: View {
             VStack(alignment: .leading, spacing: 20) {
 
                 Text("Create Forward Alert")
-                    .font(.title2)
-                    .fontWeight(.semibold)
+//                    .font(.title2)
+//                    .fontWeight(.semibold)
+                
+                    .font(.avenirDemiBold(size: 22))
 
                 // MARK: - Application
 
                 VStack(alignment: .leading, spacing: 8) {
                     Text("Application")
-                        .font(.headline)
+                       // .font(.headline)
+                        .font(.avenirDemiBold(size: 17))
 
                     if viewModel.isLoading {
                         ProgressView("Loading Applications...")
@@ -69,8 +72,8 @@ struct CreateForwardAlertView: View {
 
                 VStack(alignment: .leading, spacing: 8) {
                     Text("User")
-                        .font(.headline)
-
+                        //.font(.headline)
+                        .font(.avenirDemiBold(size: 17))
                     if viewModel.isLoadingUsers {
                         ProgressView("Loading Users...")
                     } else if viewModel.users.isEmpty {
@@ -113,13 +116,16 @@ struct CreateForwardAlertView: View {
                 if viewModel.selectedUser != nil {
                     VStack(alignment: .leading, spacing: 8) {
                         Text("Email")
-                            .font(.headline)
+                           // .font(.headline)
+                            .font(.avenirDemiBold(size: 17))
 
                         if viewModel.isLoadingEmail {
                             ProgressView("Loading Email...")
                         } else if !viewModel.selectedEmail.isEmpty {
                             Text(viewModel.selectedEmail)
-                                .font(.body)
+                               // .font(.body)
+                                .font(.avenirRegular(size: 17))
+                            
                                 .foregroundStyle(.primary)
                                 .textSelection(.enabled)
                         }
@@ -127,7 +133,9 @@ struct CreateForwardAlertView: View {
                         if let errorMessage = viewModel.errorMessage,
                            !errorMessage.isEmpty {
                             Text(errorMessage)
-                                .font(.caption)
+                                //.font(.caption)
+                                .font(.avenirRegular(size: 12))
+                            
                                 .foregroundStyle(.red)
                                 .fixedSize(
                                     horizontal: false,
@@ -141,7 +149,8 @@ struct CreateForwardAlertView: View {
 
                 VStack(alignment: .leading, spacing: 8) {
                     Text("Sort Order")
-                        .font(.headline)
+                       // .font(.headline)
+                        .font(.avenirDemiBold(size: 17))
 
                     TextField("Enter sort order", text: $sortOrder)
                         .keyboardType(.numberPad)
@@ -156,7 +165,8 @@ struct CreateForwardAlertView: View {
 
                 VStack(alignment: .leading, spacing: 8) {
                     Text("Status")
-                        .font(.headline)
+                        //.font(.headline)
+                        .font(.avenirDemiBold(size: 17))
 
                     Picker("Status", selection: $isActive) {
                         Text("Active").tag(true)
@@ -170,7 +180,10 @@ struct CreateForwardAlertView: View {
                 if let saveMessage = viewModel.saveMessage,
                    !saveMessage.isEmpty {
                     Text(saveMessage)
-                        .font(.subheadline)
+                       // .font(.subheadline)
+                        .font(.avenirRegular(size: 15))
+                    
+                    
                         .foregroundStyle(.green)
                 }
 
@@ -179,7 +192,9 @@ struct CreateForwardAlertView: View {
                    !errorMessage.isEmpty,
                    viewModel.selectedUser == nil {
                     Text(errorMessage)
-                        .font(.caption)
+                     //   .font(.caption)
+                        .font(.avenirRegular(size: 12))
+                    
                         .foregroundStyle(.red)
                 }
 
@@ -207,7 +222,8 @@ struct CreateForwardAlertView: View {
                             Text("Save Forward Alert")
                         }
                     }
-                    .fontWeight(.semibold)
+                   // .fontWeight(.semibold)
+                    .font(.avenirDemiBold(size: 16))
                     .foregroundStyle(.white)
                     .frame(maxWidth: .infinity)
                     .padding()

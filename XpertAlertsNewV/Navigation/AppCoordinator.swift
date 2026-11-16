@@ -20,17 +20,7 @@ final class AppCoordinator: ObservableObject {
     
     var selectedAlert: Alert?
     @Published var refreshAlertsAfterAction = false
-    
-//    func start(
-//        getSavedUserUseCase: GetSavedUserUseCase
-//    ) {
-//        if getSavedUserUseCase.execute() != nil {
-//            route = .alerts
-//        }else {
-//            route = .login
-//            
-//        }
-//    }
+
     
   
     
@@ -84,17 +74,28 @@ final class AppCoordinator: ObservableObject {
     ) {
         self.userRepository = userRepository
         self.logoutUseCase = logoutUseCase
+        
     }
     
     
     
     
   
-    
+ 
     func logout() {
+
+        guard route != .login else { return }
+
         logoutUseCase?.execute()
+
         selectedAlert = nil
+        pendingAlertSearchFilters = nil
+        savedAlertSearchFilters = nil
+        pendingArchivedSearchFilters = nil
+
         route = .login
+
+        print("✅ AUTOMATIC LOGOUT COMPLETED")
     }
     
         func showAlerts() {
