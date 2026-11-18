@@ -34,16 +34,16 @@
 			<key>text-context</key>
 			<dict>
 				<key>focused</key>
-				<string>                        TextField(
+				<string>                        .font(.avenirMedium(size: 13))
 </string>
 				<key>leading</key>
-				<string>                            .foregroundStyle(.secondary)
-
+				<string>                    Text("Alert Name")
+                      //  .font(.system(size: 13, weight: .medium))
 </string>
 				<key>trailing</key>
-				<string>                            "Enter alert name",
-                            text: $viewModel.searchName
-                        )
+				<string>                        .foregroundStyle(.secondary)
+
+                    HStack(spacing: 8) {
 </string>
 			</dict>
 			<key>type</key>

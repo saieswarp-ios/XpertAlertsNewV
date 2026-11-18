@@ -5,10 +5,15 @@ struct BuildSettingsView: View {
     let coordinator: AppCoordinator
 //    @Environment(\.dismiss) private var dismiss
 
-    @State private var baseURL = ""
+  //  @State private var baseURL = ""
+    
+    @State private var baseURL = UserDefaults.standard.string(
+        forKey: "BaseURL"
+    ) ?? ""
     @State private var isTesting = false
     @State private var testPassed = false
     @State private var showSaveConfirmation = false
+    @State private var verifiedURL = ""
 
     var body: some View {
 
@@ -249,7 +254,9 @@ struct BuildSettingsView: View {
                         // TEST BUTTON
 
                         Button {
-                            testConnection()
+                            Task {
+                                   await testConnection()
+                               }
                         } label: {
 
                             HStack(spacing: 7) {
@@ -399,60 +406,145 @@ struct BuildSettingsView: View {
 //    }
     
     
-    private func testConnection() {
-        
-        let urlString = baseURL
-            .trimmingCharacters(in: .whitespacesAndNewlines)
-        
-        guard !urlString.isEmpty else {
+//    private func testConnection() {
+//        
+//        let urlString = baseURL
+//            .trimmingCharacters(in: .whitespacesAndNewlines)
+//        
+//        guard !urlString.isEmpty else {
+//            return
+//        }
+//        
+//        guard let url = URL(string: urlString) else {
+//            return
+//        }
+//        
+//        isTesting = true
+//        testPassed = false
+//        
+//        Task {
+//            do {
+//                var request = URLRequest(url: url)
+//                request.httpMethod = "HEAD"
+//                
+//                let (_, response) = try await URLSession.shared.data(
+//                    for: request
+//                )
+//                
+//                guard let httpResponse = response as? HTTPURLResponse else {
+//                    await MainActor.run {
+//                        isTesting = false
+//                        testPassed = false
+//                    }
+//                    return
+//                }
+//                
+//                await MainActor.run {
+//                    isTesting = false
+//                    testPassed = (200...499).contains(httpResponse.statusCode)
+//                    
+//                }
+//                
+//            } catch {
+//                print("Connection test failed:", error)
+//                
+//                await MainActor.run {
+//                    isTesting = false
+//                    testPassed = false
+//                }
+//            }
+//        }
+//    
+//    }
+ 
+    
+    
+    
+    
+    private func testConnection() async {
+
+        let urlString = baseURL.trimmingCharacters(
+            in: .whitespacesAndNewlines
+        )
+
+        guard
+            let url = URL(string: urlString),
+            let scheme = url.scheme,
+            ["http", "https"].contains(scheme),
+            url.host != nil
+        else {
+            await MainActor.run {
+                testPassed = false
+            }
             return
         }
-        
-        guard let url = URL(string: urlString) else {
-            return
+
+        await MainActor.run {
+            isTesting = true
+            testPassed = false
         }
-        
-        isTesting = true
-        testPassed = false
-        
-        Task {
-            do {
-                var request = URLRequest(url: url)
-                request.httpMethod = "HEAD"
-                
-                let (_, response) = try await URLSession.shared.data(
-                    for: request
-                )
-                
-                guard let httpResponse = response as? HTTPURLResponse else {
-                    await MainActor.run {
-                        isTesting = false
-                        testPassed = false
-                    }
-                    return
-                }
-                
-                await MainActor.run {
-                    isTesting = false
-                    testPassed = (200...499).contains(httpResponse.statusCode)
-                    
-                }
-                
-            } catch {
-                print("Connection test failed:", error)
-                
+
+        do {
+            var request = URLRequest(url: url)
+            request.httpMethod = "HEAD"
+
+            let (_, response) = try await URLSession.shared.data(
+                for: request
+            )
+
+            guard let httpResponse = response as? HTTPURLResponse else {
                 await MainActor.run {
                     isTesting = false
                     testPassed = false
                 }
+                return
+            }
+
+            await MainActor.run {
+
+                isTesting = false
+
+                testPassed = (200...499).contains(
+                    httpResponse.statusCode
+                )
+
+                if testPassed {
+
+                    let finalURL = urlString.hasSuffix("/")
+                        ? urlString
+                        : urlString + "/"
+
+                    baseURL = finalURL
+
+                    UserDefaults.standard.set(
+                        finalURL,
+                        forKey: "BaseURL"
+                    )
+
+                    UserDefaults.standard.set(
+                        true,
+                        forKey: "BaseURLVerified"
+                    )
+                }
+            }
+
+        } catch {
+
+            print("Connection test failed:", error)
+
+            await MainActor.run {
+                isTesting = false
+                testPassed = false
             }
         }
-    
     }
- 
-
-
-
+    
+    
+    
+    
+    
+    
+   
 //
 //    private func saveURL() {
 //        
