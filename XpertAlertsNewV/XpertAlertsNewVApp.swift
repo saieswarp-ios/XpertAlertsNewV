@@ -38,10 +38,24 @@ struct XpertAlertsNewVApp: App {
                     getSavedUserUseCase: container.getSavedUserUseCase
                 )
             }
+//            .onReceive(
+//                NotificationCenter.default.publisher(for: .sessionExpired)
+//            ) { _ in
+//                print("🔴 SESSION EXPIRED - AUTOMATIC LOGOUT")
+//                coordinator.logout()
+//            }
+            
+            
             .onReceive(
                 NotificationCenter.default.publisher(for: .sessionExpired)
             ) { _ in
+
                 print("🔴 SESSION EXPIRED - AUTOMATIC LOGOUT")
+
+                toastManager.show(
+                    "Your account has been logged in on another device. You have been logged out."
+                )
+
                 coordinator.logout()
             }
 
