@@ -18,40 +18,66 @@ struct SearchAlertsView: View {
     }
 
     var body: some View {
+
         VStack(spacing: 0) {
 
-            // MARK: Header
+            // MARK: - Header
 
-            HStack {
+            HStack(spacing: 12) {
+
                 Button {
                     coordinator.showAlerts()
                 } label: {
-                    Image(systemName: "arrow.left")
+                    Image(systemName: "chevron.left")
                         .font(.system(size: 18, weight: .semibold))
-                        .foregroundStyle(.primary)
+                        .foregroundStyle(Color.themeOrange)
+                        .frame(width: 28, height: 40)
                 }
-
-                Spacer()
+                .buttonStyle(.plain)
 
                 Text("Search Alerts")
-//                    .font(.system(size: 20, weight: .bold))
-                    .font(.avenirBold(size: 20))
+                    .font(.avenirBold(size: 21))
+                    .foregroundStyle(Color.themeOrange)
+                    .lineLimit(1)
+                    .minimumScaleFactor(0.8)
 
-                Spacer()
+                Spacer(minLength: 4)
 
-                Image(systemName: "arrow.left")
-                    .opacity(0)
+                // Reset Button - Top Right
+
+                Button {
+                    viewModel.resetFilters()
+                    coordinator.savedAlertSearchFilters = nil
+                    coordinator.pendingAlertSearchFilters = nil
+                } label: {
+                    Text("Reset")
+                        .font(.avenirDemiBold(size: 14))
+                        .foregroundStyle(Color.white)
+                        .frame(height: 40)
+                        .padding(.horizontal, 12)
+                        .background(Color.themeOrange)
+                        .clipShape(RoundedRectangle(cornerRadius: 10))
+                        .overlay {
+                            RoundedRectangle(cornerRadius: 10)
+                                .stroke(
+                                    Color.themeOrange.opacity(0.35),
+                                    lineWidth: 1
+                                )
+                        }
+                }
+                .buttonStyle(.plain)
             }
             .padding(.horizontal, 16)
-            .padding(.vertical, 16)
+            .padding(.vertical, 12)
 
             Divider()
 
-            // MARK: Search Form
+            // MARK: - Search Form
 
             Form {
 
                 Section("Date Range") {
+
                     DatePicker(
                         "Start Date",
                         selection: $viewModel.startDate,
@@ -66,6 +92,7 @@ struct SearchAlertsView: View {
                 }
 
                 Section("Search Keyword") {
+
                     TextField(
                         "Enter keyword",
                         text: $viewModel.keyword
@@ -73,10 +100,10 @@ struct SearchAlertsView: View {
                     .textInputAutocapitalization(.never)
                 }
 
-                // MARK: Alert Definition
-                // Old UIKit values: 0, 1, 2
+                // MARK: - Alert Definition
 
                 Section("Alert Definition") {
+
                     Picker(
                         "Select Alert Definition",
                         selection: $viewModel.selectedViewByFlag
@@ -92,9 +119,10 @@ struct SearchAlertsView: View {
                     }
                 }
 
-                // MARK: Application
+                // MARK: - Application
 
                 Section("Application") {
+
                     Picker(
                         "Select Application",
                         selection: $viewModel.selectedApplicationId
@@ -109,11 +137,10 @@ struct SearchAlertsView: View {
                     }
                 }
 
-                // MARK: Email Sent
-                // Preserve old UIKit behavior: this list is loaded
-                // from the alert-definition API for the selected app.
+                // MARK: - Email Sent
 
                 Section("Email Sent") {
+
                     Picker(
                         "Select Email Sent",
                         selection: $viewModel.selectedAlertDefinitionId
@@ -130,6 +157,7 @@ struct SearchAlertsView: View {
                 }
 
                 if viewModel.isLoading {
+
                     Section {
                         HStack {
                             Spacer()
@@ -140,16 +168,19 @@ struct SearchAlertsView: View {
                 }
 
                 if let errorMessage = viewModel.errorMessage {
+
                     Section {
                         Text(errorMessage)
                             .foregroundStyle(.red)
                     }
                 }
 
-                // MARK: Buttons
+                // MARK: - Search Button
 
                 Section {
+
                     Button {
+
                         let start = Calendar.current.startOfDay(
                             for: viewModel.startDate
                         )
@@ -159,8 +190,11 @@ struct SearchAlertsView: View {
                         )
 
                         if start > end {
+
                             showDateError = true
+
                         } else {
+
                             let filters = AlertSearchFilters(
                                 startDate: viewModel.startDate,
                                 endDate: viewModel.endDate,
@@ -172,28 +206,27 @@ struct SearchAlertsView: View {
 
                             coordinator.applyAlertSearch(filters: filters)
                         }
+
                     } label: {
+
                         HStack {
                             Spacer()
+
                             Image(systemName: "magnifyingglass")
+
                             Text("Search")
                                 .font(.avenirDemiBold(size: 16))
+
                             Spacer()
                         }
                     }
                     .foregroundStyle(.white)
                     .listRowBackground(Color.themeOrange)
-
-                    Button("Reset", role: .destructive) {
-                        viewModel.resetFilters()
-                        coordinator.savedAlertSearchFilters = nil
-                        coordinator.pendingAlertSearchFilters = nil
-                    }
                 }
             }
         }
         .background(Color(.systemGroupedBackground))
-       
+
         .task {
             await viewModel.loadApplications()
 
@@ -202,8 +235,8 @@ struct SearchAlertsView: View {
             }
         }
 
-       
         .onChange(of: viewModel.selectedApplicationId) { newValue in
+
             guard !viewModel.isRestoringFilters else {
                 return
             }
@@ -218,11 +251,13 @@ struct SearchAlertsView: View {
         }
 
         .alert("Invalid Date Range", isPresented: $showDateError) {
+
             Button("OK", role: .cancel) {}
+
         } message: {
+
             Text("The end date must be on or after the start date.")
         }
     }
 }
-
 

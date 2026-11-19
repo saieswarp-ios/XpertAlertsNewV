@@ -3,6 +3,8 @@ import SwiftUI
 
 struct CreateForwardAlertView: View {
 
+    @Environment(\.dismiss) private var dismiss
+
     @StateObject private var viewModel: CreateForwardAlertViewModel
 
     @State private var sortOrder = "1"
@@ -13,243 +15,309 @@ struct CreateForwardAlertView: View {
     }
 
     var body: some View {
-        ScrollView {
-            VStack(alignment: .leading, spacing: 20) {
 
-                Text("Create Forward Alert")
-//                    .font(.title2)
-//                    .fontWeight(.semibold)
-                
-                    .font(.avenirDemiBold(size: 22))
+        VStack(spacing: 0) {
 
-                // MARK: - Application
+            // MARK: - Custom Header
 
-                VStack(alignment: .leading, spacing: 8) {
-                    Text("Application")
-                       // .font(.headline)
-                        .font(.avenirDemiBold(size: 17))
-
-                    if viewModel.isLoading {
-                        ProgressView("Loading Applications...")
-                    } else if viewModel.applications.isEmpty {
-                        Text("No applications found")
-                            .foregroundStyle(.secondary)
-                    } else {
-                        ForEach(viewModel.applications) { application in
-                            Button {
-                                Task {
-                                    await viewModel.selectApplication(application)
-                                }
-                            } label: {
-                                HStack {
-                                    Text(application.name)
-                                    Spacer()
-
-                                    Image(
-                                        systemName:
-                                            viewModel.selectedApplication?.id == application.id
-                                            ? "checkmark"
-                                            : "chevron.right"
-                                    )
-                                    .foregroundStyle(
-                                        viewModel.selectedApplication?.id == application.id
-                                        ? Color.themeOrange
-                                        : Color.secondary
-                                    )
-                                }
-                                .padding()
-                                .background(
-                                    RoundedRectangle(cornerRadius: 12)
-                                        .fill(Color(.secondarySystemBackground))
-                                )
-                            }
-                            .buttonStyle(.plain)
-                        }
-                    }
-                }
-
-                // MARK: - Users
-
-                VStack(alignment: .leading, spacing: 8) {
-                    Text("User")
-                        //.font(.headline)
-                        .font(.avenirDemiBold(size: 17))
-                    if viewModel.isLoadingUsers {
-                        ProgressView("Loading Users...")
-                    } else if viewModel.users.isEmpty {
-                        Text("No users found")
-                            .foregroundStyle(.secondary)
-                    } else {
-                        ForEach(viewModel.users) { user in
-                            Button {
-                                viewModel.selectUser(user)
-                            } label: {
-                                HStack {
-                                    Text(user.userName)
-                                    Spacer()
-
-                                    Image(
-                                        systemName:
-                                            viewModel.selectedUser?.id == user.id
-                                            ? "checkmark"
-                                            : "chevron.right"
-                                    )
-                                    .foregroundStyle(
-                                        viewModel.selectedUser?.id == user.id
-                                        ? Color.themeOrange
-                                        : Color.secondary
-                                    )
-                                }
-                                .padding()
-                                .background(
-                                    RoundedRectangle(cornerRadius: 12)
-                                        .fill(Color(.secondarySystemBackground))
-                                )
-                            }
-                            .buttonStyle(.plain)
-                        }
-                    }
-                }
-
-                // MARK: - Selected User Email
-
-                if viewModel.selectedUser != nil {
-                    VStack(alignment: .leading, spacing: 8) {
-                        Text("Email")
-                           // .font(.headline)
-                            .font(.avenirDemiBold(size: 17))
-
-                        if viewModel.isLoadingEmail {
-                            ProgressView("Loading Email...")
-                        } else if !viewModel.selectedEmail.isEmpty {
-                            Text(viewModel.selectedEmail)
-                               // .font(.body)
-                                .font(.avenirRegular(size: 17))
-                            
-                                .foregroundStyle(.primary)
-                                .textSelection(.enabled)
-                        }
-
-                        if let errorMessage = viewModel.errorMessage,
-                           !errorMessage.isEmpty {
-                            Text(errorMessage)
-                                //.font(.caption)
-                                .font(.avenirRegular(size: 12))
-                            
-                                .foregroundStyle(.red)
-                                .fixedSize(
-                                    horizontal: false,
-                                    vertical: true
-                                )
-                        }
-                    }
-                }
-
-                // MARK: - Sort Order
-
-                VStack(alignment: .leading, spacing: 8) {
-                    Text("Sort Order")
-                       // .font(.headline)
-                        .font(.avenirDemiBold(size: 17))
-
-                    TextField("Enter sort order", text: $sortOrder)
-                        .keyboardType(.numberPad)
-                        .padding()
-                        .background(
-                            RoundedRectangle(cornerRadius: 12)
-                                .fill(Color(.secondarySystemBackground))
-                        )
-                }
-
-                // MARK: - Status
-
-                VStack(alignment: .leading, spacing: 8) {
-                    Text("Status")
-                        //.font(.headline)
-                        .font(.avenirDemiBold(size: 17))
-
-                    Picker("Status", selection: $isActive) {
-                        Text("Active").tag(true)
-                        Text("Inactive").tag(false)
-                    }
-                    .pickerStyle(.segmented)
-                }
-
-                // MARK: - Save Result
-
-                if let saveMessage = viewModel.saveMessage,
-                   !saveMessage.isEmpty {
-                    Text(saveMessage)
-                       // .font(.subheadline)
-                        .font(.avenirRegular(size: 15))
-                    
-                    
-                        .foregroundStyle(.green)
-                }
-
-                // Show errors that aren't the missing-email message
-                if let errorMessage = viewModel.errorMessage,
-                   !errorMessage.isEmpty,
-                   viewModel.selectedUser == nil {
-                    Text(errorMessage)
-                     //   .font(.caption)
-                        .font(.avenirRegular(size: 12))
-                    
-                        .foregroundStyle(.red)
-                }
-
-                // MARK: - Save Button
+            HStack(spacing: 12) {
 
                 Button {
-                    guard let order = Int(sortOrder),
-                          order >= 0 else {
-                        return
-                    }
-
-                    Task {
-                        await viewModel.saveMappedUser(
-                            sortOrder: order,
-                            active: isActive ? 1 : 0
-                        )
-                    }
+                    dismiss()
                 } label: {
-                    HStack {
-                        if viewModel.isSaving {
-                            ProgressView()
-                                .tint(.white)
-                        } else {
-                            Image(systemName: "checkmark.circle")
-                            Text("Save Forward Alert")
-                        }
-                    }
-                   // .fontWeight(.semibold)
-                    .font(.avenirDemiBold(size: 16))
-                    .foregroundStyle(.white)
-                    .frame(maxWidth: .infinity)
-                    .padding()
-                    .background(Color.themeOrange)
-                    .clipShape(RoundedRectangle(cornerRadius: 12))
+                    Image(systemName: "chevron.left")
+                        .font(.system(size: 18, weight: .semibold))
+                        .foregroundStyle(Color.themeOrange)
+                        .frame(width: 28, height: 40)
                 }
                 .buttonStyle(.plain)
-                .disabled(
-                    viewModel.isSaving ||
-                    viewModel.isLoadingEmail ||
-                    viewModel.selectedApplication == nil ||
-                    viewModel.selectedUser == nil ||
-                    viewModel.selectedEmail.isEmpty ||
-                    Int(sortOrder) == nil ||
-                    (Int(sortOrder) ?? -1) < 0
-                )
 
-                Spacer(minLength: 20)
+                Text("Create Forward Alert")
+                    .font(.avenirBold(size: 21))
+                    .foregroundStyle(Color.themeOrange)
+                    .lineLimit(1)
+                    .minimumScaleFactor(0.8)
+
+                Spacer(minLength: 4)
             }
-            .padding()
+            .padding(.horizontal, 16)
+            .padding(.vertical, 12)
+
+            Divider()
+
+            // MARK: - Form Content
+
+            ScrollView {
+
+                VStack(alignment: .leading, spacing: 20) {
+
+                    // MARK: - Application
+
+                    VStack(alignment: .leading, spacing: 8) {
+
+                        Text("Application")
+                            .font(.avenirDemiBold(size: 17))
+
+                        if viewModel.isLoading {
+
+                            ProgressView("Loading Applications...")
+
+                        } else if viewModel.applications.isEmpty {
+
+                            Text("No applications found")
+                                .foregroundStyle(.secondary)
+
+                        } else {
+
+                            ForEach(viewModel.applications) { application in
+
+                                Button {
+
+                                    Task {
+                                        await viewModel.selectApplication(application)
+                                    }
+
+                                } label: {
+
+                                    HStack {
+
+                                        Text(application.name)
+
+                                        Spacer()
+
+                                        Image(
+                                            systemName:
+                                                viewModel.selectedApplication?.id == application.id
+                                                ? "checkmark"
+                                                : "chevron.right"
+                                        )
+                                        .foregroundStyle(
+                                            viewModel.selectedApplication?.id == application.id
+                                            ? Color.themeOrange
+                                            : Color.secondary
+                                        )
+                                    }
+                                    .padding()
+                                    .background(
+                                        RoundedRectangle(cornerRadius: 12)
+                                            .fill(Color(.secondarySystemBackground))
+                                    )
+                                }
+                                .buttonStyle(.plain)
+                            }
+                        }
+                    }
+
+                    // MARK: - Users
+
+                    VStack(alignment: .leading, spacing: 8) {
+
+                        Text("User")
+                            .font(.avenirDemiBold(size: 17))
+
+                        if viewModel.isLoadingUsers {
+
+                            ProgressView("Loading Users...")
+
+                        } else if viewModel.users.isEmpty {
+
+                            Text("No users found")
+                                .foregroundStyle(.secondary)
+
+                        } else {
+
+                            ForEach(viewModel.users) { user in
+
+                                Button {
+
+                                    viewModel.selectUser(user)
+
+                                } label: {
+
+                                    HStack {
+
+                                        Text(user.userName)
+
+                                        Spacer()
+
+                                        Image(
+                                            systemName:
+                                                viewModel.selectedUser?.id == user.id
+                                                ? "checkmark"
+                                                : "chevron.right"
+                                        )
+                                        .foregroundStyle(
+                                            viewModel.selectedUser?.id == user.id
+                                            ? Color.themeOrange
+                                            : Color.secondary
+                                        )
+                                    }
+                                    .padding()
+                                    .background(
+                                        RoundedRectangle(cornerRadius: 12)
+                                            .fill(Color(.secondarySystemBackground))
+                                    )
+                                }
+                                .buttonStyle(.plain)
+                            }
+                        }
+                    }
+
+                    // MARK: - Selected User Email
+
+                    if viewModel.selectedUser != nil {
+
+                        VStack(alignment: .leading, spacing: 8) {
+
+                            Text("Email")
+                                .font(.avenirDemiBold(size: 17))
+
+                            if viewModel.isLoadingEmail {
+
+                                ProgressView("Loading Email...")
+
+                            } else {
+
+                                TextField(
+                                    "Enter email address",
+                                    text: $viewModel.selectedEmail
+                                )
+                                .font(.avenirRegular(size: 16))
+                                .keyboardType(.emailAddress)
+                                .textInputAutocapitalization(.never)
+                                .autocorrectionDisabled()
+                                .padding()
+                                .background(
+                                    RoundedRectangle(cornerRadius: 12)
+                                        .fill(Color(.secondarySystemBackground))
+                                )
+                            }
+
+                            if let errorMessage = viewModel.errorMessage,
+                               !errorMessage.isEmpty {
+
+                                Text(errorMessage)
+                                    .font(.avenirRegular(size: 12))
+                                    .foregroundStyle(.red)
+                                    .fixedSize(
+                                        horizontal: false,
+                                        vertical: true
+                                    )
+                            }
+                        }
+                    }
+
+                    // MARK: - Sort Order
+
+                    VStack(alignment: .leading, spacing: 8) {
+
+                        Text("Sort Order")
+                            .font(.avenirDemiBold(size: 17))
+
+                        TextField("Enter sort order", text: $sortOrder)
+                            .keyboardType(.numberPad)
+                            .padding()
+                            .background(
+                                RoundedRectangle(cornerRadius: 12)
+                                    .fill(Color(.secondarySystemBackground))
+                            )
+                    }
+
+                    // MARK: - Status
+
+                    VStack(alignment: .leading, spacing: 8) {
+
+                        Text("Status")
+                            .font(.avenirDemiBold(size: 17))
+
+                        Picker("Status", selection: $isActive) {
+
+                            Text("Active").tag(true)
+                            Text("Inactive").tag(false)
+                        }
+                        .pickerStyle(.segmented)
+                    }
+
+                    // MARK: - Save Result
+
+                    if let saveMessage = viewModel.saveMessage,
+                       !saveMessage.isEmpty {
+
+                        Text(saveMessage)
+                            .font(.avenirRegular(size: 15))
+                            .foregroundStyle(.green)
+                    }
+
+                    // MARK: - Error Message
+
+                    if let errorMessage = viewModel.errorMessage,
+                       !errorMessage.isEmpty,
+                       viewModel.selectedUser == nil {
+
+                        Text(errorMessage)
+                            .font(.avenirRegular(size: 12))
+                            .foregroundStyle(.red)
+                    }
+
+                    // MARK: - Save Button
+
+                    Button {
+
+                        guard let order = Int(sortOrder),
+                              order >= 0 else {
+                            return
+                        }
+
+                        Task {
+                            await viewModel.saveMappedUser(
+                                sortOrder: order,
+                                active: isActive ? 1 : 0
+                            )
+                        }
+
+                    } label: {
+
+                        HStack {
+
+                            if viewModel.isSaving {
+
+                                ProgressView()
+                                    .tint(.white)
+
+                            } else {
+
+                                Image(systemName: "checkmark.circle")
+
+                                Text("Save Forward Alert")
+                            }
+                        }
+                        .font(.avenirDemiBold(size: 16))
+                        .foregroundStyle(.white)
+                        .frame(maxWidth: .infinity)
+                        .padding()
+                        .background(Color.themeOrange)
+                        .clipShape(RoundedRectangle(cornerRadius: 12))
+                    }
+                    .buttonStyle(.plain)
+                    .disabled(
+                        viewModel.isSaving ||
+                        viewModel.isLoadingEmail ||
+                        viewModel.selectedApplication == nil ||
+                        viewModel.selectedUser == nil ||
+                        Int(sortOrder) == nil ||
+                        (Int(sortOrder) ?? -1) < 0
+                    )
+
+                    Spacer(minLength: 20)
+                }
+                .padding()
+            }
         }
         .background(
             Color(.systemGroupedBackground)
                 .ignoresSafeArea()
         )
-        .navigationTitle("Create Forward Alert")
+        .navigationBarBackButtonHidden(true)
         .navigationBarTitleDisplayMode(.inline)
         .task {
             await viewModel.loadApplications()

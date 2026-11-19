@@ -1,9 +1,11 @@
+
 import SwiftUI
 import Combine
 
 struct ForwardAlertsView: View {
 
     @StateObject private var viewModel: ForwardAlertsViewModel
+
     let createForwardAlertViewModel: CreateForwardAlertViewModel
 
     // MARK: - Multi-selection
@@ -34,79 +36,60 @@ struct ForwardAlertsView: View {
 
             VStack(alignment: .leading, spacing: 20) {
 
-                // MARK: - Header
+                // MARK: - Top Actions
 
-                AppScreenHeader(
-                    title: "Forward Alerts",
-                    subtitle: nil,
-                    icon: "arrowshape.turn.up.right.fill"
-                )
-                .padding(.bottom, 4)
+               
+                // MARK: - Top Actions
+
+               HStack(spacing: 12) {
+
+                   Image(systemName: "arrowshape.turn.up.right.fill")
+                       .font(.system(size: 18, weight: .semibold))
+                       .foregroundStyle(Color.themeOrange)
+                       .frame(width: 40, height: 40)
+                       .background(Color.themeOrange.opacity(0.12))
+                       .clipShape(RoundedRectangle(cornerRadius: 12))
+
+                   Text("Forward Alerts")
+                       .font(.avenirBold(size: 21))
+                       .foregroundStyle(Color.themeOrange)
+
+                   Spacer()
+
+                   NavigationLink {
+                       CreateForwardAlertView(
+                           viewModel: createForwardAlertViewModel
+                       )
+                   } label: {
+                       HStack(spacing: 6) {
+                           Image(systemName: "plus")
+                           Text("Create")
+                       }
+                       .font(.avenirDemiBold(size: 15))
+                       .foregroundStyle(Color.themeOrange)
+                       .frame(height: 40)
+                       .padding(.horizontal, 12)
+                       .background(Color.themeOrange.opacity(0.12))
+                       .clipShape(RoundedRectangle(cornerRadius: 12))
+                   }
+                   .buttonStyle(.plain)
+               }
 
                 // MARK: - Existing Forward Alerts
 
                 VStack(alignment: .leading, spacing: 12) {
 
+                    // MARK: - Select / Cancel
+
                     HStack {
-
-                        Text("Forward Alerts")
-//                            .font(.headline)
-                              .font(.avenirDemiBold(size: 17))
-
-
-                        Spacer()
-
                         Button(isSelectionMode ? "Cancel" : "Select") {
                             isSelectionMode.toggle()
                             selectedAlertIDs.removeAll()
                         }
                         .foregroundStyle(Color.themeOrange)
+
+                        Spacer()
                     }
-
-                    // MARK: - Backend Status Actions
-
-//                    HStack(spacing: 12) {
-//
-//                        Button {
-//                            Task {
-//                                await viewModel.updateForwardAlertsStatus(
-//                                    status: 1
-//                                )
-//                            }
-//                        } label: {
-//                            Text("Select All")
-//                                .fontWeight(.semibold)
-//                                .frame(maxWidth: .infinity)
-//                                .padding()
-//                                .foregroundStyle(.white)
-//                                .background(
-//                                    RoundedRectangle(cornerRadius: 10)
-//                                        .fill(Color.themeOrange)
-//                                )
-//                        }
-//                        .buttonStyle(.plain)
-//
-//                        Button {
-//                            Task {
-//                                await viewModel.updateForwardAlertsStatus(
-//                                    status: 0
-//                                )
-//                            }
-//                        } label: {
-//                            Text("Unselect All")
-//                                .fontWeight(.semibold)
-//                                .frame(maxWidth: .infinity)
-//                                .padding()
-//                                .foregroundStyle(.primary)
-//                                .background(
-//                                    RoundedRectangle(cornerRadius: 10)
-//                                        .fill(
-//                                            Color(.secondarySystemBackground)
-//                                        )
-//                                )
-//                        }
-//                        .buttonStyle(.plain)
-//                    }
 
                     // MARK: - Selection Controls
 
@@ -127,15 +110,10 @@ struct ForwardAlertsView: View {
                             Spacer()
 
                             Text("\(selectedAlertIDs.count) selected")
-                            //    .font(.caption)
-                                 .font(.avenirRegular(size: 12))
-
-                            
+                                .font(.avenirRegular(size: 12))
                                 .foregroundStyle(.secondary)
                         }
-                       // .font(.subheadline)
                         .font(.avenirRegular(size: 15))
-                        
                         .foregroundStyle(Color.themeOrange)
 
                         Button("Delete Selected") {
@@ -166,34 +144,33 @@ struct ForwardAlertsView: View {
                                     if isSelectionMode {
 
                                         Button {
+
                                             if selectedAlertIDs.contains(alert.id) {
                                                 selectedAlertIDs.remove(alert.id)
                                             } else {
                                                 selectedAlertIDs.insert(alert.id)
                                             }
+
                                         } label: {
+
                                             Image(
-                                                systemName:
-                                                    selectedAlertIDs.contains(alert.id)
+                                                systemName: selectedAlertIDs.contains(alert.id)
                                                     ? "checkmark.circle.fill"
                                                     : "circle"
                                             )
                                             .foregroundStyle(Color.themeOrange)
-                                           // .font(.title3)
                                             .font(.avenirDemiBold(size: 20))
-                                            
                                         }
                                         .buttonStyle(.plain)
                                     }
 
                                     Text(alert.userName)
-//                                        .font(.body)
-//                                        .fontWeight(.medium)
                                         .font(.avenirMedium(size: 17))
 
                                     Spacer()
 
                                     Button {
+
                                         let newStatus = alert.active == 1 ? 0 : 1
 
                                         Task {
@@ -202,6 +179,7 @@ struct ForwardAlertsView: View {
                                                 status: newStatus
                                             )
                                         }
+
                                     } label: {
                                         statusLabel(for: alert)
                                     }
@@ -209,34 +187,28 @@ struct ForwardAlertsView: View {
                                 }
 
                                 Text(alert.applicationName)
-                                   // .font(.subheadline)
                                     .font(.avenirRegular(size: 15))
-                                
-                                
                                     .foregroundStyle(.secondary)
 
                                 Text(alert.email)
-//                                    .font(.caption)
-                                
                                     .font(.avenirRegular(size: 12))
                                     .foregroundStyle(.secondary)
 
                                 // Delete
 
                                 Button {
+
                                     alertToDelete = alert
                                     isBulkDelete = false
                                     showDeleteConfirmation = true
+
                                 } label: {
+
                                     HStack {
                                         Image(systemName: "trash")
                                         Text("Delete")
                                     }
-                                    //.font(.caption)
-                                    
                                     .font(.avenirRegular(size: 12))
-                                    
-                                    
                                     .foregroundStyle(.red)
                                 }
                                 .buttonStyle(.plain)
@@ -248,180 +220,8 @@ struct ForwardAlertsView: View {
                             )
                             .background(
                                 RoundedRectangle(cornerRadius: 12)
-                                    .fill(
-                                        Color(.secondarySystemBackground)
-                                    )
+                                    .fill(Color(.secondarySystemBackground))
                             )
-                        }
-                    }
-                }
-
-                // MARK: - Create Forward Alert
-
-                Text("Create Forward Alert")
-//                    .font(.title3)
-//                    .fontWeight(.semibold)
-                    .font(.avenirDemiBold(size: 20))
-
-                NavigationLink {
-                    CreateForwardAlertView(
-                        viewModel: createForwardAlertViewModel
-                    )
-                } label: {
-                    HStack {
-                        Image(systemName: "plus")
-
-                        Text("Create Forward Alert")
-                            //.fontWeight(.semibold)
-                            .font(.avenirDemiBold(size: 16))
-
-                        Spacer()
-                    }
-                    .padding()
-                    .foregroundStyle(.white)
-                    .background(
-                        RoundedRectangle(cornerRadius: 12)
-                            .fill(Color.themeOrange)
-                    )
-                }
-                .buttonStyle(.plain)
-
-                // MARK: - Applications
-
-                VStack(alignment: .leading, spacing: 8) {
-
-                    Text("Application")
-                        //.font(.headline)
-                    
-                        .font(.avenirDemiBold(size: 17))
-                    
-                    
-
-                    if viewModel.isLoadingApplications {
-
-                        ProgressView("Loading Applications...")
-
-                    } else {
-
-                        ForEach(viewModel.applications) { application in
-
-                            Button {
-                                Task {
-                                    await viewModel.selectApplication(application)
-                                }
-                            } label: {
-                                HStack {
-
-                                    Text(application.name)
-
-                                    Spacer()
-
-                                    if viewModel.selectedApplication?.id == application.id {
-                                        Image(systemName: "checkmark")
-                                            .foregroundStyle(Color.themeOrange)
-                                    } else {
-                                        Image(systemName: "chevron.right")
-                                            .foregroundStyle(.secondary)
-                                    }
-                                }
-                                .padding()
-                                .background(
-                                    RoundedRectangle(cornerRadius: 12)
-                                        .fill(
-                                            Color(.secondarySystemBackground)
-                                        )
-                                )
-                            }
-                            .buttonStyle(.plain)
-                        }
-                    }
-                }
-
-                // MARK: - Users
-
-                if viewModel.selectedApplication != nil {
-
-                    VStack(alignment: .leading, spacing: 8) {
-
-                        Text("User")
-                            //.font(.headline)
-                            .font(.avenirDemiBold(size: 17))
-
-                        if viewModel.isLoadingUsers {
-
-                            ProgressView("Loading Users...")
-
-                        } else if viewModel.users.isEmpty {
-
-                            Text("No users found")
-                                .foregroundStyle(.secondary)
-
-                        } else {
-
-                            ForEach(viewModel.users) { user in
-
-                                Button {
-                                    viewModel.selectUser(user)
-                                } label: {
-                                    HStack {
-
-                                        Text(user.userName)
-
-                                        Spacer()
-
-                                        if viewModel.selectedUser?.id == user.id {
-                                            Image(systemName: "checkmark")
-                                                .foregroundStyle(Color.themeOrange)
-                                        }
-                                    }
-                                    .padding()
-                                    .background(
-                                        RoundedRectangle(cornerRadius: 12)
-                                            .fill(
-                                                Color(.secondarySystemBackground)
-                                            )
-                                    )
-                                }
-                                .buttonStyle(.plain)
-                            }
-                        }
-
-                        // MARK: - Selected User Email
-
-                        if viewModel.selectedUser != nil {
-
-                            VStack(alignment: .leading, spacing: 8) {
-
-                                Text("Email")
-                                    //.font(.headline)
-                                    .font(.avenirDemiBold(size: 17))
-
-                                HStack(spacing: 10) {
-
-                                    Image(systemName: "envelope.fill")
-                                        .foregroundStyle(Color.themeOrange)
-
-                                    if viewModel.isLoadingEmail {
-
-                                        ProgressView()
-
-                                    } else if !viewModel.selectedEmail.isEmpty {
-
-                                        Text(viewModel.selectedEmail)
-                                            .foregroundStyle(.primary)
-                                            .textSelection(.enabled)
-                                    }
-
-                                    Spacer()
-                                }
-                                .padding()
-                                .background(
-                                    RoundedRectangle(cornerRadius: 12)
-                                        .fill(
-                                            Color(.secondarySystemBackground)
-                                        )
-                                )
-                            }
                         }
                     }
                 }
@@ -439,9 +239,7 @@ struct ForwardAlertsView: View {
                         )
 
                         Text(deleteResultMessage)
-                         //   .font(.caption)
                             .font(.avenirRegular(size: 12))
-                        
                             .fixedSize(
                                 horizontal: false,
                                 vertical: true
@@ -470,16 +268,12 @@ struct ForwardAlertsView: View {
                 if let errorMessage = viewModel.errorMessage {
 
                     Text(errorMessage)
-                     //   .font(.caption)
                         .font(.avenirRegular(size: 12))
-                    
-                    
                         .foregroundStyle(.red)
                 }
 
                 Spacer(minLength: 20)
             }
-            // Consistent outer padding
             .padding(.horizontal, 16)
             .padding(.top, 16)
             .padding(.bottom, 30)
@@ -493,7 +287,6 @@ struct ForwardAlertsView: View {
         )
         .toolbar(.hidden, for: .navigationBar)
         .task {
-            await viewModel.loadApplications()
             await viewModel.loadForwardAlerts()
         }
         .alert(
@@ -531,8 +324,6 @@ struct ForwardAlertsView: View {
         let isActive = alert.active == 1
 
         return Text(isActive ? "Active" : "Inactive")
-//            .font(.caption)
-//            .fontWeight(.medium)
             .font(.avenirMedium(size: 12))
             .foregroundColor(
                 isActive ? Color.green : Color.secondary
@@ -631,3 +422,4 @@ struct ForwardAlertsView: View {
         }
     }
 }
+

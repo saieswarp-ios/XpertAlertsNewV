@@ -20,40 +20,62 @@ struct AlertsView: View {
         VStack(spacing: 0) {
 
             // MARK: - Header
+            HStack(spacing: 12) {
 
-            AppScreenHeader(
-                title: "Alerts",
-                subtitle: nil,
-                icon: "bell.fill"
-            )
+                Image(systemName: "bell.fill")
+                    .font(.system(size: 18, weight: .semibold))
+                    .foregroundStyle(Color.themeOrange)
+                    .frame(width: 40, height: 40)
+                    .background(Color.themeOrange.opacity(0.12))
+                    .clipShape(RoundedRectangle(cornerRadius: 12))
+
+                Text("Alerts")
+                    .font(.avenirBold(size: 21))
+                    .foregroundStyle(Color.themeOrange)
+
+                Spacer()
+
+                Button {
+                    coordinator.showSearchAlerts()
+                } label: {
+                    Image(systemName: "magnifyingglass")
+                        .font(.system(size: 18, weight: .semibold))
+                        .foregroundStyle(Color.themeOrange)
+                        .frame(width: 40, height: 40)
+                        .background(Color.themeOrange.opacity(0.12))
+                        .clipShape(RoundedRectangle(cornerRadius: 12))
+                }
+                .buttonStyle(.plain)
+                .accessibilityLabel("Search Alerts")
+            }
             .padding(.horizontal, 16)
             .padding(.top, 12)
             .padding(.bottom, 10)
-
+            Divider()
             // MARK: - Search Alerts
 
-            Button {
-                coordinator.showSearchAlerts()
-            } label: {
-                HStack(spacing: 8) {
-                    Image(systemName: "magnifyingglass")
-                    Text("Search Alerts")
-                }
+//            Button {
+//                coordinator.showSearchAlerts()
+//            } label: {
+//                HStack(spacing: 8) {
+//                    Image(systemName: "magnifyingglass")
+//                    Text("Search Alerts")
+//                }
 //                .font(.system(size: 15, weight: .semibold))
                 
-                
-                .font(.avenirDemiBold(size: 15))
-                .foregroundStyle(.white)
-                .frame(maxWidth: .infinity)
-                .frame(height: 42)
-                .background(Color.themeOrange)
-                .clipShape(RoundedRectangle(cornerRadius: 10))
-            }
-            .buttonStyle(.plain)
-            .padding(.horizontal, 16)
-            .padding(.bottom, 10)
-
-            Divider()
+//                
+//                .font(.avenirDemiBold(size: 15))
+//                .foregroundStyle(.white)
+//                .frame(maxWidth: .infinity)
+//                .frame(height: 42)
+//                .background(Color.themeOrange)
+//                .clipShape(RoundedRectangle(cornerRadius: 10))
+//            }
+//            .buttonStyle(.plain)
+//            .padding(.horizontal, 16)
+//            .padding(.bottom, 10)
+//
+//            Divider()
 
             // MARK: - Loading State
 

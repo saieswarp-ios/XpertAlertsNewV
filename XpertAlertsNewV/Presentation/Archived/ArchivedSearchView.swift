@@ -11,6 +11,7 @@ struct ArchivedSearchFilters {
     var viewByFlag: Int
     var deviceStatus: Int
     var emailStatus: Int
+
 }
 
 // MARK: - Archived Search View
@@ -18,6 +19,8 @@ struct ArchivedSearchFilters {
 struct ArchivedSearchView: View {
 
     @ObservedObject var coordinator: AppCoordinator
+
+    @Environment(\.dismiss) private var dismiss
 
     @State private var keyword = ""
 
@@ -46,25 +49,52 @@ struct ArchivedSearchView: View {
             HStack(spacing: 12) {
 
                 Button {
-                    coordinator.showArchived()
+                    dismiss()
                 } label: {
 
-                    Image(systemName: "arrow.left")
+                    Image(systemName: "chevron.left")
                         .font(.system(size: 18, weight: .semibold))
                         .foregroundStyle(Color.themeOrange)
-                        .frame(width: 36, height: 36)
+                        .frame(width: 28, height: 40)
+
                 }
+                .buttonStyle(.plain)
 
                 Text("Search Archived Alerts")
-                    //.font(.system(size: 20, weight: .bold))
-                    .font(.avenirBold(size: 20))
+                    .font(.avenirBold(size: 21))
                     .foregroundStyle(Color.themeOrange)
+                    .lineLimit(1)
+                    .minimumScaleFactor(0.8)
 
-                Spacer()
+                Spacer(minLength: 4)
+
+                Button {
+                    resetFilters()
+                } label: {
+
+                    Text("Reset")
+                        .font(.avenirDemiBold(size: 14))
+                        .foregroundStyle(.white)
+                        .frame(height: 40)
+                        .padding(.horizontal, 12)
+                        .background(Color.themeOrange)
+                        .clipShape(
+                            RoundedRectangle(cornerRadius: 10)
+                        )
+                        .overlay {
+                            RoundedRectangle(cornerRadius: 10)
+                                .stroke(
+                                    Color.themeOrange.opacity(0.35),
+                                    lineWidth: 1
+                                )
+                        }
+
+                }
+                .buttonStyle(.plain)
+
             }
             .padding(.horizontal, 16)
-            .padding(.top, 12)
-            .padding(.bottom, 10)
+            .padding(.vertical, 12)
 
             Divider()
 
@@ -91,6 +121,7 @@ struct ArchivedSearchView: View {
                             date: $endDate,
                             range: startDate...
                         )
+
                     }
 
                     // Keyword
@@ -158,55 +189,43 @@ struct ArchivedSearchView: View {
                         ]
                     )
 
-                    // Buttons
+                    // MARK: Search Button
 
-                    HStack(spacing: 12) {
+                    Button {
+                        searchArchivedAlerts()
+                    } label: {
 
-                        Button {
-                            searchArchivedAlerts()
-                        } label: {
+                        HStack {
 
-                            Label(
-                                "Search",
-                                systemImage: "magnifyingglass"
-                            )
-                           // .font(.system(size: 15, weight: .semibold))
-                            .font(.avenirDemiBold(size: 15))
-                            .foregroundStyle(.white)
-                            .frame(maxWidth: .infinity)
-                            .frame(height: 46)
-                            .background(Color.themeOrange)
-                            .clipShape(
-                                RoundedRectangle(cornerRadius: 10)
-                            )
+                            Spacer()
+
+                            Image(systemName: "magnifyingglass")
+
+                            Text("Search")
+                                .font(.avenirDemiBold(size: 16))
+
+                            Spacer()
+
                         }
+                        .foregroundStyle(.white)
+                        .frame(maxWidth: .infinity)
+                        .frame(height: 46)
+                        .background(Color.themeOrange)
+                        .clipShape(
+                            RoundedRectangle(cornerRadius: 10)
+                        )
 
-                        Button {
-                            resetFilters()
-                        } label: {
-
-                            Text("Reset")
-                                //.font(.system(size: 15, weight: .semibold))
-                                .font(.avenirDemiBold(size: 15))
-                                .foregroundStyle(Color.themeOrange)
-                                .frame(maxWidth: .infinity)
-                                .frame(height: 46)
-                                .background(Color.white)
-                                .overlay {
-                                    RoundedRectangle(cornerRadius: 10)
-                                        .stroke(
-                                            Color.themeOrange,
-                                            lineWidth: 1
-                                        )
-                                }
-                        }
                     }
+                    .buttonStyle(.plain)
                     .padding(.top, 8)
                     .padding(.bottom, 20)
+
                 }
                 .padding(.horizontal, 16)
                 .padding(.top, 18)
+
             }
+
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .background(Color(.systemBackground))
@@ -224,7 +243,9 @@ struct ArchivedSearchView: View {
         } message: {
 
             Text("The end date must be on or after the start date.")
+
         }
+
     }
 
     // MARK: - Section Title
@@ -232,12 +253,12 @@ struct ArchivedSearchView: View {
     private func sectionTitle(_ title: String) -> some View {
 
         Text(title)
-           // .font(.system(size: 15, weight: .semibold))
             .font(.avenirDemiBold(size: 15))
             .foregroundStyle(.primary)
+
     }
 
-    // MARK: - Date Field
+    // MARK: - Date Field (Through)
 
     private func dateField(
         title: String,
@@ -248,7 +269,6 @@ struct ArchivedSearchView: View {
         HStack {
 
             Text(title)
-               // .font(.system(size: 14))
                 .font(.avenirRegular(size: 14))
                 .foregroundStyle(.primary)
 
@@ -262,6 +282,7 @@ struct ArchivedSearchView: View {
             )
             .labelsHidden()
             .tint(Color.themeOrange)
+
         }
         .padding(.horizontal, 14)
         .frame(height: 46)
@@ -269,7 +290,10 @@ struct ArchivedSearchView: View {
         .clipShape(
             RoundedRectangle(cornerRadius: 10)
         )
+
     }
+
+    // MARK: - Date Field (From)
 
     private func dateField(
         title: String,
@@ -280,7 +304,6 @@ struct ArchivedSearchView: View {
         HStack {
 
             Text(title)
-               // .font(.system(size: 14))
                 .font(.avenirRegular(size: 14))
                 .foregroundStyle(.primary)
 
@@ -294,6 +317,7 @@ struct ArchivedSearchView: View {
             )
             .labelsHidden()
             .tint(Color.themeOrange)
+
         }
         .padding(.horizontal, 14)
         .frame(height: 46)
@@ -301,6 +325,7 @@ struct ArchivedSearchView: View {
         .clipShape(
             RoundedRectangle(cornerRadius: 10)
         )
+
     }
 
     // MARK: - Custom Dropdown
@@ -316,7 +341,9 @@ struct ArchivedSearchView: View {
             ForEach(options, id: \.0) { option in
 
                 Button {
+
                     selection.wrappedValue = option.0
+
                 } label: {
 
                     if selection.wrappedValue == option.0 {
@@ -329,8 +356,11 @@ struct ArchivedSearchView: View {
                     } else {
 
                         Text(option.1)
+
                     }
+
                 }
+
             }
 
         } label: {
@@ -342,7 +372,6 @@ struct ArchivedSearchView: View {
                         $0.0 == selection.wrappedValue
                     })?.1 ?? title
                 )
-//                .font(.system(size: 14))
                 .font(.avenirRegular(size: 14))
                 .foregroundStyle(.primary)
 
@@ -351,6 +380,7 @@ struct ArchivedSearchView: View {
                 Image(systemName: "chevron.down")
                     .font(.system(size: 12, weight: .semibold))
                     .foregroundStyle(.secondary)
+
             }
             .padding(.horizontal, 14)
             .frame(height: 46)
@@ -361,7 +391,9 @@ struct ArchivedSearchView: View {
             .contentShape(
                 RoundedRectangle(cornerRadius: 10)
             )
+
         }
+
     }
 
     // MARK: - Search Action
@@ -372,22 +404,32 @@ struct ArchivedSearchView: View {
         let end = Calendar.current.startOfDay(for: endDate)
 
         guard start <= end else {
+
             showDateError = true
             return
+
         }
 
         let filters = ArchivedSearchFilters(
+
             keyword: keyword.trimmingCharacters(
                 in: .whitespacesAndNewlines
             ),
+
             startDate: startDate,
             endDate: endDate,
             viewByFlag: viewByFlag,
             deviceStatus: deviceStatus,
             emailStatus: emailStatus
+
         )
 
         coordinator.applyArchivedSearch(filters: filters)
+
+        // Return to ArchivedView after saving the filters.
+
+        dismiss()
+
     }
 
     // MARK: - Reset Filters
@@ -407,6 +449,8 @@ struct ArchivedSearchView: View {
         viewByFlag = 0
         deviceStatus = 0
         emailStatus = 0
+
     }
+
 }
 

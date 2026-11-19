@@ -12,13 +12,13 @@
 					<key>EndingColumnNumber</key>
 					<string>0</string>
 					<key>EndingLineNumber</key>
-					<string>130</string>
+					<string>287</string>
 					<key>StartingColumnNumber</key>
 					<string>0</string>
 					<key>StartingLineNumber</key>
-					<string>129</string>
+					<string>287</string>
 					<key>Timestamp</key>
-					<string>816079459.302605</string>
+					<string>816758631.061235</string>
 				</dict>
 				<key>rebasable-url</key>
 				<dict>
@@ -34,17 +34,13 @@
 			<key>text-context</key>
 			<dict>
 				<key>focused</key>
-				<string>                        .font(.avenirMedium(size: 13))
-</string>
+				<string></string>
 				<key>leading</key>
-				<string>                    Text("Alert Name")
-                      //  .font(.system(size: 13, weight: .medium))
+				<string>}
+
 </string>
 				<key>trailing</key>
-				<string>                        .foregroundStyle(.secondary)
-
-                    HStack(spacing: 8) {
-</string>
+				<string></string>
 			</dict>
 			<key>type</key>
 			<string>bookmark</string>

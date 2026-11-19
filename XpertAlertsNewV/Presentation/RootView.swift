@@ -32,7 +32,10 @@ struct RootView: View {
         case .alerts,
              .alertDetails,
              .archived,
-             .searchArchived:
+             .searchArchived,
+             .subscriptions,
+             .forwardAlerts:
+            
 
             MainTabView(
                 container: container,

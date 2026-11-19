@@ -5,6 +5,8 @@ struct ArchivedView: View {
 
     @StateObject private var viewModel: ArchivedViewModel
 
+    @Environment(\.dismiss) private var dismiss
+
     let coordinator: AppCoordinator
 
     @State private var searchText = ""
@@ -14,7 +16,6 @@ struct ArchivedView: View {
         coordinator: AppCoordinator
     ) {
         self.coordinator = coordinator
-
         _viewModel = StateObject(
             wrappedValue: container.makeArchivedViewModel()
         )
@@ -33,7 +34,6 @@ struct ArchivedView: View {
         }
 
         return viewModel.alerts.filter { alert in
-
             alert.subject.localizedCaseInsensitiveContains(query) ||
             alert.message.localizedCaseInsensitiveContains(query) ||
             alert.applicationName.localizedCaseInsensitiveContains(query)
@@ -45,7 +45,6 @@ struct ArchivedView: View {
     private var groupedAlerts: [(date: String, alerts: [Alert])] {
 
         let groups = Dictionary(grouping: filteredAlerts) { alert in
-
             Self.dayLabel(
                 from: alert.groupBy,
                 fallback: alert.date
@@ -55,7 +54,6 @@ struct ArchivedView: View {
         // Preserve the order in which dates appear in the API response.
 
         var seen = Set<String>()
-
         var orderedGroups: [(date: String, alerts: [Alert])] = []
 
         for alert in filteredAlerts {
@@ -85,46 +83,58 @@ struct ArchivedView: View {
 
         VStack(spacing: 0) {
 
-            // MARK: Header
+            // MARK: - Header
 
-            AppScreenHeader(
-                title: "Archived",
-                subtitle: nil,
-                icon: "archivebox.fill"
-            )
+            HStack(spacing: 12) {
+
+                Button {
+                    dismiss()
+                } label: {
+
+                    Image(systemName: "chevron.left")
+                        .font(.system(size: 18, weight: .semibold))
+                        .foregroundStyle(Color.themeOrange)
+                        .frame(width: 28, height: 40)
+                        .contentShape(Rectangle())
+                }
+                .buttonStyle(.plain)
+                .accessibilityLabel("Back")
+
+                Image(systemName: "archivebox.fill")
+                    .font(.system(size: 18, weight: .semibold))
+                    .foregroundStyle(Color.themeOrange)
+                    .frame(width: 40, height: 40)
+                    .background(Color.themeOrange.opacity(0.12))
+                    .clipShape(RoundedRectangle(cornerRadius: 12))
+
+                Text("Archived")
+                    .font(.avenirBold(size: 21))
+                    .foregroundStyle(Color.themeOrange)
+
+                Spacer()
+
+                // MARK: - Search Icon
+
+                NavigationLink {
+                    ArchivedSearchView(coordinator: coordinator)
+                } label: {
+                        Image(systemName: "magnifyingglass")
+                            .font(.system(size: 18, weight: .semibold))
+                            .foregroundStyle(Color.themeOrange)
+                            .frame(width: 40, height: 40)
+                            .background(Color.themeOrange.opacity(0.12))
+                            .clipShape(RoundedRectangle(cornerRadius: 12))
+                    }
+                .buttonStyle(.plain)
+                .accessibilityLabel("Search Archived Alerts")
+            }
             .padding(.horizontal, 16)
             .padding(.top, 12)
-            .padding(.bottom, 10)
-
-            // MARK: Search Archived Alerts Button
-
-            Button {
-                coordinator.showArchivedSearch()
-            } label: {
-
-                HStack(spacing: 8) {
-
-                    Image(systemName: "magnifyingglass")
-
-                    Text("Search Archived Alerts")
-                }
-              //  .font(.system(size: 15, weight: .semibold))
-                .font(.avenirDemiBold(size: 15))
-                .foregroundStyle(.white)
-                .frame(maxWidth: .infinity)
-                .frame(height: 42)
-                .background(Color.themeOrange)
-                .clipShape(
-                    RoundedRectangle(cornerRadius: 10)
-                )
-            }
-            .buttonStyle(.plain)
-            .padding(.horizontal, 16)
-            .padding(.bottom, 10)
+            .padding(.bottom, 16)
 
             Divider()
 
-            // MARK: Loading State
+            // MARK: - Loading State
 
             if viewModel.isLoading {
 
@@ -133,10 +143,9 @@ struct ArchivedView: View {
                 ProgressView("Loading archived alerts...")
 
                 Spacer()
-
             }
 
-            // MARK: Error State
+            // MARK: - Error State
 
             else if let errorMessage = viewModel.errorMessage {
 
@@ -149,19 +158,16 @@ struct ArchivedView: View {
                         .foregroundStyle(Color.themeOrange)
 
                     Text(errorMessage)
-                        //.font(.system(size: 15))
                         .font(.avenirRegular(size: 15))
                         .foregroundStyle(.secondary)
                         .multilineTextAlignment(.center)
-
                 }
                 .padding(16)
 
                 Spacer()
-
             }
 
-            // MARK: Empty State
+            // MARK: - Empty State
 
             else if filteredAlerts.isEmpty {
 
@@ -178,7 +184,6 @@ struct ArchivedView: View {
                             ? "No Archived Alerts"
                             : "No Matching Alerts"
                     )
-                   // .font(.system(size: 17, weight: .medium))
                     .font(.avenirMedium(size: 17))
                     .foregroundStyle(.primary)
 
@@ -187,19 +192,16 @@ struct ArchivedView: View {
                             ? "There are no archived alerts to display."
                             : "Try a different search term."
                     )
-                   // .font(.system(size: 14))
                     .font(.avenirRegular(size: 14))
                     .foregroundStyle(.secondary)
                     .multilineTextAlignment(.center)
-
                 }
                 .padding(16)
 
                 Spacer()
-
             }
 
-            // MARK: Archived Alerts List
+            // MARK: - Archived Alerts List
 
             else {
 
@@ -217,12 +219,6 @@ struct ArchivedView: View {
                                 // Date Heading
 
                                 Text(group.date)
-//                                    .font(
-//                                        .system(
-//                                            size: 14,
-//                                            weight: .semibold
-//                                        )
-//                                    )
                                     .font(.avenirDemiBold(size: 14))
                                     .foregroundStyle(.white)
                                     .padding(.horizontal, 10)
@@ -236,22 +232,14 @@ struct ArchivedView: View {
 
                                 ForEach(group.alerts) { alert in
 
-                                    Button {
-
+                                    ArchivedRow(
+                                        title: alert.subject,
+                                        message: alert.message,
+                                        application: alert.applicationName,
+                                        date: alert.date
+                                    ) {
                                         coordinator.showAlertDetails(alert)
-
-                                    } label: {
-
-                                        ArchivedRow(
-                                            title: alert.subject,
-                                            message: alert.message,
-                                            application: alert.applicationName,
-                                            date: alert.date
-                                        ) {
-                                            coordinator.showAlertDetails(alert)
-                                        }
                                     }
-                                    .buttonStyle(.plain)
                                     .padding(.bottom, 9)
                                 }
                             }
@@ -264,13 +252,13 @@ struct ArchivedView: View {
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .background(Color(.systemBackground))
+        .toolbar(.hidden, for: .navigationBar)
 
-        // MARK: Load Archived Alerts
+        // MARK: - Load Archived Alerts
 
         .onAppear {
 
             let filters = coordinator.pendingArchivedSearchFilters
-
             coordinator.pendingArchivedSearchFilters = nil
 
             viewModel.loadArchivedAlerts(filters: filters)
@@ -296,7 +284,6 @@ struct ArchivedView: View {
         for format in formats {
 
             let formatter = DateFormatter()
-
             formatter.locale = Locale(identifier: "en_US_POSIX")
             formatter.timeZone = .current
             formatter.dateFormat = format
@@ -304,7 +291,6 @@ struct ArchivedView: View {
             if let parsedDate = formatter.date(from: rawValue) {
 
                 let output = DateFormatter()
-
                 output.locale = Locale.current
                 output.timeZone = .current
                 output.dateFormat = "dd MMM"
@@ -320,74 +306,70 @@ struct ArchivedView: View {
 // MARK: - Archived Alert Row
 
 struct ArchivedRow: View {
-    
+
     let title: String
     let message: String
     let application: String
     let date: String
-    
     let action: () -> Void
-    
+
     private var parsedDate: Date? {
-        
+
         let formats = [
             "MM/dd/yyyy hh:mm a",
             "MM/dd/yyyy hh:mm:ss a",
             "MM/dd/yyyy"
         ]
-        
+
         for format in formats {
-            
+
             let formatter = DateFormatter()
-            
             formatter.locale = Locale(identifier: "en_US_POSIX")
             formatter.timeZone = .current
             formatter.dateFormat = format
-            
+
             if let parsed = formatter.date(from: date) {
                 return parsed
             }
         }
-        
+
         return nil
     }
-    
+
     private var displayDay: String {
-        
+
         guard let parsedDate else {
             return date
         }
-        
+
         let formatter = DateFormatter()
-        
         formatter.locale = Locale.current
         formatter.dateFormat = "dd MMM"
-        
+
         return formatter.string(from: parsedDate)
     }
-    
+
     private var displayTime: String {
-        
+
         guard let parsedDate else {
             return ""
         }
-        
+
         let formatter = DateFormatter()
-        
         formatter.locale = Locale.current
         formatter.dateFormat = "hh:mm a"
-        
+
         return formatter.string(from: parsedDate)
     }
-    
+
     private var preview: String {
-        
+
         let source = message.trimmingCharacters(
             in: .whitespacesAndNewlines
         )
-        
+
         let content = source.isEmpty ? title : source
-        
+
         return content
             .replacingOccurrences(
                 of: "(?i)<br\\s*/?>",
@@ -406,34 +388,32 @@ struct ArchivedRow: View {
             )
             .trimmingCharacters(in: .whitespacesAndNewlines)
     }
-    
+
     var body: some View {
-        
+
         Button(action: action) {
-            
+
             HStack(spacing: 8) {
-                
+
                 VStack(spacing: 4) {
-                    
+
                     Text(displayDay)
                         .lineLimit(1)
-                    
+
                     Text(displayTime)
                         .lineLimit(1)
                 }
-               // .font(.system(size: 11))
                 .font(.avenirRegular(size: 11))
                 .foregroundStyle(Color.gray)
                 .frame(width: 56)
-                
+
                 Rectangle()
                     .fill(Color.themeOrange)
                     .frame(width: 1, height: 38)
-                
+
                 VStack(alignment: .leading, spacing: 3) {
-                    
+
                     Text(preview)
-                       // .font(.system(size: 11))
                         .font(.avenirRegular(size: 11))
                         .foregroundStyle(Color.gray)
                         .lineLimit(2)
@@ -442,9 +422,8 @@ struct ArchivedRow: View {
                             maxWidth: .infinity,
                             alignment: .leading
                         )
-                    
+
                     Text(application)
-                       // .font(.system(size: 10))
                         .font(.avenirRegular(size: 10))
                         .foregroundStyle(Color.gray.opacity(0.9))
                         .lineLimit(1)
@@ -458,12 +437,15 @@ struct ArchivedRow: View {
             .padding(.vertical, 10)
             .frame(maxWidth: .infinity, minHeight: 54)
             .background(
-                Color(red: 0.95, green: 0.95, blue: 0.97),
+                Color(
+                    red: 0.95,
+                    green: 0.95,
+                    blue: 0.97
+                ),
                 in: RoundedRectangle(cornerRadius: 6)
             )
         }
         .buttonStyle(.plain)
     }
 }
-
 
