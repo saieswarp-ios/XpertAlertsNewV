@@ -1,14 +1,14 @@
 import Foundation
 
 final class DIContainer {
-    // container
-    // MARK: - Core
+  
+   // Core
 
     let apiClient: APIClient
     
-    //let analyticsTracker: AnalyticsTracking
+   
 
-    // MARK: - Repositories
+    // Repositories
 
     let authRepository: AuthRepository
     let userRepository: UserRepository
@@ -63,7 +63,7 @@ final class DIContainer {
     
     
 
-    // MARK: - Use Cases
+    // Use Cases
 
     let loginUseCase:
         LoginUseCase
@@ -112,18 +112,18 @@ final class DIContainer {
     let getArchivedAlertsUseCase:
         GetArchivedAlertsUseCase
 
-    // MARK: - Init
+    // Init
 
     init() {
 
-        // MARK: API Client
+        //  API Client
 
         self.apiClient =
             URLSessionAPIClient()
         
-        //self.analyticsTracker = FirebaseAnalyticsTracker()
+     
 
-        // MARK: User Repository
+        //  User Repository
 
         let userLocalDataSource =
             UserDefaultsDataSource()
@@ -134,7 +134,7 @@ final class DIContainer {
                     userLocalDataSource
             )
 
-        // MARK: Auth Repository
+        //  Auth Repository
 
         self.authRepository =
             AuthRepositoryImpl(
@@ -142,7 +142,7 @@ final class DIContainer {
                     apiClient
             )
 
-        // MARK: Change Password Repository
+        //Change Password Repository
 
         self.changePasswordRepository =
             ChangePasswordRepositoryImpl(
@@ -150,7 +150,7 @@ final class DIContainer {
                     apiClient
             )
 
-        // MARK: Subscription Repository
+        //  Subscription Repository
 
         self.subscriptionRepository =
             SubscriptionRepositoryImpl(
@@ -158,7 +158,7 @@ final class DIContainer {
                     apiClient
             )
 
-        // MARK: Subscription Use Cases
+        // Subscription Use Cases
 
         self.getSubscriptionDetailsUseCase =
             GetSubscriptionDetailsUseCase(
@@ -172,7 +172,7 @@ final class DIContainer {
                     subscriptionRepository
             )
 
-        // MARK: Alert Definition Repository
+        // Alert Definition Repository
 
         self.alertDefinitionRepository =
             AlertDefinitionRepositoryImpl(
@@ -180,7 +180,7 @@ final class DIContainer {
                     apiClient
             )
 
-        // MARK: Application Repository
+        //  Application Repository
 
         self.applicationRepository =
             ApplicationRepositoryImpl(
@@ -190,7 +190,7 @@ final class DIContainer {
                     userRepository
             )
 
-        // MARK: Forward Alerts Repository
+        //  Forward Alerts Repository
 
         self.forwardAlertsRepository =
             ForwardAlertsRepositoryImpl(
@@ -200,7 +200,7 @@ final class DIContainer {
                     userRepository
             )
 
-        // MARK: Alert Repository
+        // Alert Repository
 
         self.alertRepository =
             AlertRepositoryImpl(
@@ -210,7 +210,7 @@ final class DIContainer {
                     userRepository
             )
 
-        // MARK: Forward Alerts Use Cases
+        //  Forward Alerts Use Cases
 
         self.getForwardApplicationsUseCase =
             GetForwardApplicationsUseCase(
@@ -230,7 +230,7 @@ final class DIContainer {
                     forwardAlertsRepository
             )
 
-        // MARK: Update Forward Alerts Status
+        //  Update Forward Alerts Status
 
         self.updateForwardAlertsStatusUseCase =
             UpdateForwardAlertsStatusUseCase(
@@ -245,7 +245,7 @@ final class DIContainer {
             )
         
 
-        // MARK: Duplicate Forward Alert
+        //  Duplicate Forward Alert
 
         self.duplicateForwardAlertUseCase =
             DuplicateForwardAlertUseCase(
@@ -253,7 +253,7 @@ final class DIContainer {
                     forwardAlertsRepository
             )
 
-        // MARK: Change Password Use Case
+        //  Change Password Use Case
 
         self.changePasswordUseCase =
             ChangePasswordUseCase(
@@ -261,7 +261,7 @@ final class DIContainer {
                     changePasswordRepository
             )
 
-        // MARK: Alert Definitions Use Case
+        //  Alert Definitions Use Case
 
         self.getAlertDefinitionsUseCase =
             GetAlertDefinitionsUseCase(
@@ -269,7 +269,7 @@ final class DIContainer {
                     alertDefinitionRepository
             )
 
-        // MARK: Save Mapped User
+        // Save Mapped User
 
         self.saveMappedUserUseCase =
             SaveMappedUserUseCase(
@@ -277,7 +277,7 @@ final class DIContainer {
                     forwardAlertsRepository
             )
 
-        // MARK: Delete Forward Alert User
+        // Delete Forward Alert User
 
         self.deleteForwardAlertUserUseCase =
             DeleteForwardAlertUserUseCase(
@@ -285,7 +285,7 @@ final class DIContainer {
                     forwardAlertsRepository
             )
 
-        // MARK: Search Repository
+        // Search Repository
 
         let searchLocalDataSource =
             UserDefaultsSearchDataSource()
@@ -296,7 +296,7 @@ final class DIContainer {
                     searchLocalDataSource
             )
 
-        // MARK: Login Use Case
+        // Login Use Case
 
         self.loginUseCase =
             LoginUseCase(
@@ -310,7 +310,7 @@ final class DIContainer {
                     searchRepository
             )
 
-        // MARK: Logout Use Case
+        //Logout Use Case
 
         self.logoutUseCase =
             LogoutUseCase(
@@ -318,7 +318,7 @@ final class DIContainer {
                     userRepository
             )
 
-        // MARK: Saved User Use Case
+        //  Saved User Use Case
 
         self.getSavedUserUseCase =
             GetSavedUserUseCase(
@@ -326,7 +326,7 @@ final class DIContainer {
                     userRepository
             )
 
-        // MARK: Alerts Use Case
+        // Alerts Use Case
 
         self.getAlertsUseCase =
             GetAlertsUseCase(
@@ -347,7 +347,7 @@ final class DIContainer {
                 alertRepository: alertRepository
             )
 
-        // MARK: Applications Use Case
+        // Applications Use Case
 
         self.getApplicationsUseCase =
             GetApplicationsUseCase(
@@ -355,7 +355,7 @@ final class DIContainer {
                     applicationRepository
             )
 
-        // MARK: Search Application Use Cases
+        //  Search Application Use Cases
 
         self.saveSearchApplicationUseCase =
             SaveSearchApplicationUseCase(
@@ -369,7 +369,7 @@ final class DIContainer {
                     searchRepository
             )
 
-        // MARK: Search Date Use Cases
+        // Search Date Use Cases
 
         self.saveSearchDatesUseCase =
             SaveSearchDatesUseCase(
@@ -383,7 +383,7 @@ final class DIContainer {
                     searchRepository
             )
 
-        // MARK: Archived
+        //  Archived
 
         self.archivedRepository =
             ArchivedRepositoryImpl(
@@ -399,7 +399,7 @@ final class DIContainer {
                     archivedRepository
             )
 
-        // MARK: Subscriptions
+        //  Subscriptions
 
         self.getSubscriptionsUseCase =
             GetSubscriptionsUseCase(
@@ -414,14 +414,14 @@ final class DIContainer {
             )
     }
 
-    // MARK: - View Models
+//          View Models
 
    
     func makeLoginViewModel() -> LoginViewModel {
         return LoginViewModel(
             loginUseCase: loginUseCase
             //,
-            //analyticsTracker: analyticsTracker
+            
         )
     }
 
@@ -458,7 +458,7 @@ final class DIContainer {
         )
     }
 
-    // MARK: Logout
+    //  Logout
 
     func makeLogoutUseCase()
         -> LogoutUseCase {
@@ -466,7 +466,7 @@ final class DIContainer {
         return logoutUseCase
     }
 
-    // MARK: Temporary Application Test
+    //  Temporary Application Test
 
     func testApplications() {
 

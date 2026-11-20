@@ -21,9 +21,9 @@ struct ChangePasswordView: View {
     var body: some View {
         VStack(spacing: 0) {
 
-            // MARK: - Header
+          
         
-            // MARK: - Header
+            //Header
 
             HStack(spacing: 12) {
                 Button {
@@ -62,7 +62,7 @@ struct ChangePasswordView: View {
             .padding()
         
 
-            // MARK: - Password Form
+          // Password Form
 
             ScrollView {
                 VStack(alignment: .leading, spacing: 20) {
@@ -112,7 +112,7 @@ struct ChangePasswordView: View {
                             )
                     }
 
-                    // MARK: - Result Message
+                    // Result Message
 
                     if let message = viewModel.message {
                         HStack(alignment: .top, spacing: 10) {
@@ -142,7 +142,7 @@ struct ChangePasswordView: View {
                         .clipShape(RoundedRectangle(cornerRadius: 10))
                     }
 
-                    // MARK: - Update Button
+                    // Update Button
 
                     Button {
                         viewModel.updatePassword()
@@ -178,7 +178,7 @@ struct ChangePasswordView: View {
     }
 }
 
-// MARK: - Password Input Row
+// Password Input Row
 
 private struct PasswordInputRow: View {
 

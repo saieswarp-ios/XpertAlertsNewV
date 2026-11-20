@@ -485,7 +485,7 @@ struct ArchivedView: View {
         )
     }
 
-    // MARK: - Filter Archived Alerts
+    // Filter Archived Alerts
 
     private var filteredAlerts: [Alert] {
 
@@ -504,7 +504,7 @@ struct ArchivedView: View {
         }
     }
 
-    // MARK: - Group Archived Alerts By Date
+    // Group Archived Alerts By Date
 
     private var groupedAlerts: [(date: String, alerts: [Alert])] {
 
@@ -541,13 +541,13 @@ struct ArchivedView: View {
         return orderedGroups
     }
 
-    // MARK: - Body
+    // Body
 
     var body: some View {
 
         VStack(spacing: 0) {
 
-            // MARK: - Header
+            // Header
 
             HStack(spacing: 12) {
 
@@ -583,15 +583,19 @@ struct ArchivedView: View {
 
                 Spacer()
 
-                // MARK: - Search Icon
+                // Search Icon
 
                 NavigationLink {
                     ArchivedSearchView(coordinator: coordinator)
                 } label: {
-                    Image(systemName: "magnifyingglass")
-                        .font(.system(size: 18, weight: .semibold))
+                    HStack(spacing: 7) {
+                        Image(systemName: "magnifyingglass")
+                        Text("Search")
+                    }
+                        //.font(.system(size: 18, weight: .semibold))
+                        .font(.avenirDemiBold(size: 18))
                         .foregroundStyle(Color.themeOrange)
-                        .frame(width: 40, height: 40)
+                        .frame(minWidth: 100, minHeight: 40)
                         .background(Color.themeOrange.opacity(0.15))
                         .clipShape(RoundedRectangle(cornerRadius: 12))
                         .overlay(
@@ -611,13 +615,13 @@ struct ArchivedView: View {
 
             Divider()
 
-            // MARK: - Archived Alerts ScrollView
+            //Archived Alerts ScrollView
 
             ScrollView {
 
                 Group {
 
-                    // MARK: - Loading State
+                    // Loading State
 
                     if viewModel.isLoading {
 
@@ -631,7 +635,7 @@ struct ArchivedView: View {
 
                     }
 
-                    // MARK: - Error State
+                    // Error State
 
                     else if let errorMessage = viewModel.errorMessage {
 
@@ -654,7 +658,7 @@ struct ArchivedView: View {
 
                     }
 
-                    // MARK: - Empty State
+                    // Empty State
 
                     else if filteredAlerts.isEmpty {
 
@@ -689,7 +693,7 @@ struct ArchivedView: View {
 
                     }
 
-                    // MARK: - Archived Alerts List
+                    //Archived Alerts List
 
                     else {
 
@@ -745,7 +749,7 @@ struct ArchivedView: View {
         .background(Color(.systemBackground))
         .toolbar(.hidden, for: .navigationBar)
 
-        // MARK: - Load Archived Alerts
+        // Load Archived Alerts
 
         .onAppear {
 
@@ -757,7 +761,7 @@ struct ArchivedView: View {
         }
     }
 
-    // MARK: - Date Formatting
+    //Date Formatting
 
     private static func dayLabel(
         from groupBy: String,
@@ -795,7 +799,7 @@ struct ArchivedView: View {
     }
 }
 
-// MARK: - Archived Alert Row
+// Archived Alert Row
 
 struct ArchivedRow: View {
 

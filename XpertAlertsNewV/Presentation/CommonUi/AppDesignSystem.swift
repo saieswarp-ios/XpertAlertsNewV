@@ -1,7 +1,7 @@
 
 import SwiftUI
 
-// MARK: - Screen Icon
+// Screen Icon
 
 struct AppScreenIcon: View {
 
@@ -38,7 +38,7 @@ struct AppScreenIcon: View {
 }
 
 
-// MARK: - Screen Header
+// Screen Header
 
 struct AppScreenHeader: View {
 
@@ -107,7 +107,7 @@ struct AppScreenHeader: View {
 }
 
 
-// MARK: - Section Title
+// Section Title
 
 struct SectionTitle: View {
 
@@ -193,7 +193,7 @@ struct SectionTitle: View {
 }
 
 
-// MARK: - App Card
+// App Card
 
 struct AppCard<Content: View>: View {
 
@@ -229,7 +229,7 @@ struct AppCard<Content: View>: View {
 }
 
 
-// MARK: - App Background
+// App Background
 
 struct AppBackground: View {
 
@@ -241,7 +241,7 @@ struct AppBackground: View {
 }
 
 
-// MARK: - Status Chip
+// Status Chip
 
 struct AppStatusChip: View {
 
@@ -278,7 +278,7 @@ struct AppStatusChip: View {
 }
 
 
-// MARK: - App Divider
+// App Divider
 
 struct AppDivider: View {
 

@@ -3,7 +3,7 @@ import Foundation
 
 struct APIEndpoint {
 
-    // MARK: - Default Base URL
+    //  Default Base URL
 
 //    static let defaultBaseURL =
 //        "https://testapps.aquilasoftware.com/ams/webservice/"
@@ -12,7 +12,7 @@ struct APIEndpoint {
     "https://www.xpertalerts.com/ams/webservice/"
   //  "https://testapps.aquilasoftware.com/ams/webservice/"
 
-    // MARK: - Base URL
+    //  Base URL
 
     static var baseURL: String {
 
@@ -33,7 +33,7 @@ struct APIEndpoint {
         return defaultBaseURL
     }
 
-    // MARK: - API Endpoints
+    //  API Endpoints
 
     static let login =
         "authenticateUserForDevices"

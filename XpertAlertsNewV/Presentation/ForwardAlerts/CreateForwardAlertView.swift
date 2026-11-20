@@ -18,7 +18,7 @@ struct CreateForwardAlertView: View {
 
         VStack(spacing: 0) {
 
-            // MARK: - Custom Header
+            // Custom Header
 
             HStack(spacing: 12) {
 
@@ -45,13 +45,13 @@ struct CreateForwardAlertView: View {
 
             Divider()
 
-            // MARK: - Form Content
+            // Form Content
 
             ScrollView {
 
                 VStack(alignment: .leading, spacing: 20) {
 
-                    // MARK: - Application
+                 //Application
 
                     VStack(alignment: .leading, spacing: 8) {
 
@@ -108,7 +108,7 @@ struct CreateForwardAlertView: View {
                         }
                     }
 
-                    // MARK: - Users
+                   // Users
 
                     VStack(alignment: .leading, spacing: 8) {
 
@@ -163,7 +163,7 @@ struct CreateForwardAlertView: View {
                         }
                     }
 
-                    // MARK: - Selected User Email
+                   //Selected User Email
 
                     if viewModel.selectedUser != nil {
 
@@ -207,7 +207,7 @@ struct CreateForwardAlertView: View {
                         }
                     }
 
-                    // MARK: - Sort Order
+                   //Sort Order
 
                     VStack(alignment: .leading, spacing: 8) {
 
@@ -223,7 +223,7 @@ struct CreateForwardAlertView: View {
                             )
                     }
 
-                    // MARK: - Status
+                    //Status
 
                     VStack(alignment: .leading, spacing: 8) {
 
@@ -238,7 +238,7 @@ struct CreateForwardAlertView: View {
                         .pickerStyle(.segmented)
                     }
 
-                    // MARK: - Save Result
+                    // Save Result
 
                     if let saveMessage = viewModel.saveMessage,
                        !saveMessage.isEmpty {
@@ -248,7 +248,7 @@ struct CreateForwardAlertView: View {
                             .foregroundStyle(.green)
                     }
 
-                    // MARK: - Error Message
+                    // Error Message
 
                     if let errorMessage = viewModel.errorMessage,
                        !errorMessage.isEmpty,
@@ -259,7 +259,7 @@ struct CreateForwardAlertView: View {
                             .foregroundStyle(.red)
                     }
 
-                    // MARK: - Save Button
+                    // Save Button
 
                     Button {
 

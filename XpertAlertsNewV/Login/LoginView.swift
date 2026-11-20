@@ -21,7 +21,7 @@ struct LoginView: View {
     let coordinator: AppCoordinator
     let container: DIContainer
 
-    // MARK: - Responsive Sizes
+// Responsive Sizes
 
     @ScaledMetric(relativeTo: .body)
     private var taglineSize: CGFloat = 15
@@ -62,7 +62,7 @@ struct LoginView: View {
 
                     VStack(spacing: 22) {
 
-                        // MARK: - Settings Button
+                // Settings Button
 
                         HStack {
 
@@ -90,7 +90,7 @@ struct LoginView: View {
                             }
                         }
 
-                        // MARK: - Logo
+                   // Logo
 
                         VStack(spacing: 8) {
 
@@ -116,7 +116,7 @@ struct LoginView: View {
                         }
                         .padding(.top, 4)
 
-                        // MARK: - Login Card
+                   // Login Card
 
                         AppCard {
 
@@ -158,7 +158,7 @@ struct LoginView: View {
                             }
                         }
 
-                        // MARK: - Server Status
+                //Server Status
 
                         HStack(
                             alignment: .top,
@@ -198,7 +198,7 @@ struct LoginView: View {
                         .frame(maxWidth: .infinity, alignment: .center)
                         .multilineTextAlignment(.center)
 
-                        // MARK: - Version
+             //Version
 
                         Text("App Version · v1.0")
                             .font(.avenirRegular(size: versionTextSize))
@@ -225,7 +225,7 @@ struct LoginView: View {
         }
         .navigationBarHidden(true)
 
-        // MARK: - Login Error
+//Login Error
 
         .alert(
             "Authentication Failed",
@@ -251,7 +251,7 @@ struct LoginView: View {
             )
         }
 
-        // MARK: - Login Result
+// Login Result
 
         .onReceive(viewModel.$loginResult) { result in
 
@@ -264,7 +264,7 @@ struct LoginView: View {
         }
     }
 
-    // MARK: - Login Field
+// Login Field
 
     @ViewBuilder
     private func loginField(

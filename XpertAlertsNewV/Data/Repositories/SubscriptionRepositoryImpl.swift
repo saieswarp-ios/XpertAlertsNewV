@@ -15,7 +15,7 @@ final class SubscriptionRepositoryImpl: SubscriptionRepository {
         self.apiClient = apiClient
     }
 
-    // MARK: - Get Subscriptions
+    // Get Subscriptions
 
     func getSubscriptions(
         userId: Int,
@@ -87,7 +87,7 @@ final class SubscriptionRepositoryImpl: SubscriptionRepository {
         return response
     }
 
-    // MARK: - Get Subscription Details
+    // Get Subscription Details
 
     func getSubscriptionDetails(
         subscriptionId: Int,
@@ -152,7 +152,7 @@ final class SubscriptionRepositoryImpl: SubscriptionRepository {
         return result
     }
 
-    // MARK: - Check Duplicate Subscription
+    //  Check Duplicate Subscription
 
     func checkDuplicateSubscription(
         userId: Int,
@@ -232,7 +232,7 @@ final class SubscriptionRepositoryImpl: SubscriptionRepository {
         return result
     }
 
-    // MARK: - Save Subscription
+    //  Save Subscription
 
     func saveSubscription(
         userSubId: Int,

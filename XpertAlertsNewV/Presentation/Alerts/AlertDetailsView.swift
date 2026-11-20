@@ -8,7 +8,7 @@ struct AlertDetailsView: View {
     let container: DIContainer
     let isArchived: Bool
     
-    // MARK: - Alert Presentation
+ //Alert Presentation
     
     private enum ActiveAlert: Identifiable {
         case confirmation
@@ -22,7 +22,7 @@ struct AlertDetailsView: View {
         }
     }
     
-    // MARK: - State
+//State
     
     @State private var isLoadingActions = true
     @State private var alertButtonDetails: [GetAlertButtonDetailsResponse] = []
@@ -46,7 +46,7 @@ struct AlertDetailsView: View {
     @State private var shouldLogout = false
     @State private var shouldReturnToAlerts = false
     
-    // MARK: - Body
+// Body
     
     var body: some View {
         VStack(spacing: 0) {
@@ -202,7 +202,7 @@ struct AlertDetailsView: View {
         }
     }
     
-    // MARK: - Section Title
+  //Section Title
     
     private func sectionTitle(_ title: String) -> some View {
         Text(title)
@@ -212,7 +212,7 @@ struct AlertDetailsView: View {
             .foregroundStyle(Color.themeOrange)
     }
     
-    // MARK: - Available Actions
+   // Available Actions
     
     
     private var availableActionsSection: some View {
@@ -318,7 +318,7 @@ struct AlertDetailsView: View {
     }
     
     
-    // MARK: - Load Actions
+// Load Actions
     
     
     
@@ -422,7 +422,7 @@ struct AlertDetailsView: View {
     
     
     
-    // MARK: - Parse API Values
+   // Parse API Values
     
     private func splitValues(_ value: String?) -> [String] {
         guard
@@ -443,7 +443,7 @@ struct AlertDetailsView: View {
             }
     }
     
-    // MARK: - Select Action
+// Select Action
     
     private func selectAction(_ caption: String) {
         guard let details = alertButtonDetails.first else {
@@ -487,7 +487,7 @@ struct AlertDetailsView: View {
         }
     }
     
-    // MARK: - Clear Pending Action
+  // Clear Pending Action
     
     private func clearPendingAction() {
         selectedAction = ""
@@ -496,7 +496,7 @@ struct AlertDetailsView: View {
         pendingPrompt = ""
     }
     
-    // MARK: - Execute Action
+ // Execute Action
     
     @MainActor
     private func executeSelectedAction() async {
@@ -553,7 +553,7 @@ struct AlertDetailsView: View {
         activeAlert = .result
     }
     
-    // MARK: - Handle Result
+// Handle Result
     
     private func handleResultDismissal() {
         let shouldDoLogout = shouldLogout

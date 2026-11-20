@@ -26,10 +26,10 @@ final class AlertsViewModel: ObservableObject {
         self.processDynamicActionsUseCase = processDynamicActionsUseCase
     }
 
-    // MARK: - Load Alerts
+    //Load Alerts
 
    
-    // MARK: - Load Alerts
+    //Load Alerts
 
     func loadAlerts() {
         // Clear the previous error, but preserve existing alerts.
@@ -110,7 +110,7 @@ final class AlertsViewModel: ObservableObject {
         }
     }
 
-    // MARK: - Load Alert Button Details
+    // Load Alert Button Details
 
     func loadAlertButtonDetails(
         applicationId: Int,
@@ -132,7 +132,7 @@ final class AlertsViewModel: ObservableObject {
         }
     }
 
-    // MARK: - Process Dynamic Actions
+    // Process Dynamic Actions
 
     func processDynamicActions(
         applicationId: Int,

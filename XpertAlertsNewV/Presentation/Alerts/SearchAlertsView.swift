@@ -21,7 +21,7 @@ struct SearchAlertsView: View {
 
         VStack(spacing: 0) {
 
-            // MARK: - Header
+            // Header
 
             HStack(spacing: 12) {
 
@@ -72,7 +72,7 @@ struct SearchAlertsView: View {
 
             Divider()
 
-            // MARK: - Search Form
+            //Search Form
 
             Form {
 
@@ -83,12 +83,16 @@ struct SearchAlertsView: View {
                         selection: $viewModel.startDate,
                         displayedComponents: .date
                     )
+                    .controlSize(.small)
+                    .scaleEffect(0.90)
 
                     DatePicker(
                         "End Date",
                         selection: $viewModel.endDate,
                         displayedComponents: .date
                     )
+                    .controlSize(.small)
+                    .scaleEffect(0.90)
                 }
 
                 Section("Search Keyword") {
@@ -100,7 +104,7 @@ struct SearchAlertsView: View {
                     .textInputAutocapitalization(.never)
                 }
 
-                // MARK: - Alert Definition
+                // Alert Definition
 
                 Section("Alert Definition") {
 
@@ -119,7 +123,7 @@ struct SearchAlertsView: View {
                     }
                 }
 
-                // MARK: - Application
+                // Application
 
                 Section("Application") {
 
@@ -137,7 +141,7 @@ struct SearchAlertsView: View {
                     }
                 }
 
-                // MARK: - Email Sent
+                // Email Sent
 
                 Section("Email Sent") {
 
@@ -175,7 +179,7 @@ struct SearchAlertsView: View {
                     }
                 }
 
-                // MARK: - Search Button
+                // Search Button
 
                 Section {
 

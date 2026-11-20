@@ -13,8 +13,7 @@ struct AboutView: View {
 
     var body: some View {
         VStack(spacing: 0) {
-
-            // MARK: - Header
+// Header
 
             HStack(spacing: 12) {
 
@@ -52,7 +51,7 @@ struct AboutView: View {
             .padding(.top, 12)
             .padding(.bottom, 16)
 
-            // MARK: - About Content
+   // About Content
 
             Spacer()
 

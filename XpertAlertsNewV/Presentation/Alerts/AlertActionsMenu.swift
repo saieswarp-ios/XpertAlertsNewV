@@ -15,7 +15,7 @@ struct AlertActionsMenu: View {
 
     @ObservedObject var viewModel: AlertsViewModel
 
-    // MARK: - Alert Presentation
+// Alert Presentation
 
     private enum ActiveAlert: Identifiable {
         case confirmation
@@ -29,7 +29,7 @@ struct AlertActionsMenu: View {
         }
     }
 
-    // MARK: - State
+// State
 
     @State private var alertButtonDetails: [GetAlertButtonDetailsResponse] = []
     @State private var actionOptions: [String] = []
@@ -46,7 +46,7 @@ struct AlertActionsMenu: View {
     @State private var actionResultMessage = ""
     @State private var shouldLogout = false
 
-    // MARK: - Body
+    // Body
 
     var body: some View {
 
@@ -124,7 +124,7 @@ struct AlertActionsMenu: View {
         }
     }
 
-    // MARK: - Load Actions
+  // Load Actions
 
     @MainActor
     private func loadAlertActions() async {
@@ -145,7 +145,7 @@ struct AlertActionsMenu: View {
         isLoadingActions = false
     }
 
-    // MARK: - Parse API Values
+// Parse API Values
 
     private func splitValues(_ value: String?) -> [String] {
 
@@ -167,7 +167,7 @@ struct AlertActionsMenu: View {
             }
     }
 
-    // MARK: - Select Action
+// Select Action
 
     private func selectAction(_ caption: String) {
 
@@ -202,7 +202,7 @@ struct AlertActionsMenu: View {
         }
     }
 
-    // MARK: - Clear Pending Action
+ // Clear Pending Action
 
     private func clearPendingAction() {
 
@@ -211,7 +211,7 @@ struct AlertActionsMenu: View {
         pendingPrompt = ""
     }
 
-    // MARK: - Execute Action
+// Execute Action
 
     @MainActor
     private func executeSelectedAction() async {
@@ -276,7 +276,7 @@ struct AlertActionsMenu: View {
         activeAlert = .result
     }
 
-    // MARK: - Handle Result
+  // Handle Result
 
     private func handleResultDismissal() {
 

@@ -19,7 +19,7 @@ final class ForwardAlertsRepositoryImpl: ForwardAlertsRepository {
         self.userRepository = userRepository
     }
 
-    // MARK: - Get Applications
+    //  Get Applications
 
     func getApplications() async throws -> [ForwardApplication] {
 
@@ -73,7 +73,7 @@ final class ForwardAlertsRepositoryImpl: ForwardAlertsRepository {
         }
     }
 
-    // MARK: - Get Users
+    // Get Users
 
     func getUsers(
         applicationId: Int?
@@ -136,7 +136,7 @@ final class ForwardAlertsRepositoryImpl: ForwardAlertsRepository {
         }
     }
 
-    // MARK: - Get User Email
+    //  Get User Email
 
 //    func getUserEmail(
 //        userId: Int
@@ -250,7 +250,7 @@ final class ForwardAlertsRepositoryImpl: ForwardAlertsRepository {
         }
     }
 
-    // MARK: - Get Forward Alerts
+    //  Get Forward Alerts
 
     func getForwardAlerts() async throws -> [ForwardAlert] {
 
@@ -347,7 +347,7 @@ final class ForwardAlertsRepositoryImpl: ForwardAlertsRepository {
         }
     }
 
-    // MARK: - Save Mapped User
+    // Save Mapped User
 
     func saveMappedUser(
         mappedUserId: Int,
@@ -430,7 +430,7 @@ final class ForwardAlertsRepositoryImpl: ForwardAlertsRepository {
     
     
     
-    // MARK: - Delete Forward Alert User
+    //  Delete Forward Alert User
 
     func deleteForwardAlertUser(
         forwardAlertId: Int,

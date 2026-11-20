@@ -17,8 +17,7 @@ struct BuildSettingsView: View {
     var body: some View {
 
         VStack(spacing: 0) {
-
-            // MARK: - Header
+// Header
 
             HStack(spacing: 12) {
 
@@ -28,7 +27,7 @@ struct BuildSettingsView: View {
 
                     Image(systemName: "chevron.left")
                         .font(.system(size: 18, weight: .semibold))
-                        .foregroundStyle(Color.themeOrange)
+                        .foregroundStyle(Color.themeGreen)
                         .frame(width: 28, height: 40)
 
                 }
@@ -36,16 +35,16 @@ struct BuildSettingsView: View {
 
                 Image(systemName: "gearshape.fill")
                     .font(.system(size: 20, weight: .semibold))
-                    .foregroundStyle(Color.themeOrange)
+                    .foregroundStyle(Color.themeGreen)
                     .frame(width: 40, height: 40)
-                    .background(Color.themeOrange.opacity(0.10))
+                    .background(Color.themeGreen.opacity(0.15))
                     .clipShape(
                         RoundedRectangle(cornerRadius: 10)
                     )
                     .overlay {
                         RoundedRectangle(cornerRadius: 10)
                             .stroke(
-                                Color.themeOrange.opacity(0.30),
+                                Color.themeGreen.opacity(0.5),
                                 lineWidth: 1
                             )
                     }
@@ -57,7 +56,7 @@ struct BuildSettingsView: View {
 
                     Text("Build Settings")
                         .font(.avenirBold(size: 21))
-                        .foregroundStyle(Color.themeOrange)
+                        .foregroundStyle(Color.themeGreen)
 
                     Text("Server Configuration")
                         .font(.avenirRegular(size: 12))
@@ -73,7 +72,7 @@ struct BuildSettingsView: View {
 
             Divider()
 
-            // MARK: - Content
+            // Content
 
             ScrollView {
 
@@ -98,7 +97,7 @@ struct BuildSettingsView: View {
                                         weight: .semibold
                                     )
                                 )
-                                .foregroundStyle(Color.themeOrange)
+                                .foregroundStyle(Color.themeBlue)
 
                             Text("Server URL")
                                 .font(.avenirBold(size: 17))
@@ -313,7 +312,7 @@ struct BuildSettingsView: View {
         .background(Color(.systemGroupedBackground))
         .navigationBarBackButtonHidden(true)
 
-        // MARK: - Save Confirmation
+        // Save Confirmation
 
         .alert(
             "Save Base URL?",
@@ -336,7 +335,7 @@ struct BuildSettingsView: View {
 
     }
 
-    // MARK: - Test Connection
+    // Test Connection
 
     private func testConnection() async {
 
@@ -425,7 +424,7 @@ struct BuildSettingsView: View {
 
     }
 
-    // MARK: - Save URL
+    // Save URL
 
     private func saveURL() {
 

@@ -19,7 +19,7 @@
 //    var body: some View {
 //        VStack(spacing: 0) {
 //
-//            // MARK: - Header
+//        //Header
 //            HStack(spacing: 12) {
 //
 ////                Image(systemName: "bell.fill")
@@ -91,7 +91,7 @@
 //            .padding(.bottom, 10)
 //          
 //            Divider()
-//            // MARK: - Search Alerts
+//          // Search Alerts
 //
 ////            Button {
 ////                coordinator.showSearchAlerts()
@@ -116,7 +116,7 @@
 ////
 ////            Divider()
 //
-//            // MARK: - Loading State
+//          // Loading State
 //
 //            if viewModel.isLoading && viewModel.alerts.isEmpty {
 //
@@ -124,7 +124,7 @@
 //                ProgressView("Loading alerts...")
 //                Spacer()
 //
-//            // MARK: - Error State
+//        // Error State
 //
 //            } else if viewModel.alerts.isEmpty,
 //                      let errorMessage = viewModel.errorMessage {
@@ -152,7 +152,7 @@
 //
 //                Spacer()
 //
-//            // MARK: - Empty State
+//           // Empty State
 //
 //            } else if viewModel.alerts.isEmpty {
 //
@@ -176,7 +176,7 @@
 //
 //                Spacer()
 //
-//            // MARK: - Date-Grouped Alerts
+//         // Date-Grouped Alerts
 //
 //            } else {
 //
@@ -256,7 +256,7 @@
 //        }
 //    }
 //
-//    // MARK: - Group Alerts Using API groupBy
+//   //Group Alerts Using API groupBy
 //
 //    private var groupedAlerts: [AlertDateGroup] {
 //
@@ -297,7 +297,7 @@
 //        .sorted { $0.sortDate > $1.sortDate }
 //    }
 //
-//    // MARK: - Date Parsing
+//   // Date Parsing
 //
 //    private static func parseDate(_ value: String) -> Date? {
 //
@@ -324,7 +324,7 @@
 //    }
 //}
 //
-//// MARK: - Date Group
+//// // Date Group
 //
 //private struct AlertDateGroup {
 //    let dateKey: String
@@ -333,7 +333,7 @@
 //    let alerts: [Alert]
 //}
 //
-//// MARK: - Old-Style Alert Card
+////// Old-Style Alert Card
 //
 //private struct LegacyAlertCard: View {
 //
@@ -341,7 +341,7 @@
 //    let message: String
 //    let date: String
 //
-//    // MARK: - Parse Alert Date
+//    // Parse Alert Date
 //
 //    private var parsedAlertDate: Date? {
 //        let formatter = DateFormatter()
@@ -350,7 +350,7 @@
 //        return formatter.date(from: date)
 //    }
 //
-//    // MARK: - Display Date
+//    //  Display Date
 //
 //    private var displayDate: String {
 //        guard let parsedAlertDate else {
@@ -364,7 +364,7 @@
 //        return formatter.string(from: parsedAlertDate)
 //    }
 //
-//    // MARK: - Display Time
+//    // Display Time
 //
 //    private var displayTime: String {
 //        guard let parsedAlertDate else {
@@ -378,10 +378,10 @@
 //        return formatter.string(from: parsedAlertDate)
 //    }
 //
-//    // MARK: - Clean HTML Message
+//    // Clean HTML Message
 //
 //    
-//    // MARK: - Clean HTML Message
+//    //  Clean HTML Message
 //
 //    private var formattedMessage: String {
 //        var cleaned = message
@@ -432,7 +432,7 @@
 //
 //    
 //
-//    // MARK: - Card UI
+//    // Card UI
 //
 //    var body: some View {
 //        HStack(spacing: 0) {
@@ -517,13 +517,13 @@ struct AlertsView: View {
         )
     }
 
-    // MARK: - Body
+    //Body
 
     var body: some View {
 
         VStack(spacing: 0) {
 
-            // MARK: - Header
+            //  Header
 
             HStack(spacing: 12) {
 
@@ -550,10 +550,14 @@ struct AlertsView: View {
                 Button {
                     coordinator.showSearchAlerts()
                 } label: {
-                    Image(systemName: "magnifyingglass")
-                        .font(.system(size: 18, weight: .semibold))
+                    HStack(spacing: 7) {
+                        Image(systemName: "magnifyingglass")
+                            .font(.avenirDemiBold(size: 18))
+                        Text("Search")
+                        .font(.avenirDemiBold(size: 18))                    }
                         .foregroundStyle(Color.themeOrange)
-                        .frame(width: 40, height: 40)
+                       // .frame(width: 40, height: 40)
+                        .frame(minWidth: 100, minHeight: 40)
                         .background(Color.themeOrange.opacity(0.15))
                         .clipShape(RoundedRectangle(cornerRadius: 12))
                         .overlay(
@@ -573,7 +577,7 @@ struct AlertsView: View {
 
             Divider()
 
-            // MARK: - Alerts ScrollView
+            //  Alerts ScrollView
 
             GeometryReader { geometry in
 
@@ -581,7 +585,7 @@ struct AlertsView: View {
 
                     Group {
 
-                        // MARK: - Loading State
+              // Loading State
 
                         if viewModel.isLoading && viewModel.alerts.isEmpty {
 
@@ -595,7 +599,7 @@ struct AlertsView: View {
 
                         }
 
-                        // MARK: - Error State
+                        // Error State
 
                         else if viewModel.alerts.isEmpty,
                                 let errorMessage = viewModel.errorMessage {
@@ -624,7 +628,7 @@ struct AlertsView: View {
 
                         }
 
-                        // MARK: - Empty State
+                        //Empty State
 
                         else if viewModel.alerts.isEmpty {
 
@@ -652,7 +656,7 @@ struct AlertsView: View {
 
                         }
 
-                        // MARK: - Date-Grouped Alerts
+                        // Date-Grouped Alerts
 
                         else {
 
@@ -725,7 +729,7 @@ struct AlertsView: View {
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .background(Color(.systemBackground))
 
-        // MARK: - Load Alerts
+        // Load Alerts
 
         .onAppear {
 
@@ -741,7 +745,7 @@ struct AlertsView: View {
             }
         }
 
-        // MARK: - Refresh After Alert Action
+        // Refresh After Alert Action
 
         .onChange(of: coordinator.refreshAlertsAfterAction) { _, needsRefresh in
 
@@ -757,7 +761,7 @@ struct AlertsView: View {
         }
     }
 
-    // MARK: - Group Alerts Using API groupBy
+    // Group Alerts Using API groupBy
 
     private var groupedAlerts: [AlertDateGroup] {
 
@@ -805,7 +809,7 @@ struct AlertsView: View {
         }
     }
 
-    // MARK: - Date Parsing
+    // Date Parsing
 
     private static func parseDate(_ value: String) -> Date? {
 
@@ -833,7 +837,7 @@ struct AlertsView: View {
     }
 }
 
-// MARK: - Date Group
+//Date Group
 
 private struct AlertDateGroup {
 
@@ -843,7 +847,7 @@ private struct AlertDateGroup {
     let alerts: [Alert]
 }
 
-// MARK: - Old-Style Alert Card
+//Old-Style Alert Card
 
 private struct LegacyAlertCard: View {
 
@@ -851,7 +855,7 @@ private struct LegacyAlertCard: View {
     let message: String
     let date: String
 
-    // MARK: - Parse Alert Date
+    //Parse Alert Date
 
     private var parsedAlertDate: Date? {
 
@@ -862,7 +866,7 @@ private struct LegacyAlertCard: View {
         return formatter.date(from: date)
     }
 
-    // MARK: - Display Date
+    //Display Date
 
     private var displayDate: String {
 
@@ -877,7 +881,7 @@ private struct LegacyAlertCard: View {
         return formatter.string(from: parsedAlertDate)
     }
 
-    // MARK: - Display Time
+    // Display Time
 
     private var displayTime: String {
 
@@ -892,7 +896,7 @@ private struct LegacyAlertCard: View {
         return formatter.string(from: parsedAlertDate)
     }
 
-    // MARK: - Clean HTML Message
+    // Clean HTML Message
 
     private var formattedMessage: String {
 
@@ -947,7 +951,7 @@ private struct LegacyAlertCard: View {
             .trimmingCharacters(in: .whitespacesAndNewlines)
     }
 
-    // MARK: - Card UI
+    // Card UI
 
     var body: some View {
 

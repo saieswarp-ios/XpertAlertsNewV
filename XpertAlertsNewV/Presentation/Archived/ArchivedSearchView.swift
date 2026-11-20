@@ -1,7 +1,7 @@
 
 import SwiftUI
 
-// MARK: - Archived Search Filters
+// Archived Search Filters
 
 struct ArchivedSearchFilters {
 
@@ -14,7 +14,7 @@ struct ArchivedSearchFilters {
 
 }
 
-// MARK: - Archived Search View
+//Archived Search View
 
 struct ArchivedSearchView: View {
 
@@ -38,13 +38,13 @@ struct ArchivedSearchView: View {
 
     @State private var showDateError = false
 
-    // MARK: - Body
+    //Body
 
     var body: some View {
 
         VStack(spacing: 0) {
 
-            // MARK: Header
+            //Header
 
             HStack(spacing: 12) {
 
@@ -98,7 +98,7 @@ struct ArchivedSearchView: View {
 
             Divider()
 
-            // MARK: Search Fields
+            //Search Fields
 
             ScrollView {
 
@@ -123,6 +123,7 @@ struct ArchivedSearchView: View {
                         )
 
                     }
+                    //.scaleEffect(0.90, anchor: .top)
 
                     // Keyword
 
@@ -189,7 +190,7 @@ struct ArchivedSearchView: View {
                         ]
                     )
 
-                    // MARK: Search Button
+                    // Search Button
 
                     Button {
                         searchArchivedAlerts()
@@ -231,7 +232,7 @@ struct ArchivedSearchView: View {
         .background(Color(.systemBackground))
         .navigationBarBackButtonHidden(true)
 
-        // MARK: Date Validation Alert
+        // Date Validation Alert
 
         .alert(
             "Invalid Date Range",
@@ -248,7 +249,7 @@ struct ArchivedSearchView: View {
 
     }
 
-    // MARK: - Section Title
+    //Section Title
 
     private func sectionTitle(_ title: String) -> some View {
 
@@ -258,7 +259,7 @@ struct ArchivedSearchView: View {
 
     }
 
-    // MARK: - Date Field (Through)
+    // Date Field (Through)
 
     private func dateField(
         title: String,
@@ -280,8 +281,14 @@ struct ArchivedSearchView: View {
                 in: range,
                 displayedComponents: .date
             )
+//            .labelsHidden()
+//            .tint(Color.themeOrange)
+            
             .labelsHidden()
-            .tint(Color.themeOrange)
+                 .datePickerStyle(.compact)
+                 .controlSize(.small)
+                 .scaleEffect(0.85, anchor: .trailing)
+                 .tint(Color.themeOrange)
 
         }
         .padding(.horizontal, 14)
@@ -293,7 +300,7 @@ struct ArchivedSearchView: View {
 
     }
 
-    // MARK: - Date Field (From)
+    // Date Field (From)
 
     private func dateField(
         title: String,
@@ -316,6 +323,9 @@ struct ArchivedSearchView: View {
                 displayedComponents: .date
             )
             .labelsHidden()
+            .datePickerStyle(.compact)
+            .controlSize(.small)
+            .scaleEffect(0.85, anchor: .trailing)
             .tint(Color.themeOrange)
 
         }
@@ -328,7 +338,7 @@ struct ArchivedSearchView: View {
 
     }
 
-    // MARK: - Custom Dropdown
+    // Custom Dropdown
 
     private func customPicker(
         title: String,
@@ -396,7 +406,7 @@ struct ArchivedSearchView: View {
 
     }
 
-    // MARK: - Search Action
+    // Search Action
 
     private func searchArchivedAlerts() {
 
@@ -432,7 +442,7 @@ struct ArchivedSearchView: View {
 
     }
 
-    // MARK: - Reset Filters
+    // Reset Filters
 
     private func resetFilters() {
 

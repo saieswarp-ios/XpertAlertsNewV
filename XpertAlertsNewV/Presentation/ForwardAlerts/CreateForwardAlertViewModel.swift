@@ -5,7 +5,7 @@ import Combine
 @MainActor
 final class CreateForwardAlertViewModel: ObservableObject {
 
-    // MARK: - Dependencies
+   // Dependencies
 
     private let getApplicationsUseCase: GetForwardApplicationsUseCase
     private let getUsersUseCase: GetForwardUsersUseCase
@@ -14,33 +14,33 @@ final class CreateForwardAlertViewModel: ObservableObject {
     private let duplicateForwardAlertUseCase: DuplicateForwardAlertUseCase
     private let userRepository: UserRepository
 
-    // MARK: - Applications
+   // Applications
 
     @Published var applications: [ForwardApplication] = []
     @Published var selectedApplication: ForwardApplication?
 
-    // MARK: - Users
+   // Users
 
     @Published var users: [ForwardUser] = []
     @Published var selectedUser: ForwardUser?
 
-    // MARK: - Email
+    // Email
 
     @Published var selectedEmail: String = ""
 
-    // MARK: - Loading
+    // Loading
 
     @Published var isLoading = false
     @Published var isLoadingUsers = false
     @Published var isLoadingEmail = false
     @Published var isSaving = false
 
-    // MARK: - Error / Message
+  // Error / Message
 
     @Published var errorMessage: String?
     @Published var saveMessage: String?
 
-    // MARK: - Init
+   // Init
 
     init(
         getApplicationsUseCase: GetForwardApplicationsUseCase,
@@ -59,7 +59,7 @@ final class CreateForwardAlertViewModel: ObservableObject {
         self.userRepository = userRepository
     }
 
-    // MARK: - Load Applications
+    // Load Applications
 
     func loadApplications() async {
 
@@ -95,7 +95,7 @@ final class CreateForwardAlertViewModel: ObservableObject {
         isLoading = false
     }
 
-    // MARK: - Select Application
+   //Select Application
 
     func selectApplication(_ application: ForwardApplication) async {
 
@@ -110,7 +110,7 @@ final class CreateForwardAlertViewModel: ObservableObject {
         await loadUsers(applicationId: application.id)
     }
 
-    // MARK: - Load Users
+   // Load Users
 
     private func loadUsers(applicationId: Int) async {
 
@@ -148,7 +148,7 @@ final class CreateForwardAlertViewModel: ObservableObject {
         isLoadingUsers = false
     }
 
-    // MARK: - Select User
+   //Select User
 
     func selectUser(_ user: ForwardUser) {
 
@@ -161,7 +161,7 @@ final class CreateForwardAlertViewModel: ObservableObject {
         loadUserEmail(userId: user.id)
     }
 
-    // MARK: - Load User Email
+    //Load User Email
 
     private func loadUserEmail(userId: Int) {
 
@@ -193,7 +193,7 @@ final class CreateForwardAlertViewModel: ObservableObject {
         }
     }
 
-    // MARK: - Save Mapped User
+    // Save Mapped User
 
     func saveMappedUser(
         sortOrder: Int,
@@ -220,7 +220,7 @@ final class CreateForwardAlertViewModel: ObservableObject {
 
         do {
 
-            // MARK: - Check Duplicate
+            // Check Duplicate
 
             guard let user = userRepository.getUser() else {
 
@@ -247,7 +247,7 @@ final class CreateForwardAlertViewModel: ObservableObject {
             )
             print("==============================================")
 
-            // MARK: - Stop if Duplicate
+           // Stop if Duplicate
 
             guard duplicateResponse.duplicateCount == 0 else {
 
@@ -256,7 +256,7 @@ final class CreateForwardAlertViewModel: ObservableObject {
                 return
             }
 
-            // MARK: - Save Mapped User
+           // Save Mapped User
 
             let response = try await saveMappedUserUseCase.execute(
                 mappedUserId: selectedUser.id,

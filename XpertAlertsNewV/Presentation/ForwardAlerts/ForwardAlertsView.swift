@@ -8,12 +8,12 @@ struct ForwardAlertsView: View {
 
     let createForwardAlertViewModel: CreateForwardAlertViewModel
 
-    // MARK: - Multi-selection
+//Multi-selection
 
     @State private var selectedAlertIDs: Set<Int> = []
     @State private var isSelectionMode = false
 
-    // MARK: - Delete Confirmation
+   // Delete Confirmation
 
     @State private var alertToDelete: ForwardAlert?
     @State private var showDeleteConfirmation = false
@@ -36,10 +36,10 @@ struct ForwardAlertsView: View {
 
             VStack(alignment: .leading, spacing: 20) {
 
-                // MARK: - Top Actions
+                // Top Actions
 
                
-                // MARK: - Top Actions
+               // Top Actions
 
                HStack(spacing: 12) {
 
@@ -67,7 +67,7 @@ struct ForwardAlertsView: View {
                        )
                    } label: {
                        HStack(spacing: 6) {
-                         //  Image(systemName: "plus")
+                          Image(systemName: "plus")
                            Text("Create")
                        }
                        .font(.avenirDemiBold(size: 15))
@@ -85,11 +85,11 @@ struct ForwardAlertsView: View {
                    .buttonStyle(.plain)
                }
 
-                // MARK: - Existing Forward Alerts
+               // Existing Forward Alerts
 
                 VStack(alignment: .leading, spacing: 12) {
 
-                    // MARK: - Select / Cancel
+                   // Select / Cancel
 
                     HStack {
                         Button(isSelectionMode ? "Cancel" : "Select") {
@@ -101,7 +101,7 @@ struct ForwardAlertsView: View {
                         Spacer()
                     }
 
-                    // MARK: - Selection Controls
+                  // Selection Controls
 
                     if isSelectionMode {
 
@@ -133,7 +133,7 @@ struct ForwardAlertsView: View {
                         .disabled(selectedAlertIDs.isEmpty)
                     }
 
-                    // MARK: - Forward Alerts List
+                   // Forward Alerts List
 
                     if viewModel.forwardAlerts.isEmpty {
 
@@ -254,7 +254,7 @@ struct ForwardAlertsView: View {
                     }
                 }
 
-                // MARK: - Delete Result
+                // Delete Result
 
                 if let deleteResultMessage = deleteResultMessage {
 
@@ -291,7 +291,7 @@ struct ForwardAlertsView: View {
                     )
                 }
 
-                // MARK: - Existing Error
+               //Existing Error
 
                 if let errorMessage = viewModel.errorMessage {
 
@@ -345,7 +345,7 @@ struct ForwardAlertsView: View {
         }
     }
 
-    // MARK: - Status Label
+   //Status Label
 
     private func statusLabel(for alert: ForwardAlert) -> some View {
 
@@ -358,7 +358,7 @@ struct ForwardAlertsView: View {
             )
     }
 
-    // MARK: - Perform Delete
+    // Perform Delete
 
     @MainActor
     private func performDelete() async {
