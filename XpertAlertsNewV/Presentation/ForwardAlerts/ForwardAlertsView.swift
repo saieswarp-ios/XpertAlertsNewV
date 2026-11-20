@@ -47,8 +47,13 @@ struct ForwardAlertsView: View {
                        .font(.system(size: 18, weight: .semibold))
                        .foregroundStyle(Color.themeOrange)
                        .frame(width: 40, height: 40)
-                       .background(Color.themeOrange.opacity(0.12))
+                       .background(Color.themeOrange.opacity(0.15))
                        .clipShape(RoundedRectangle(cornerRadius: 12))
+                       .overlay(
+                                RoundedRectangle(cornerRadius: 12)
+                               .stroke(
+                                       Color.themeOrange.opacity(0.5),
+                                       lineWidth: 1 ))
 
                    Text("Forward Alerts")
                        .font(.avenirBold(size: 21))
@@ -62,15 +67,20 @@ struct ForwardAlertsView: View {
                        )
                    } label: {
                        HStack(spacing: 6) {
-                           Image(systemName: "plus")
+                         //  Image(systemName: "plus")
                            Text("Create")
                        }
                        .font(.avenirDemiBold(size: 15))
                        .foregroundStyle(Color.themeOrange)
                        .frame(height: 40)
                        .padding(.horizontal, 12)
-                       .background(Color.themeOrange.opacity(0.12))
+                       .background(Color.themeOrange.opacity(0.15))
                        .clipShape(RoundedRectangle(cornerRadius: 12))
+                       .overlay(
+                                RoundedRectangle(cornerRadius: 12)
+                               .stroke(
+                                       Color.themeOrange.opacity(0.5),
+                                       lineWidth: 1 ))
                    }
                    .buttonStyle(.plain)
                }
@@ -196,22 +206,40 @@ struct ForwardAlertsView: View {
 
                                 // Delete
 
+//                                Button {
+//
+//                                    alertToDelete = alert
+//                                    isBulkDelete = false
+//                                    showDeleteConfirmation = true
+//
+//                                } label: {
+//
+//                                    HStack {
+//                                        Image(systemName: "trash")
+//                                        Text("Delete")
+//                                    }
+//                                    .font(.avenirRegular(size: 12))
+//                                    .foregroundStyle(.red)
+//                                }
+//                                .buttonStyle(.plain)
+                                
+                                
+                                
+                                // Remove Mapped User
                                 Button {
-
                                     alertToDelete = alert
                                     isBulkDelete = false
                                     showDeleteConfirmation = true
-
                                 } label: {
-
                                     HStack {
-                                        Image(systemName: "trash")
-                                        Text("Delete")
+                                        Image(systemName: "person.crop.circle.badge.minus")
+                                        Text("Remove")
                                     }
-                                    .font(.avenirRegular(size: 12))
+                                    .font(.avenirMedium(size: 12))
                                     .foregroundStyle(.red)
                                 }
                                 .buttonStyle(.plain)
+                                
                             }
                             .padding(16)
                             .frame(

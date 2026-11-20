@@ -30,8 +30,13 @@ struct SubscriptionsView: View {
                     .font(.system(size: 20, weight: .semibold))
                     .foregroundStyle(Color.themeOrange)
                     .frame(width: 44, height: 44)
-                    .background(Color.themeOrange.opacity(0.12))
+                    .background(Color.themeOrange.opacity(0.15))
                     .clipShape(RoundedRectangle(cornerRadius: 12))
+                    .overlay(
+                             RoundedRectangle(cornerRadius: 12)
+                            .stroke(
+                                    Color.themeOrange.opacity(0.5),
+                                    lineWidth: 1 ))
 
                 Text("Subscriptions")
                     .font(.avenirBold(size: 21))
@@ -62,10 +67,17 @@ struct SubscriptionsView: View {
                 } label: {
                     Image(systemName: "plus")
                         .font(.system(size: 18, weight: .semibold))
-                        .foregroundStyle(.white)
+                        .foregroundStyle(Color.themeOrange)
                         .frame(width: 54, height: 44)
-                        .background(Color.themeOrange)
+                        .background(Color.themeOrange.opacity(0.15))
                         .clipShape(RoundedRectangle(cornerRadius: 10))
+                        .overlay(
+                                 RoundedRectangle(cornerRadius: 10)
+                                .stroke(
+                                        Color.themeOrange.opacity(0.5),
+                                        lineWidth: 1 ))
+                                        
+                                         
                 }
                 .buttonStyle(.plain)
                 .accessibilityLabel("Create Subscription")
@@ -94,8 +106,13 @@ struct SubscriptionsView: View {
                         .font(.system(size: 18, weight: .semibold))
                         .foregroundStyle(Color.themeOrange)
                         .frame(width: 44, height: 44)
-                        .background(Color.themeOrange.opacity(0.12))
+                        .background(Color.themeOrange.opacity(0.15))
                         .clipShape(RoundedRectangle(cornerRadius: 12))
+                        .overlay(
+                                 RoundedRectangle(cornerRadius: 12)
+                                .stroke(
+                                        Color.themeOrange.opacity(0.5),
+                                        lineWidth: 1 ))
                 }
                 .buttonStyle(.plain)
                 .accessibilityLabel("Search Subscriptions")
@@ -160,12 +177,18 @@ struct SubscriptionsView: View {
                     LazyVStack(spacing: 0) {
 
                         ForEach(viewModel.subscriptions) { subscription in
-
                             NavigationLink {
-                                SubscriptionDetailView(
-                                    subscription: subscription,
-                                    viewModel: viewModel,
-                                    container: container
+                                CreateSubscriptionView(
+                                    getApplicationsUseCase: container.getApplicationsUseCase,
+                                    getAlertDefinitionsUseCase: container.getAlertDefinitionsUseCase,
+                                    userRepository: container.userRepository,
+                                    saveSubscriptionUseCase: container.saveSubscriptionUseCase,
+                                    getDuplicateSubscriptionUseCase: container.getDuplicateSubscriptionUseCase,
+                                    subscriptionToEdit: subscription,
+                                    getSubscriptionDetailsUseCase: container.getSubscriptionDetailsUseCase,
+                                    onSaveSuccess: {
+                                        viewModel.loadSubscriptions()
+                                    }
                                 )
                             } label: {
                                 SubscriptionRow(

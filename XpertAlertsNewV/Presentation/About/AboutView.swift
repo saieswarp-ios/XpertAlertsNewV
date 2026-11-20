@@ -34,9 +34,13 @@ struct AboutView: View {
                     .font(.system(size: 18, weight: .semibold))
                     .foregroundStyle(themeOrange)
                     .frame(width: 40, height: 40)
-                    .background(themeOrange.opacity(0.12))
+                    .background(themeOrange.opacity(0.15))
                     .clipShape(RoundedRectangle(cornerRadius: 12))
-
+                    .overlay(
+                             RoundedRectangle(cornerRadius: 12)
+                             .stroke(
+                                     Color.themeOrange.opacity(0.5),
+                                    lineWidth: 1))
                 Text("About")
                     //.font(.system(size: 21, weight: .bold))
                     .font(.avenirBold(size: 21))

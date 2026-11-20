@@ -65,15 +65,15 @@ struct SubscriptionsSearchView: View {
                 } label: {
                     Text("Reset")
                         .font(.avenirDemiBold(size: 14))
-                        .foregroundStyle(Color.white)
+                        .foregroundStyle(Color.themeOrange)
                         .frame(height: 40)
                         .padding(.horizontal, 12)
-                        .background(Color.themeOrange.opacity(1))
+                        .background(Color.themeOrange.opacity(0.15))
                         .clipShape(RoundedRectangle(cornerRadius: 10))
                         .overlay {
                             RoundedRectangle(cornerRadius: 10)
                                 .stroke(
-                                    Color.themeOrange.opacity(0.35),
+                                    Color.themeOrange.opacity(0.5),
                                     lineWidth: 1
                                 )
                         }

@@ -74,17 +74,17 @@ struct ArchivedSearchView: View {
 
                     Text("Reset")
                         .font(.avenirDemiBold(size: 14))
-                        .foregroundStyle(.white)
+                        .foregroundStyle(Color.themeOrange)
                         .frame(height: 40)
                         .padding(.horizontal, 12)
-                        .background(Color.themeOrange)
+                        .background(Color.themeOrange.opacity(0.15))
                         .clipShape(
                             RoundedRectangle(cornerRadius: 10)
                         )
                         .overlay {
                             RoundedRectangle(cornerRadius: 10)
                                 .stroke(
-                                    Color.themeOrange.opacity(0.35),
+                                    Color.themeOrange.opacity(0.5),
                                     lineWidth: 1
                                 )
                         }

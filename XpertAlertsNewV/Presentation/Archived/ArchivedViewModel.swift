@@ -15,84 +15,83 @@ final class ArchivedViewModel: ObservableObject {
         self.getArchivedAlertsUseCase = getArchivedAlertsUseCase
     }
 
+   
     func loadArchivedAlerts(filters: ArchivedSearchFilters? = nil) {
+        Task {
+            await fetchArchivedAlerts(filters: filters)
+        }
+    }
+
+    func refreshArchivedAlerts() async {
+        await fetchArchivedAlerts()
+    }
+
+    private func fetchArchivedAlerts(
+        filters: ArchivedSearchFilters? = nil
+    ) async {
         errorMessage = nil
         isLoading = true
 
-        Task {
-            defer {
-                isLoading = false
+        defer {
+            isLoading = false
+        }
+
+        do {
+            let formatter = DateFormatter()
+            formatter.dateFormat = "MM/dd/yyyy"
+            formatter.locale = Locale(identifier: "en_US_POSIX")
+            formatter.timeZone = TimeZone.current
+
+            let startDateString: String
+            let endDateString: String
+            let keyword: String
+            let viewBy: Int
+            let deviceStatus: Int
+            let emailStatus: Int
+
+            if let filters {
+                startDateString = formatter.string(from: filters.startDate)
+                endDateString = formatter.string(from: filters.endDate)
+                keyword = filters.keyword
+                viewBy = filters.viewByFlag
+                deviceStatus = filters.deviceStatus
+                emailStatus = filters.emailStatus
+            } else {
+                startDateString = "10/23/2024"
+                endDateString = "10/26/2026"
+                keyword = ""
+                viewBy = 0
+                deviceStatus = 0
+                emailStatus = 0
             }
 
-            do {
-                let formatter = DateFormatter()
-                formatter.dateFormat = "MM/dd/yyyy"
-                formatter.locale = Locale(identifier: "en_US_POSIX")
-                formatter.timeZone = TimeZone.current
+            print("ARCHIVED FILTERS:")
+            print("Start Date: \(startDateString)")
+            print("End Date: \(endDateString)")
+            print("Keyword: \(keyword)")
+            print("View By: \(viewBy)")
+            print("Device Status: \(deviceStatus)")
+            print("Email Status: \(emailStatus)")
 
-                let startDateString: String
-                let endDateString: String
-                let keyword: String
-                let viewBy: Int
-                let deviceStatus: Int
-                let emailStatus: Int
+            let result = try await getArchivedAlertsUseCase.execute(
+                startDate: startDateString,
+                endDate: endDateString,
+                searchByKeyword: keyword,
+                viewByFlag: viewBy,
+                status: deviceStatus,
+                emailStatus: emailStatus
+            )
 
-                if let filters {
-                    // Match the old iOS app:
-                    // send the selected filter IDs directly.
-                    startDateString = formatter.string(
-                        from: filters.startDate
-                    )
+            alerts = result
 
-                    endDateString = formatter.string(
-                        from: filters.endDate
-                    )
+            print("Returned Alerts: \(result.count)")
+            print("Archived Results: \(result.count)")
 
-                    keyword = filters.keyword
-                    viewBy = filters.viewByFlag
-                    deviceStatus = filters.deviceStatus
-                    emailStatus = filters.emailStatus
-
-               
-                } else {
-                    // Initial load: match the old iOS request behavior.
-                    startDateString = "10/23/2024"
-                    endDateString = "10/26/2026"
-                    keyword = ""
-                    viewBy = 0
-                    deviceStatus = 0
-                    emailStatus = 0
-                }
-
-                
-
-                print("ARCHIVED FILTERS:")
-                print("Start Date: \(startDateString)")
-                print("End Date: \(endDateString)")
-                print("Keyword: \(keyword)")
-                print("View By: \(viewBy)")
-                print("Device Status: \(deviceStatus)")
-                print("Email Status: \(emailStatus)")
-
-                let result = try await getArchivedAlertsUseCase.execute(
-                    startDate: startDateString,
-                    endDate: endDateString,
-                    searchByKeyword: keyword,
-                    viewByFlag: viewBy,
-                    status: deviceStatus,
-                    emailStatus: emailStatus
-                )
-
-                alerts = result
-
-                print("Returned Alerts: \(result.count)")
-                print("Archived Results: \(result.count)")
-
-            } catch {
-                print("Failed to load archived alerts:", error)
-                errorMessage = "Unable To Load Archived Alerts."
-            }
+        } catch {
+            print("Failed to load archived alerts:", error)
+            errorMessage = "Unable To Load Archived Alerts."
         }
     }
+
 }
 

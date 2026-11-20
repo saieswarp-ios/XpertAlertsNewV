@@ -38,12 +38,25 @@ struct ChangePasswordView: View {
                 .buttonStyle(.plain)
                
 
-                AppScreenHeader(
-                    title: "Change Password",
-                    subtitle: nil,
-                    icon: "lock.fill"
-                )
+                HStack(spacing: 12) {
+                    Image(systemName: "lock.fill")
+                        .font(.system(size: 18, weight: .semibold))
+                        .foregroundStyle(Color.themeOrange)
+                        .frame(width: 40, height: 40)
+                        .background(Color.themeOrange.opacity(0.15))
+                        .clipShape(RoundedRectangle(cornerRadius: 12))
+                        .overlay(
+                            RoundedRectangle(cornerRadius: 12)
+                                .stroke(
+                                    Color.themeOrange.opacity(0.5),
+                                    lineWidth: 1
+                                )
+                        )
 
+                    Text("Change Password")
+                        .font(.avenirBold(size: 21))
+                        .foregroundStyle(Color.themeOrange)
+                }
                 Spacer(minLength: 0)
             }
             .padding()
